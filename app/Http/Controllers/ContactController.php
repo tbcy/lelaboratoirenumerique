@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactFormMail;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -33,26 +34,27 @@ class ContactController extends Controller
         ]);
 
         try {
-            // Log the contact form data for now
-            Log::info('Contact form submission:', $validated);
+            Mail::to('thomasbourcy@live.com')->send(new ContactFormMail(
+                name: $validated['name'],
+                email: $validated['email'],
+                phone: $validated['phone'] ?? null,
+                subject: $validated['subject'],
+                contactMessage: $validated['message'],
+            ));
 
-            // TODO: Configure mail settings and send actual email
-            // For now, we'll just log the data and show a success message
-
-            // Example mail sending (uncomment when mail is configured):
-            /*
-            Mail::send('emails.contact', $validated, function ($message) use ($validated) {
-                $message->to('contact@lelaboratoirenumerique.com')
-                    ->subject('Nouveau message de contact : ' . $validated['subject'])
-                    ->replyTo($validated['email'], $validated['name']);
-            });
-            */
+            Log::info('Contact form email sent successfully', [
+                'from' => $validated['email'],
+                'subject' => $validated['subject'],
+            ]);
 
             return redirect()
                 ->route('contact')
                 ->with('success', 'Merci pour votre message ! Je vous répondrai dans les plus brefs délais.');
         } catch (\Exception $e) {
-            Log::error('Error sending contact form: ' . $e->getMessage());
+            Log::error('Error sending contact form email: ' . $e->getMessage(), [
+                'from' => $validated['email'],
+                'subject' => $validated['subject'],
+            ]);
 
             return redirect()
                 ->route('contact')
