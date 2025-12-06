@@ -8,6 +8,7 @@
     <meta name="description" content="@yield('description', 'Développeur Full-Stack spécialisé en Laravel et Ionic. Création d\'applications web et mobiles sur mesure.')">
 
     <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
     <!-- Fonts -->
