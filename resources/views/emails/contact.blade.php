@@ -101,7 +101,7 @@
 
             <div class="field">
                 <div class="field-label">Sujet</div>
-                <div class="field-value">{{ $subject }}</div>
+                <div class="field-value">{{ $contactSubject }}</div>
             </div>
 
             <div class="field">

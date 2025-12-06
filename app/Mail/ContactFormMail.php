@@ -17,7 +17,7 @@ class ContactFormMail extends Mailable
         public string $name,
         public string $email,
         public ?string $phone,
-        public string $subject,
+        public string $contactSubject,
         public string $contactMessage,
     ) {}
 
@@ -25,7 +25,7 @@ class ContactFormMail extends Mailable
     {
         return new Envelope(
             replyTo: [new Address($this->email, $this->name)],
-            subject: 'Nouveau message de contact : ' . $this->subject,
+            subject: 'Nouveau message de contact : ' . $this->contactSubject,
         );
     }
 
