@@ -277,7 +277,7 @@
         <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
             Prêt à démarrer votre projet ?
         </h2>
-        <p class="text-xl text-white/90 mb-10">
+        <p class="text-xl text-white mb-10">
             Discutons de vos besoins et trouvons ensemble la meilleure solution pour concrétiser votre projet.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">

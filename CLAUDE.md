@@ -72,3 +72,32 @@ Uses Mailgun (EU endpoint) configured via environment variables:
 - `MAIL_MAILER=mailgun`
 - `MAILGUN_DOMAIN`, `MAILGUN_SECRET`, `MAILGUN_ENDPOINT`
 - `MAIL_FROM_ADDRESS`, `MAIL_FROM_NAME`
+
+## Projets à Mettre en Avant
+
+1. **Youplago**
+   - Application mobile et hybride (Ionic)
+   - Organisation d'événements entre amis/professionnels
+   - Features : activités, budgets, chat, listes de courses, to-do lists
+   - Site : app.youplago.com
+
+2. **Olympiadus**
+   - Application mobile pour organiser des olympiades/compétitions sportives
+   - Plateforme tout-en-un : entre amis, en famille ou en entreprise
+   - Features : gestion d'équipes, validation QR Code, classements temps réel, statistiques
+   - Stats : 10K+ utilisateurs, 50K+ matchs, 5K+ équipes, 1K+ olympiades
+   - Site : olympiadus.lelaboratoirenumerique.com
+
+3. **Batibid**
+   - Plateforme immobilière (Agence au Bénin)
+   - Back-office : gestion des annonces et biens
+   - Système de facturation automatique
+   - Front-end : recherche de biens immobiliers
+   - Site : app.batibid.com
+
+## Compétences à Valoriser
+
+- **Laravel** : Développement back-end, API, back-offices
+- **Ionic** : Applications mobiles et hybrides (iOS/Android)
+- **Développement Full-Stack** : Front-end + Back-end
+- **Architecture** : Conception d'applications complètes

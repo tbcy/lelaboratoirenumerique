@@ -67,7 +67,7 @@
             </p>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8">
+        <div class="grid md:grid-cols-3 gap-8">
             <!-- Youplago -->
             <div class="card hover-lift hover-glow">
                 <div class="flex items-start gap-4 mb-4">
@@ -81,23 +81,53 @@
                         <div class="flex flex-wrap gap-2 mb-3">
                             <span class="badge badge-primary">Ionic</span>
                             <span class="badge badge-secondary">Laravel</span>
-                            <span class="badge badge-success">Mobile</span>
                         </div>
                     </div>
                 </div>
                 <p class="text-neutral-600 mb-4 leading-relaxed">
-                    Application mobile et hybride pour l'organisation d'événements entre amis et professionnels.
-                    Gestion d'activités, budgets, chat en temps réel, listes de courses et to-do lists.
+                    Application mobile pour l'organisation d'événements entre amis. Gestion d'activités, budgets, chat en temps réel.
                 </p>
                 <div class="flex items-center gap-3">
                     <a href="https://app.youplago.com" target="_blank" rel="noopener" class="btn btn-outline flex-1">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                         </svg>
-                        Voir le site
+                        Voir
                     </a>
                     <a href="{{ route('projects') }}#youplago" class="btn btn-ghost">
-                        En savoir plus
+                        Plus
+                    </a>
+                </div>
+            </div>
+
+            <!-- Olympiadus -->
+            <div class="card hover-lift hover-glow">
+                <div class="flex items-start gap-4 mb-4">
+                    <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="heading-4 mb-2">Olympiadus</h3>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="badge badge-primary">Mobile</span>
+                            <span class="badge" style="background-color: rgb(238 242 255); color: rgb(67 56 202);">Sport</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-neutral-600 mb-4 leading-relaxed">
+                    Plateforme pour organiser des olympiades et compétitions sportives. Gestion d'équipes, QR codes, classements en temps réel.
+                </p>
+                <div class="flex items-center gap-3">
+                    <a href="https://olympiadus.lelaboratoirenumerique.com/fr" target="_blank" rel="noopener" class="btn btn-outline flex-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                        Voir
+                    </a>
+                    <a href="{{ route('projects') }}#olympiadus" class="btn btn-ghost">
+                        Plus
                     </a>
                 </div>
             </div>
@@ -114,24 +144,22 @@
                         <h3 class="heading-4 mb-2">Batibid</h3>
                         <div class="flex flex-wrap gap-2 mb-3">
                             <span class="badge badge-primary">Laravel</span>
-                            <span class="badge badge-secondary">Back-office</span>
                             <span class="badge badge-warning">Immobilier</span>
                         </div>
                     </div>
                 </div>
                 <p class="text-neutral-600 mb-4 leading-relaxed">
-                    Plateforme immobilière complète pour une agence au Bénin. Back-office de gestion des annonces,
-                    système de facturation automatique et interface de recherche de biens optimisée.
+                    Plateforme immobilière complète. Back-office de gestion des annonces et système de facturation automatique.
                 </p>
                 <div class="flex items-center gap-3">
                     <a href="https://app.batibid.com" target="_blank" rel="noopener" class="btn btn-outline flex-1">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                         </svg>
-                        Voir le site
+                        Voir
                     </a>
                     <a href="{{ route('projects') }}#batibid" class="btn btn-ghost">
-                        En savoir plus
+                        Plus
                     </a>
                 </div>
             </div>
@@ -214,7 +242,7 @@
 <section class="section gradient-primary">
     <div class="container-custom text-white">
         <h2 class="heading-2 text-white mb-4 text-center">Prêt à démarrer votre projet ?</h2>
-        <p class="text-lead text-white/90 mb-8 text-center">
+        <p class="text-lead text-white mb-8 text-center">
             Discutons de vos besoins et transformons vos idées en réalité.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
