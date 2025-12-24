@@ -87,12 +87,18 @@ git push origin main
 # Deploy to production (SSH pull)
 ssh o2switch_perso "cd ~/production/lelaboratoirenumerique && git pull origin main"
 
-# If needed, rebuild assets on server
-ssh o2switch_perso "cd ~/production/lelaboratoirenumerique && npm run build"
+# Rebuild assets (REQUIRED when modifying Tailwind classes)
+# Note: Vite 7 requires Node.js 20+, use alt-nodejs22 on o2switch
+ssh o2switch_perso "cd ~/production/lelaboratoirenumerique && export PATH=/opt/alt/alt-nodejs22/root/usr/bin:\$PATH && npm run build"
 
 # Clear Laravel caches if needed
 ssh o2switch_perso "cd ~/production/lelaboratoirenumerique && php artisan cache:clear && php artisan config:clear && php artisan view:clear"
 ```
+
+### Important Notes
+
+- **Tailwind CSS 4.x** : Les classes arbitraires (ex: `w-[450px]`) doivent être compilées. Toujours lancer `npm run build` après modification des templates Blade.
+- **Node.js** : Le serveur a Node 16 par défaut mais Vite 7 nécessite Node 20+. Utiliser `/opt/alt/alt-nodejs22/root/usr/bin/` pour les commandes npm.
 
 ### Production URL
 
