@@ -4,15 +4,20 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="gradient-primary py-20 md:py-32">
+<section class="gradient-primary py-20 md:py-32 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-white">
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight text-center">
-                Des solutions <span class="text-accent-300">sur mesure</span> pour vos projets
-            </h1>
-            <p class="text-xl md:text-2xl text-white/90 text-center">
-                Expert en développement Laravel et Ionic, je transforme vos idées en applications performantes et évolutives.
-            </p>
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="text-white text-center lg:text-left">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+                    Des solutions <span class="text-accent-300">sur mesure</span> pour vos projets
+                </h1>
+                <p class="text-xl md:text-2xl text-white/90">
+                    Expert en développement Laravel et Ionic, je transforme vos idées en applications performantes et évolutives.
+                </p>
+            </div>
+            <div class="hidden lg:block">
+                <img src="{{ asset('images/services-hero.png') }}" alt="Le Laboratoire Numérique - Création sur mesure" class="w-full max-w-lg mx-auto rounded-3xl drop-shadow-2xl animate-fade-in-up">
+            </div>
         </div>
     </div>
 </section>
@@ -218,8 +223,11 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Étape 1 -->
             <div class="relative">
-                <div class="card h-full">
-                    <div class="w-12 h-12 rounded-full bg-primary-600 text-white flex items-center justify-center text-xl font-bold mb-4">
+                <div class="card h-full text-center hover-lift">
+                    <div class="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-xl">
+                        <img src="{{ asset('images/icons/process-analyse.png') }}" alt="Étape Analyse" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center text-sm font-bold mx-auto mb-3">
                         1
                     </div>
                     <h3 class="text-xl font-semibold text-neutral-900 mb-2">Analyse</h3>
@@ -231,8 +239,11 @@
 
             <!-- Étape 2 -->
             <div class="relative">
-                <div class="card h-full">
-                    <div class="w-12 h-12 rounded-full bg-primary-600 text-white flex items-center justify-center text-xl font-bold mb-4">
+                <div class="card h-full text-center hover-lift">
+                    <div class="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-xl">
+                        <img src="{{ asset('images/icons/process-conception.png') }}" alt="Étape Conception" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center text-sm font-bold mx-auto mb-3">
                         2
                     </div>
                     <h3 class="text-xl font-semibold text-neutral-900 mb-2">Conception</h3>
@@ -244,8 +255,11 @@
 
             <!-- Étape 3 -->
             <div class="relative">
-                <div class="card h-full">
-                    <div class="w-12 h-12 rounded-full bg-primary-600 text-white flex items-center justify-center text-xl font-bold mb-4">
+                <div class="card h-full text-center hover-lift">
+                    <div class="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-xl">
+                        <img src="{{ asset('images/icons/process-dev.png') }}" alt="Étape Développement" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center text-sm font-bold mx-auto mb-3">
                         3
                     </div>
                     <h3 class="text-xl font-semibold text-neutral-900 mb-2">Développement</h3>
@@ -257,8 +271,11 @@
 
             <!-- Étape 4 -->
             <div class="relative">
-                <div class="card h-full">
-                    <div class="w-12 h-12 rounded-full bg-primary-600 text-white flex items-center justify-center text-xl font-bold mb-4">
+                <div class="card h-full text-center hover-lift">
+                    <div class="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-xl">
+                        <img src="{{ asset('images/icons/process-launch.png') }}" alt="Étape Livraison" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center text-sm font-bold mx-auto mb-3">
                         4
                     </div>
                     <h3 class="text-xl font-semibold text-neutral-900 mb-2">Livraison</h3>

@@ -34,7 +34,7 @@ class ContactController extends Controller
         ]);
 
         try {
-            Mail::to('thomasbourcy@live.com')->send(new ContactFormMail(
+            Mail::to(config('mail.contact_email'))->send(new ContactFormMail(
                 name: $validated['name'],
                 email: $validated['email'],
                 phone: $validated['phone'] ?? null,

@@ -88,58 +88,65 @@
             </div>
 
             <!-- Visual/Stats -->
-            <div class="bg-neutral-50 rounded-2xl p-8">
-                <h3 class="text-xl font-semibold text-neutral-900 mb-6">Stack Technique</h3>
-                <div class="space-y-4">
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="text-neutral-700 font-medium">Ionic Framework</span>
-                            <span class="text-neutral-600">Mobile</span>
-                        </div>
-                        <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-primary-600 rounded-full" style="width: 100%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="text-neutral-700 font-medium">Laravel</span>
-                            <span class="text-neutral-600">Backend API</span>
-                        </div>
-                        <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-secondary-600 rounded-full" style="width: 100%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="text-neutral-700 font-medium">MySQL</span>
-                            <span class="text-neutral-600">Base de données</span>
-                        </div>
-                        <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-accent-600 rounded-full" style="width: 100%"></div>
-                        </div>
-                    </div>
+            <div class="space-y-6">
+                <!-- Showcase Image -->
+                <div class="overflow-hidden rounded-2xl shadow-2xl bg-neutral-900">
+                    <img src="{{ asset('images/projects/youplago-showcase.png') }}" alt="Youplago - Application mobile événementielle" class="w-full h-auto">
                 </div>
 
-                <div class="mt-8 pt-8 border-t border-neutral-200">
-                    <h4 class="text-lg font-semibold text-neutral-900 mb-4">Plateformes</h4>
-                    <div class="flex flex-wrap gap-3">
-                        <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-neutral-200">
-                            <svg class="w-5 h-5 text-neutral-700" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
-                            </svg>
-                            <span class="text-neutral-700 font-medium">iOS</span>
+                <div class="bg-neutral-50 rounded-2xl p-8">
+                    <h3 class="text-xl font-semibold text-neutral-900 mb-6">Stack Technique</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-neutral-700 font-medium">Ionic Framework</span>
+                                <span class="text-neutral-600">Mobile</span>
+                            </div>
+                            <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-primary-600 rounded-full" style="width: 100%"></div>
+                            </div>
                         </div>
-                        <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-neutral-200">
-                            <svg class="w-5 h-5 text-neutral-700" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M17.523 15.341c-.54-.537-.97-1.169-1.29-1.892-.32-.723-.48-1.458-.48-2.205 0-1.047.246-1.999.738-2.856.492-.857 1.17-1.53 2.034-2.019-.736-1.076-1.755-1.614-3.056-1.614-.492 0-1.045.123-1.659.369-.614.246-1.059.369-1.335.369-.215 0-.645-.123-1.29-.369-.645-.246-1.2-.369-1.66-.369-2.445 0-4.38 1.93-4.38 4.374 0 1.415.462 2.915 1.386 4.5.924 1.585 2.034 2.377 3.33 2.377.492 0 1.045-.123 1.659-.369.614-.246 1.076-.369 1.386-.369.277 0 .738.123 1.383.369.645.246 1.183.369 1.614.369 1.17 0 2.17-.584 3-1.752zM15.787 3.73c.43-.522.736-1.144.92-1.865C15.417 2.05 14.17 2.572 13.186 3.73c-.369.43-.645.922-.83 1.476-.185.554-.277 1.089-.277 1.604.737-.03 1.413-.245 2.028-.645.615-.4 1.107-.922 1.477-1.566l.203-.37z"/>
-                            </svg>
-                            <span class="text-neutral-700 font-medium">Android</span>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-neutral-700 font-medium">Laravel</span>
+                                <span class="text-neutral-600">Backend API</span>
+                            </div>
+                            <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-secondary-600 rounded-full" style="width: 100%"></div>
+                            </div>
                         </div>
-                        <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-neutral-200">
-                            <svg class="w-5 h-5 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
-                            </svg>
-                            <span class="text-neutral-700 font-medium">Web</span>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-neutral-700 font-medium">MySQL</span>
+                                <span class="text-neutral-600">Base de données</span>
+                            </div>
+                            <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-accent-600 rounded-full" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 pt-8 border-t border-neutral-200">
+                        <h4 class="text-lg font-semibold text-neutral-900 mb-4">Plateformes</h4>
+                        <div class="flex flex-wrap gap-3">
+                            <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-neutral-200">
+                                <svg class="w-5 h-5 text-neutral-700" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                                </svg>
+                                <span class="text-neutral-700 font-medium">iOS</span>
+                            </div>
+                            <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-neutral-200">
+                                <svg class="w-5 h-5 text-neutral-700" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M17.523 15.341c-.54-.537-.97-1.169-1.29-1.892-.32-.723-.48-1.458-.48-2.205 0-1.047.246-1.999.738-2.856.492-.857 1.17-1.53 2.034-2.019-.736-1.076-1.755-1.614-3.056-1.614-.492 0-1.045.123-1.659.369-.614.246-1.059.369-1.335.369-.215 0-.645-.123-1.29-.369-.645-.246-1.2-.369-1.66-.369-2.445 0-4.38 1.93-4.38 4.374 0 1.415.462 2.915 1.386 4.5.924 1.585 2.034 2.377 3.33 2.377.492 0 1.045-.123 1.659-.369.614-.246 1.076-.369 1.386-.369.277 0 .738.123 1.383.369.645.246 1.183.369 1.614.369 1.17 0 2.17-.584 3-1.752zM15.787 3.73c.43-.522.736-1.144.92-1.865C15.417 2.05 14.17 2.572 13.186 3.73c-.369.43-.645.922-.83 1.476-.185.554-.277 1.089-.277 1.604.737-.03 1.413-.245 2.028-.645.615-.4 1.107-.922 1.477-1.566l.203-.37z"/>
+                                </svg>
+                                <span class="text-neutral-700 font-medium">Android</span>
+                            </div>
+                            <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-neutral-200">
+                                <svg class="w-5 h-5 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                                </svg>
+                                <span class="text-neutral-700 font-medium">Web</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -153,52 +160,59 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid md:grid-cols-2 gap-12 items-center">
             <!-- Visual/Stats -->
-            <div class="bg-white rounded-2xl p-8 order-2 md:order-1">
-                <h3 class="text-xl font-semibold text-neutral-900 mb-6">Stack Technique</h3>
-                <div class="space-y-4">
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="text-neutral-700 font-medium">Laravel</span>
-                            <span class="text-neutral-600">Full-Stack</span>
-                        </div>
-                        <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-primary-600 rounded-full" style="width: 100%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="text-neutral-700 font-medium">Blade + Alpine.js</span>
-                            <span class="text-neutral-600">Frontend</span>
-                        </div>
-                        <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-secondary-600 rounded-full" style="width: 100%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="text-neutral-700 font-medium">MySQL</span>
-                            <span class="text-neutral-600">Base de données</span>
-                        </div>
-                        <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-accent-600 rounded-full" style="width: 100%"></div>
-                        </div>
-                    </div>
+            <div class="space-y-6 order-2 md:order-1">
+                <!-- Showcase Image -->
+                <div class="overflow-hidden rounded-2xl shadow-2xl bg-neutral-900">
+                    <img src="{{ asset('images/projects/batibid-showcase.png') }}" alt="Batibid - Plateforme immobilière" class="w-full h-auto">
                 </div>
 
-                <div class="mt-8 pt-8 border-t border-neutral-200">
-                    <h4 class="text-lg font-semibold text-neutral-900 mb-4">Modules clés</h4>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="px-4 py-3 bg-neutral-50 rounded-lg">
-                            <div class="text-neutral-900 font-medium">Gestion annonces</div>
+                <div class="bg-white rounded-2xl p-8">
+                    <h3 class="text-xl font-semibold text-neutral-900 mb-6">Stack Technique</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-neutral-700 font-medium">Laravel</span>
+                                <span class="text-neutral-600">Full-Stack</span>
+                            </div>
+                            <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-primary-600 rounded-full" style="width: 100%"></div>
+                            </div>
                         </div>
-                        <div class="px-4 py-3 bg-neutral-50 rounded-lg">
-                            <div class="text-neutral-900 font-medium">Facturation auto</div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-neutral-700 font-medium">Blade + Alpine.js</span>
+                                <span class="text-neutral-600">Frontend</span>
+                            </div>
+                            <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-secondary-600 rounded-full" style="width: 100%"></div>
+                            </div>
                         </div>
-                        <div class="px-4 py-3 bg-neutral-50 rounded-lg">
-                            <div class="text-neutral-900 font-medium">Recherche avancée</div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-neutral-700 font-medium">MySQL</span>
+                                <span class="text-neutral-600">Base de données</span>
+                            </div>
+                            <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-accent-600 rounded-full" style="width: 100%"></div>
+                            </div>
                         </div>
-                        <div class="px-4 py-3 bg-neutral-50 rounded-lg">
-                            <div class="text-neutral-900 font-medium">Back-office</div>
+                    </div>
+
+                    <div class="mt-8 pt-8 border-t border-neutral-200">
+                        <h4 class="text-lg font-semibold text-neutral-900 mb-4">Modules clés</h4>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="px-4 py-3 bg-neutral-50 rounded-lg">
+                                <div class="text-neutral-900 font-medium">Gestion annonces</div>
+                            </div>
+                            <div class="px-4 py-3 bg-neutral-50 rounded-lg">
+                                <div class="text-neutral-900 font-medium">Facturation auto</div>
+                            </div>
+                            <div class="px-4 py-3 bg-neutral-50 rounded-lg">
+                                <div class="text-neutral-900 font-medium">Recherche avancée</div>
+                            </div>
+                            <div class="px-4 py-3 bg-neutral-50 rounded-lg">
+                                <div class="text-neutral-900 font-medium">Back-office</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -344,80 +358,87 @@
             </div>
 
             <!-- Visual/Stats -->
-            <div class="bg-neutral-50 rounded-2xl p-8">
-                <h3 class="text-xl font-semibold text-neutral-900 mb-6">Stack Technique</h3>
-                <div class="space-y-4">
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="text-neutral-700 font-medium">React / Ionic</span>
-                            <span class="text-neutral-600">Mobile</span>
-                        </div>
-                        <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-indigo-600 rounded-full" style="width: 100%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="text-neutral-700 font-medium">Laravel</span>
-                            <span class="text-neutral-600">Backend API</span>
-                        </div>
-                        <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-secondary-600 rounded-full" style="width: 100%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="text-neutral-700 font-medium">MySQL</span>
-                            <span class="text-neutral-600">Base de données</span>
-                        </div>
-                        <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-accent-600 rounded-full" style="width: 100%"></div>
-                        </div>
-                    </div>
+            <div class="space-y-6">
+                <!-- Showcase Image -->
+                <div class="overflow-hidden rounded-2xl shadow-2xl bg-neutral-900">
+                    <img src="{{ asset('images/projects/olympiadus-showcase.png') }}" alt="Olympiadus - Plateforme de compétitions sportives" class="w-full h-auto">
                 </div>
 
-                <div class="mt-8 pt-8 border-t border-neutral-200">
-                    <h4 class="text-lg font-semibold text-neutral-900 mb-4">Statistiques</h4>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="text-center p-4 bg-white rounded-lg border border-neutral-200">
-                            <div class="text-2xl font-bold text-indigo-600">10K+</div>
-                            <div class="text-sm text-neutral-600">Utilisateurs</div>
+                <div class="bg-neutral-50 rounded-2xl p-8">
+                    <h3 class="text-xl font-semibold text-neutral-900 mb-6">Stack Technique</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-neutral-700 font-medium">React / Ionic</span>
+                                <span class="text-neutral-600">Mobile</span>
+                            </div>
+                            <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-indigo-600 rounded-full" style="width: 100%"></div>
+                            </div>
                         </div>
-                        <div class="text-center p-4 bg-white rounded-lg border border-neutral-200">
-                            <div class="text-2xl font-bold text-indigo-600">50K+</div>
-                            <div class="text-sm text-neutral-600">Matchs joués</div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-neutral-700 font-medium">Laravel</span>
+                                <span class="text-neutral-600">Backend API</span>
+                            </div>
+                            <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-secondary-600 rounded-full" style="width: 100%"></div>
+                            </div>
                         </div>
-                        <div class="text-center p-4 bg-white rounded-lg border border-neutral-200">
-                            <div class="text-2xl font-bold text-indigo-600">5K+</div>
-                            <div class="text-sm text-neutral-600">Équipes</div>
-                        </div>
-                        <div class="text-center p-4 bg-white rounded-lg border border-neutral-200">
-                            <div class="text-2xl font-bold text-indigo-600">1K+</div>
-                            <div class="text-sm text-neutral-600">Olympiades</div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-neutral-700 font-medium">MySQL</span>
+                                <span class="text-neutral-600">Base de données</span>
+                            </div>
+                            <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-accent-600 rounded-full" style="width: 100%"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="mt-8 pt-8 border-t border-neutral-200">
-                    <h4 class="text-lg font-semibold text-neutral-900 mb-4">Plateformes</h4>
-                    <div class="flex flex-wrap gap-3">
-                        <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-neutral-200">
-                            <svg class="w-5 h-5 text-neutral-700" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
-                            </svg>
-                            <span class="text-neutral-700 font-medium">iOS</span>
+                    <div class="mt-8 pt-8 border-t border-neutral-200">
+                        <h4 class="text-lg font-semibold text-neutral-900 mb-4">Statistiques</h4>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="text-center p-4 bg-white rounded-lg border border-neutral-200">
+                                <div class="text-2xl font-bold text-indigo-600">10K+</div>
+                                <div class="text-sm text-neutral-600">Utilisateurs</div>
+                            </div>
+                            <div class="text-center p-4 bg-white rounded-lg border border-neutral-200">
+                                <div class="text-2xl font-bold text-indigo-600">50K+</div>
+                                <div class="text-sm text-neutral-600">Matchs joués</div>
+                            </div>
+                            <div class="text-center p-4 bg-white rounded-lg border border-neutral-200">
+                                <div class="text-2xl font-bold text-indigo-600">5K+</div>
+                                <div class="text-sm text-neutral-600">Équipes</div>
+                            </div>
+                            <div class="text-center p-4 bg-white rounded-lg border border-neutral-200">
+                                <div class="text-2xl font-bold text-indigo-600">1K+</div>
+                                <div class="text-sm text-neutral-600">Olympiades</div>
+                            </div>
                         </div>
-                        <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-neutral-200">
-                            <svg class="w-5 h-5 text-neutral-700" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M17.523 15.341c-.54-.537-.97-1.169-1.29-1.892-.32-.723-.48-1.458-.48-2.205 0-1.047.246-1.999.738-2.856.492-.857 1.17-1.53 2.034-2.019-.736-1.076-1.755-1.614-3.056-1.614-.492 0-1.045.123-1.659.369-.614.246-1.059.369-1.335.369-.215 0-.645-.123-1.29-.369-.645-.246-1.2-.369-1.66-.369-2.445 0-4.38 1.93-4.38 4.374 0 1.415.462 2.915 1.386 4.5.924 1.585 2.034 2.377 3.33 2.377.492 0 1.045-.123 1.659-.369.614-.246 1.076-.369 1.386-.369.277 0 .738.123 1.383.369.645.246 1.183.369 1.614.369 1.17 0 2.17-.584 3-1.752zM15.787 3.73c.43-.522.736-1.144.92-1.865C15.417 2.05 14.17 2.572 13.186 3.73c-.369.43-.645.922-.83 1.476-.185.554-.277 1.089-.277 1.604.737-.03 1.413-.245 2.028-.645.615-.4 1.107-.922 1.477-1.566l.203-.37z"/>
-                            </svg>
-                            <span class="text-neutral-700 font-medium">Android</span>
-                        </div>
-                        <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-neutral-200">
-                            <svg class="w-5 h-5 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
-                            </svg>
-                            <span class="text-neutral-700 font-medium">Web</span>
+                    </div>
+
+                    <div class="mt-8 pt-8 border-t border-neutral-200">
+                        <h4 class="text-lg font-semibold text-neutral-900 mb-4">Plateformes</h4>
+                        <div class="flex flex-wrap gap-3">
+                            <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-neutral-200">
+                                <svg class="w-5 h-5 text-neutral-700" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                                </svg>
+                                <span class="text-neutral-700 font-medium">iOS</span>
+                            </div>
+                            <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-neutral-200">
+                                <svg class="w-5 h-5 text-neutral-700" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M17.523 15.341c-.54-.537-.97-1.169-1.29-1.892-.32-.723-.48-1.458-.48-2.205 0-1.047.246-1.999.738-2.856.492-.857 1.17-1.53 2.034-2.019-.736-1.076-1.755-1.614-3.056-1.614-.492 0-1.045.123-1.659.369-.614.246-1.059.369-1.335.369-.215 0-.645-.123-1.29-.369-.645-.246-1.2-.369-1.66-.369-2.445 0-4.38 1.93-4.38 4.374 0 1.415.462 2.915 1.386 4.5.924 1.585 2.034 2.377 3.33 2.377.492 0 1.045-.123 1.659-.369.614-.246 1.076-.369 1.386-.369.277 0 .738.123 1.383.369.645.246 1.183.369 1.614.369 1.17 0 2.17-.584 3-1.752zM15.787 3.73c.43-.522.736-1.144.92-1.865C15.417 2.05 14.17 2.572 13.186 3.73c-.369.43-.645.922-.83 1.476-.185.554-.277 1.089-.277 1.604.737-.03 1.413-.245 2.028-.645.615-.4 1.107-.922 1.477-1.566l.203-.37z"/>
+                                </svg>
+                                <span class="text-neutral-700 font-medium">Android</span>
+                            </div>
+                            <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-neutral-200">
+                                <svg class="w-5 h-5 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                                </svg>
+                                <span class="text-neutral-700 font-medium">Web</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -503,72 +524,79 @@
             </div>
 
             <!-- Visual/Stats -->
-            <div class="bg-neutral-50 rounded-2xl p-8">
-                <h3 class="text-xl font-semibold text-neutral-900 mb-6">Stack Technique</h3>
-                <div class="space-y-4">
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="text-neutral-700 font-medium">Laravel</span>
-                            <span class="text-neutral-600">Backend</span>
-                        </div>
-                        <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-primary-600 rounded-full" style="width: 100%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="text-neutral-700 font-medium">Blade + Tailwind CSS</span>
-                            <span class="text-neutral-600">Frontend</span>
-                        </div>
-                        <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-secondary-600 rounded-full" style="width: 100%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="text-neutral-700 font-medium">MySQL</span>
-                            <span class="text-neutral-600">Database</span>
-                        </div>
-                        <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-accent-600 rounded-full" style="width: 100%"></div>
-                        </div>
-                    </div>
+            <div class="space-y-6">
+                <!-- Showcase Image -->
+                <div class="overflow-hidden rounded-2xl shadow-2xl bg-neutral-900">
+                    <img src="{{ asset('images/projects/datamigration-showcase.png') }}" alt="Data Migration - Dashboard de suivi de migration" class="w-full h-auto">
                 </div>
 
-                <div class="mt-8 pt-8 border-t border-neutral-200">
-                    <h3 class="text-xl font-semibold text-neutral-900 mb-4">Points clés</h3>
+                <div class="bg-neutral-50 rounded-2xl p-8">
+                    <h3 class="text-xl font-semibold text-neutral-900 mb-6">Stack Technique</h3>
                     <div class="space-y-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-lg bg-success-100 flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                                </svg>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-neutral-700 font-medium">Laravel</span>
+                                <span class="text-neutral-600">Backend</span>
                             </div>
-                            <div>
-                                <p class="font-semibold text-neutral-900">Développement rapide</p>
-                                <p class="text-sm text-neutral-600">Livré en moins de 48h</p>
+                            <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-primary-600 rounded-full" style="width: 100%"></div>
                             </div>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-lg bg-warning-100 flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-warning-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-neutral-700 font-medium">Blade + Tailwind CSS</span>
+                                <span class="text-neutral-600">Frontend</span>
                             </div>
-                            <div>
-                                <p class="font-semibold text-neutral-900">Gestion complète</p>
-                                <p class="text-sm text-neutral-600">Projets & spécifications</p>
+                            <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-secondary-600 rounded-full" style="width: 100%"></div>
                             </div>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-lg bg-primary-100 flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                                </svg>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-neutral-700 font-medium">MySQL</span>
+                                <span class="text-neutral-600">Database</span>
                             </div>
-                            <div>
-                                <p class="font-semibold text-neutral-900">Collaboration</p>
-                                <p class="text-sm text-neutral-600">Travail d'équipe facilité</p>
+                            <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-accent-600 rounded-full" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 pt-8 border-t border-neutral-200">
+                        <h3 class="text-xl font-semibold text-neutral-900 mb-4">Points clés</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-lg bg-success-100 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-neutral-900">Développement rapide</p>
+                                    <p class="text-sm text-neutral-600">Livré en moins de 48h</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-lg bg-warning-100 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-warning-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-neutral-900">Gestion complète</p>
+                                    <p class="text-sm text-neutral-600">Projets & spécifications</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-lg bg-primary-100 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-neutral-900">Collaboration</p>
+                                    <p class="text-sm text-neutral-600">Travail d'équipe facilité</p>
+                                </div>
                             </div>
                         </div>
                     </div>

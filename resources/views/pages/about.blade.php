@@ -22,6 +22,12 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
+                <!-- Portrait -->
+                <div class="mb-8 flex justify-center lg:justify-start">
+                    <div class="w-48 h-48 rounded-2xl overflow-hidden shadow-xl ring-4 ring-primary-100">
+                        <img src="{{ asset('images/about-portrait.png') }}" alt="Thomas Bourcy - Développeur Full-Stack" class="w-full h-full object-cover">
+                    </div>
+                </div>
                 <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 mb-6">Qui suis-je ?</h2>
                 <div class="space-y-4 text-lg text-neutral-600">
                     <p>
@@ -328,76 +334,201 @@
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 mb-4">Mon Parcours</h2>
             <p class="text-lg md:text-xl text-neutral-600">
-                Plus de 5 ans d'expérience en développement web et mobile
+                Plus de 7 ans d'expérience en développement web et mobile
             </p>
         </div>
 
         <div class="max-w-7xl mx-auto">
             <div class="space-y-8">
-                <!-- Expérience 1 -->
-                <div class="flex gap-6">
+                <!-- Formation -->
+                <div class="flex gap-6 items-start">
                     <div class="flex-shrink-0">
-                        <div class="w-12 h-12 rounded-full bg-primary-600 text-white flex items-center justify-center font-bold">
-                            2020
+                        <div class="w-20 h-20 rounded-xl overflow-hidden shadow-lg">
+                            <img src="{{ asset('images/timeline/mba-marketing.png') }}" alt="MBA Marketing Digital" class="w-full h-full object-cover">
                         </div>
                     </div>
                     <div class="flex-1 card">
-                        <h3 class="text-xl font-semibold text-neutral-900 mb-2">Lancement du Laboratoire Numérique</h3>
+                        <div class="badge" style="background-color: rgb(224 231 255); color: rgb(67 56 202);">2016 - 2018</div>
+                        <h3 class="text-xl font-semibold text-neutral-900 mb-2 mt-2">MBA Marketing Digital</h3>
                         <p class="text-neutral-600">
-                            Création de mon activité de développement freelance. Spécialisation dans les technologies
-                            Laravel et Ionic pour offrir des solutions web et mobiles complètes à mes clients.
+                            Formation complète en stratégie digitale, gestion de projet et entrepreneuriat.
+                            Acquisition des compétences business qui complètent aujourd'hui mon expertise technique
+                            pour comprendre les enjeux métier de mes clients.
                         </p>
                     </div>
                 </div>
 
-                <!-- Expérience 2 -->
-                <div class="flex gap-6">
+                <!-- Sipper -->
+                <div class="flex gap-6 items-start">
                     <div class="flex-shrink-0">
-                        <div class="w-12 h-12 rounded-full bg-secondary-600 text-white flex items-center justify-center font-bold">
-                            2021
+                        <div class="w-20 h-20 rounded-xl overflow-hidden shadow-lg">
+                            <img src="{{ asset('images/timeline/sipper-startup.png') }}" alt="Sipper - Startup" class="w-full h-full object-cover">
                         </div>
                     </div>
                     <div class="flex-1 card">
-                        <h3 class="text-xl font-semibold text-neutral-900 mb-2">Développement de Youplago</h3>
+                        <div class="badge" style="background-color: rgb(255 237 213); color: rgb(194 65 12);">2018 - 2020</div>
+                        <h3 class="text-xl font-semibold text-neutral-900 mb-2 mt-2">Fondateur & CEO</h3>
+                        <p class="text-neutral-600 mb-2">
+                            <span class="font-medium text-neutral-700">Sipper</span>
+                        </p>
                         <p class="text-neutral-600">
-                            Conception et développement d'une application mobile hybride d'organisation d'événements.
-                            Gestion complète du projet : architecture, développement backend Laravel, application mobile Ionic,
-                            et déploiement sur iOS et Android.
+                            Création et développement de ma première startup. Gestion complète : stratégie, développement produit,
+                            marketing et relation client. Cette expérience entrepreneuriale m'a permis de développer
+                            une vision 360° des projets digitaux et d'apprendre le développement en autodidacte.
                         </p>
                     </div>
                 </div>
 
-                <!-- Expérience 3 -->
-                <div class="flex gap-6">
+                <!-- Lancement Freelance -->
+                <div class="flex gap-6 items-start">
                     <div class="flex-shrink-0">
-                        <div class="w-12 h-12 rounded-full bg-accent-600 text-white flex items-center justify-center font-bold">
-                            2023
+                        <div class="w-20 h-20 rounded-xl overflow-hidden shadow-lg">
+                            <img src="{{ asset('images/timeline/2020-launch.png') }}" alt="2020 - Lancement" class="w-full h-full object-cover">
                         </div>
                     </div>
-                    <div class="flex-1 card">
-                        <h3 class="text-xl font-semibold text-neutral-900 mb-2">Création de Batibid</h3>
+                    <div class="flex-1 card border-2 border-primary-200 bg-primary-50/30">
+                        <div class="badge badge-primary mb-2">2020</div>
+                        <h3 class="text-xl font-semibold text-neutral-900 mb-2">Création du Laboratoire Numérique</h3>
+                        <p class="text-neutral-600 mb-2">
+                            <span class="font-medium text-neutral-700">Freelance</span> · France
+                        </p>
                         <p class="text-neutral-600">
-                            Développement d'une plateforme immobilière complète pour le marché béninois.
-                            Back-office avancé, système de facturation automatique, recherche optimisée de biens immobiliers,
-                            et interface utilisateur moderne.
+                            Lancement de mon activité indépendante pour offrir des solutions sur mesure. Spécialisation dans l'écosystème
+                            Laravel et le développement mobile avec Ionic. Premiers clients dans les secteurs de l'événementiel et du e-commerce.
                         </p>
                     </div>
                 </div>
 
-                <!-- Expérience 4 -->
-                <div class="flex gap-6">
+                <!-- Youplago -->
+                <div class="flex gap-6 items-start">
                     <div class="flex-shrink-0">
-                        <div class="w-12 h-12 rounded-full bg-success-500 text-white flex items-center justify-center font-bold">
-                            2025
+                        <div class="w-20 h-20 rounded-xl overflow-hidden shadow-lg">
+                            <img src="{{ asset('images/timeline/2021-youplago.png') }}" alt="2021 - Youplago" class="w-full h-full object-cover">
                         </div>
                     </div>
                     <div class="flex-1 card">
+                        <div class="badge badge-secondary mb-2">2021</div>
+                        <h3 class="text-xl font-semibold text-neutral-900 mb-2">Lancement de Youplago</h3>
+                        <p class="text-neutral-600 mb-2">
+                            <span class="font-medium text-neutral-700">Projet personnel</span> · Application mobile
+                        </p>
+                        <p class="text-neutral-600">
+                            Conception et développement complet d'une application mobile d'organisation d'événements entre amis.
+                            Architecture backend Laravel, application Ionic avec Angular, déploiement sur iOS et Android.
+                            +5 000 téléchargements la première année.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <span class="text-xs px-2 py-1 bg-neutral-100 text-neutral-600 rounded">Ionic</span>
+                            <span class="text-xs px-2 py-1 bg-neutral-100 text-neutral-600 rounded">Angular</span>
+                            <span class="text-xs px-2 py-1 bg-neutral-100 text-neutral-600 rounded">Laravel API</span>
+                            <span class="text-xs px-2 py-1 bg-neutral-100 text-neutral-600 rounded">Firebase</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Olympiadus -->
+                <div class="flex gap-6 items-start">
+                    <div class="flex-shrink-0">
+                        <div class="w-20 h-20 rounded-xl overflow-hidden shadow-lg">
+                            <img src="{{ asset('images/timeline/2022-olympiadus.png') }}" alt="Olympiadus" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="flex-1 card">
+                        <div class="badge" style="background-color: rgb(224 231 255); color: rgb(67 56 202);">2022</div>
+                        <h3 class="text-xl font-semibold text-neutral-900 mb-2 mt-2">Développement d'Olympiadus</h3>
+                        <p class="text-neutral-600 mb-2">
+                            <span class="font-medium text-neutral-700">Projet personnel</span> · Plateforme sportive
+                        </p>
+                        <p class="text-neutral-600">
+                            Création d'une plateforme de gestion de compétitions sportives avec système de validation par QR code.
+                            Classements en temps réel, gestion d'équipes et statistiques avancées.
+                            Utilisée par +50 organisations sportives.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <span class="text-xs px-2 py-1 bg-neutral-100 text-neutral-600 rounded">React</span>
+                            <span class="text-xs px-2 py-1 bg-neutral-100 text-neutral-600 rounded">Ionic Capacitor</span>
+                            <span class="text-xs px-2 py-1 bg-neutral-100 text-neutral-600 rounded">Laravel</span>
+                            <span class="text-xs px-2 py-1 bg-neutral-100 text-neutral-600 rounded">WebSockets</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Batibid -->
+                <div class="flex gap-6 items-start">
+                    <div class="flex-shrink-0">
+                        <div class="w-20 h-20 rounded-xl overflow-hidden shadow-lg">
+                            <img src="{{ asset('images/timeline/2023-batibid.png') }}" alt="2023 - Batibid" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="flex-1 card">
+                        <div class="badge" style="background-color: rgb(207 250 254); color: rgb(14 116 144);">2023</div>
+                        <h3 class="text-xl font-semibold text-neutral-900 mb-2 mt-2">Lancement de Batibid</h3>
+                        <p class="text-neutral-600 mb-2">
+                            <span class="font-medium text-neutral-700">Client : Agence immobilière</span> · Bénin
+                        </p>
+                        <p class="text-neutral-600">
+                            Développement d'une plateforme immobilière complète : back-office de gestion, système de facturation automatique,
+                            moteur de recherche avancé et interface utilisateur moderne. Gestion de +500 biens immobiliers.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <span class="text-xs px-2 py-1 bg-neutral-100 text-neutral-600 rounded">Laravel 10</span>
+                            <span class="text-xs px-2 py-1 bg-neutral-100 text-neutral-600 rounded">Tailwind CSS</span>
+                            <span class="text-xs px-2 py-1 bg-neutral-100 text-neutral-600 rounded">Alpine.js</span>
+                            <span class="text-xs px-2 py-1 bg-neutral-100 text-neutral-600 rounded">Stripe</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mission Data Migration -->
+                <div class="flex gap-6 items-start">
+                    <div class="flex-shrink-0">
+                        <div class="w-20 h-20 rounded-xl overflow-hidden shadow-lg">
+                            <img src="{{ asset('images/timeline/2024-datamigration.png') }}" alt="Data Migration" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="flex-1 card">
+                        <div class="badge" style="background-color: rgb(209 250 229); color: rgb(4 120 87);">2024</div>
+                        <h3 class="text-xl font-semibold text-neutral-900 mb-2 mt-2">Mission Data Migration</h3>
+                        <p class="text-neutral-600 mb-2">
+                            <span class="font-medium text-neutral-700">Client : Grand groupe industriel</span> · Transformation digitale
+                        </p>
+                        <p class="text-neutral-600">
+                            Développement en 48h d'un outil de suivi de migration de données pour un programme de transformation digitale.
+                            Gestion de projets, rédaction de spécifications, tableaux de bord et collaboration d'équipe.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <span class="text-xs px-2 py-1 bg-neutral-100 text-neutral-600 rounded">Laravel 11</span>
+                            <span class="text-xs px-2 py-1 bg-neutral-100 text-neutral-600 rounded">Livewire</span>
+                            <span class="text-xs px-2 py-1 bg-neutral-100 text-neutral-600 rounded">Tailwind CSS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aujourd'hui -->
+                <div class="flex gap-6 items-start">
+                    <div class="flex-shrink-0">
+                        <div class="w-20 h-20 rounded-xl overflow-hidden shadow-lg">
+                            <img src="{{ asset('images/timeline/2025-today.png') }}" alt="2025 - Aujourd'hui" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="flex-1 card border-2 border-success-200 bg-success-50/30">
+                        <div class="badge badge-success mb-2">2025</div>
                         <h3 class="text-xl font-semibold text-neutral-900 mb-2">Aujourd'hui</h3>
-                        <p class="text-neutral-600">
-                            Poursuite du développement de solutions sur mesure pour mes clients.
-                            Veille technologique constante pour proposer des solutions modernes utilisant les dernières
-                            versions de Laravel et Ionic, tout en maintenant et améliorant les projets existants.
+                        <p class="text-neutral-600 mb-2">
+                            <span class="font-medium text-neutral-700">Le Laboratoire Numérique</span> · +20 projets livrés
                         </p>
+                        <p class="text-neutral-600">
+                            Poursuite du développement de solutions sur mesure. Spécialisation renforcée sur Laravel 12 et Ionic 8.
+                            Accompagnement de startups et PME dans leur transformation digitale. Disponible pour de nouveaux projets ambitieux.
+                        </p>
+                        <div class="mt-4">
+                            <a href="{{ route('contact') }}" class="inline-flex items-center gap-2 text-primary-600 font-medium hover:text-primary-700">
+                                <span>Discutons de votre projet</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                                </svg>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

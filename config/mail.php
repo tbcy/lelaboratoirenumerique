@@ -119,4 +119,15 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Contact Form Recipient
+    |--------------------------------------------------------------------------
+    |
+    | This address receives all messages from the contact form.
+    |
+    */
+
+    'contact_email' => env('CONTACT_EMAIL', 'contact@lelaboratoirenumerique.com'),
+
 ];
