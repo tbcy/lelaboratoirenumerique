@@ -73,6 +73,31 @@ Uses Mailgun (EU endpoint) configured via environment variables:
 - `MAILGUN_DOMAIN`, `MAILGUN_SECRET`, `MAILGUN_ENDPOINT`
 - `MAIL_FROM_ADDRESS`, `MAIL_FROM_NAME`
 
+## Deployment (o2switch)
+
+**Server:** o2switch_perso (see global CLAUDE.md for SSH config)
+**Path:** `~/production/lelaboratoirenumerique`
+
+### Deploy Commands
+
+```bash
+# Push changes to GitHub first
+git push origin main
+
+# Deploy to production (SSH pull)
+ssh o2switch_perso "cd ~/production/lelaboratoirenumerique && git pull origin main"
+
+# If needed, rebuild assets on server
+ssh o2switch_perso "cd ~/production/lelaboratoirenumerique && npm run build"
+
+# Clear Laravel caches if needed
+ssh o2switch_perso "cd ~/production/lelaboratoirenumerique && php artisan cache:clear && php artisan config:clear && php artisan view:clear"
+```
+
+### Production URL
+
+https://lelaboratoirenumerique.com
+
 ## Projets à Mettre en Avant
 
 1. **Youplago**
