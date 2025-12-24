@@ -242,7 +242,7 @@
 <section class="section gradient-primary">
     <div class="container-custom text-white">
         <h2 class="heading-2 text-white mb-4 text-center">Prêt à démarrer votre projet ?</h2>
-        <p class="text-lead text-white mb-8 text-center">
+        <p class="text-lg md:text-xl text-white/90 mb-8 text-center leading-relaxed">
             Discutons de vos besoins et transformons vos idées en réalité.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
