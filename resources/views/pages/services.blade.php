@@ -16,7 +16,7 @@
                 </p>
             </div>
             <div class="hidden lg:block">
-                <img src="{{ asset('images/services-hero.png') }}" alt="Le Laboratoire Numérique - Création sur mesure" class="w-full max-w-lg mx-auto rounded-3xl drop-shadow-2xl animate-fade-in-up">
+                <img src="{{ asset('images/services-hero.png') }}" alt="Le Laboratoire Numérique - Création sur mesure" class="w-[450px] h-auto mx-auto rounded-3xl drop-shadow-2xl animate-fade-in-up">
             </div>
         </div>
     </div>
