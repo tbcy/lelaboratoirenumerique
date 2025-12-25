@@ -24,3 +24,10 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Auto Claude data directory
+.auto-claude/
+.claude_settings.json
+
+# Git worktrees
+.worktrees/
