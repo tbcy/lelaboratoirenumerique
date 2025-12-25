@@ -1,4 +1,4 @@
-@props(['items'])
+@props(['items' => []])
 
 <script type="application/ld+json">
 {
@@ -11,14 +11,16 @@
             "name": "Accueil",
             "item": "{{ config('app.url') }}"
         }
-        @foreach($items as $index => $item)
+        @if(count($items) > 0)
+            @foreach($items as $index => $item)
         ,{
             "@type": "ListItem",
             "position": {{ $index + 2 }},
             "name": "{{ $item['name'] }}",
             "item": "{{ $item['url'] }}"
         }
-        @endforeach
+            @endforeach
+        @endif
     ]
 }
 </script>
