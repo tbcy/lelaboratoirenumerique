@@ -1,7 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Accueil - Le Laboratoire Numérique')
-@section('description', 'Développeur Full-Stack spécialisé en Laravel et Ionic. Création d\'applications web et mobiles innovantes : Youplago, Batibid et plus encore.')
+@section('title', 'Le Laboratoire Numérique - Développeur Laravel & Ionic Freelance')
+@section('description', 'Développeur Full-Stack spécialisé en Laravel et Ionic. Création d\'applications web et mobiles sur mesure : Youplago, Olympiadus, Batibid. +5 ans d\'expérience.')
+@section('og_type', 'website')
+
+@push('schema')
+<x-schema-person />
+@endpush
 
 @section('content')
 

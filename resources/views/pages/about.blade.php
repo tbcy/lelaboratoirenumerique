@@ -1,6 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'À propos - Le Laboratoire Numérique')
+@section('title', 'À propos - Thomas Bourcy, Développeur Full-Stack | Le Laboratoire Numérique')
+@section('description', 'Développeur Full-Stack avec +5 ans d\'expérience. Expert Laravel et Ionic, je crée des applications web et mobiles sur mesure. Découvrez mon parcours et mes compétences.')
+@section('og_type', 'profile')
+
+@push('schema')
+<x-schema-breadcrumb :items="[['name' => 'À propos', 'url' => route('about')]]" />
+<x-schema-person />
+@endpush
 
 @section('content')
 <!-- Hero Section -->

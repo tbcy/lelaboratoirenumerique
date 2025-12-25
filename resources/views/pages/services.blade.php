@@ -1,6 +1,18 @@
 @extends('layouts.app')
 
-@section('title', 'Services - Le Laboratoire Numérique')
+@section('title', 'Services Développement Web & Mobile | Laravel & Ionic | Le Laboratoire Numérique')
+@section('description', 'Services de développement sur mesure : applications web Laravel, applications mobiles Ionic, APIs REST, back-offices. Expert Full-Stack disponible pour vos projets.')
+@section('og_type', 'website')
+
+@push('schema')
+<x-schema-breadcrumb :items="[['name' => 'Services', 'url' => route('services')]]" />
+<x-schema-service :services="[
+    ['name' => 'Développement Laravel', 'description' => 'Création d\'applications web robustes et évolutives avec le framework Laravel', 'type' => 'Web Development'],
+    ['name' => 'Développement Mobile Ionic', 'description' => 'Conception d\'applications mobiles hybrides iOS et Android avec Ionic', 'type' => 'Mobile App Development'],
+    ['name' => 'API REST & GraphQL', 'description' => 'Création d\'APIs sécurisées pour applications mobiles et tierces', 'type' => 'API Development'],
+    ['name' => 'Back-offices personnalisés', 'description' => 'Gestion de contenus, administration, tableaux de bord sur mesure', 'type' => 'Web Development']
+]" />
+@endpush
 
 @section('content')
 <!-- Hero Section -->

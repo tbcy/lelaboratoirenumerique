@@ -1,2 +1,10 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Sitemap
+Sitemap: https://lelaboratoirenumerique.com/sitemap.xml
+
+# Disallow admin and private routes
+Disallow: /admin
+Disallow: /api
+Disallow: /_debugbar

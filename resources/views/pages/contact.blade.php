@@ -1,6 +1,26 @@
 @extends('layouts.app')
 
-@section('title', 'Contact - Le Laboratoire Numérique')
+@section('title', 'Contact - Devis Développement Web & Mobile | Le Laboratoire Numérique')
+@section('description', 'Contactez-moi pour discuter de votre projet web ou mobile. Devis gratuit sous 24-48h. Développeur Laravel et Ionic disponible pour vos projets sur mesure.')
+@section('og_type', 'website')
+
+@push('schema')
+<x-schema-breadcrumb :items="[['name' => 'Contact', 'url' => route('contact')]]" />
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Contact - Le Laboratoire Numérique",
+    "description": "Formulaire de contact pour demander un devis ou discuter d'un projet de développement web ou mobile",
+    "url": "{{ route('contact') }}",
+    "mainEntity": {
+        "@type": "Organization",
+        "name": "Le Laboratoire Numérique",
+        "email": "contact@lelaboratoirenumerique.com"
+    }
+}
+</script>
+@endpush
 
 @section('content')
 <!-- Hero Section -->

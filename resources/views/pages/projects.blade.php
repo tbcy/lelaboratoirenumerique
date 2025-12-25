@@ -1,7 +1,36 @@
 @extends('layouts.app')
 
-@section('title', 'Projets - Le Laboratoire Numérique')
-@section('description', 'Découvrez mes projets phares : Youplago (organisation d\'événements), Olympiadus (compétitions sportives), Batibid (plateforme immobilière) et plus encore.')
+@section('title', 'Projets - Portfolio Développeur Laravel & Ionic | Le Laboratoire Numérique')
+@section('description', 'Découvrez mes projets phares : Youplago (organisation d\'événements), Olympiadus (compétitions sportives), Batibid (plateforme immobilière). Applications web et mobiles sur mesure.')
+@section('og_type', 'website')
+
+@push('schema')
+<x-schema-breadcrumb :items="[['name' => 'Projets', 'url' => route('projects')]]" />
+<x-schema-software
+    name="Youplago"
+    description="Application mobile pour l'organisation d'événements entre amis"
+    url="https://app.youplago.com"
+    :image="asset('images/projects/youplago-mockup.png')"
+    category="LifestyleApplication"
+    :platforms="['iOS', 'Android', 'Web']"
+/>
+<x-schema-software
+    name="Olympiadus"
+    description="Plateforme de gestion de compétitions sportives avec classements en temps réel"
+    url="https://olympiadus.lelaboratoirenumerique.com"
+    :image="asset('images/projects/olympiadus-mockup.png')"
+    category="SportsApplication"
+    :platforms="['iOS', 'Android', 'Web']"
+/>
+<x-schema-software
+    name="Batibid"
+    description="Plateforme immobilière complète avec back-office et facturation automatique"
+    url="https://app.batibid.com"
+    :image="asset('images/projects/batibid-mockup.png')"
+    category="BusinessApplication"
+    :platforms="['Web']"
+/>
+@endpush
 
 @section('content')
 
