@@ -9,8 +9,8 @@
 
 <script type="application/ld+json">
 {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
+    "@@context": "https://schema.org",
+    "@@type": "SoftwareApplication",
     "name": "{{ $name }}",
     "description": "{{ $description }}",
     "applicationCategory": "{{ $category }}",
@@ -22,11 +22,11 @@
     "image": "{{ $image }}",
     @endif
     "author": {
-        "@type": "Organization",
+        "@@type": "Organization",
         "name": "Le Laboratoire Numérique"
     },
     "creator": {
-        "@type": "Person",
+        "@@type": "Person",
         "name": "Thomas Bourcy"
     }
 }

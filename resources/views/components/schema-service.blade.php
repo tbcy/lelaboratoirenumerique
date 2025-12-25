@@ -2,23 +2,23 @@
 
 <script type="application/ld+json">
 {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
+    "@@context": "https://schema.org",
+    "@@type": "ItemList",
     "itemListElement": [
         @foreach($services as $index => $service)
         {
-            "@type": "ListItem",
+            "@@type": "ListItem",
             "position": {{ $index + 1 }},
             "item": {
-                "@type": "Service",
+                "@@type": "Service",
                 "name": "{{ $service['name'] }}",
                 "description": "{{ $service['description'] }}",
                 "provider": {
-                    "@type": "Organization",
+                    "@@type": "Organization",
                     "name": "Le Laboratoire Numérique"
                 },
                 "areaServed": {
-                    "@type": "Country",
+                    "@@type": "Country",
                     "name": "France"
                 },
                 "serviceType": "{{ $service['type'] ?? 'Développement Web' }}"

@@ -8,13 +8,13 @@
 <x-schema-breadcrumb :items="[['name' => 'Contact', 'url' => route('contact')]]" />
 <script type="application/ld+json">
 {
-    "@context": "https://schema.org",
-    "@type": "ContactPage",
+    "@@context": "https://schema.org",
+    "@@type": "ContactPage",
     "name": "Contact - Le Laboratoire Numérique",
     "description": "Formulaire de contact pour demander un devis ou discuter d'un projet de développement web ou mobile",
     "url": "{{ route('contact') }}",
     "mainEntity": {
-        "@type": "Organization",
+        "@@type": "Organization",
         "name": "Le Laboratoire Numérique",
         "email": "contact@lelaboratoirenumerique.com"
     }
