@@ -46,4 +46,20 @@ class PageController extends Controller
     {
         return view('pages.contact');
     }
+
+    /**
+     * Display the legal notice page.
+     */
+    public function legal(): View
+    {
+        return view('pages.legal');
+    }
+
+    /**
+     * Display the privacy policy page.
+     */
+    public function privacy(): View
+    {
+        return view('pages.privacy');
+    }
 }

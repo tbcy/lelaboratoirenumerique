@@ -32,10 +32,14 @@
 
         <!-- Bottom Footer -->
         <div class="py-6 border-t border-neutral-800">
-            <div class="text-center">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
                 <p class="text-neutral-500 text-sm">
                     © {{ date('Y') }} Le Laboratoire Numérique. Tous droits réservés.
                 </p>
+                <div class="flex gap-6 text-sm">
+                    <a href="{{ route('legal') }}" class="text-neutral-500 hover:text-white transition-colors">Mentions légales</a>
+                    <a href="{{ route('privacy') }}" class="text-neutral-500 hover:text-white transition-colors">Politique de confidentialité</a>
+                </div>
             </div>
         </div>
     </div>
