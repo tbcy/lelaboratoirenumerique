@@ -32,11 +32,11 @@
 
         <!-- Bottom Footer -->
         <div class="py-6 border-t border-neutral-800">
-            <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-3 sm:gap-4 text-center sm:text-left">
-                <p class="text-neutral-500 text-sm order-2 sm:order-1">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-neutral-500 text-sm">
                     © {{ date('Y') }} Le Laboratoire Numérique. Tous droits réservés.
                 </p>
-                <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm order-1 sm:order-2">
+                <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm justify-center md:justify-end">
                     <a href="{{ route('legal') }}" class="text-neutral-500 hover:text-white transition-colors whitespace-nowrap">Mentions légales</a>
                     <a href="{{ route('privacy') }}" class="text-neutral-500 hover:text-white transition-colors whitespace-nowrap">Politique de confidentialité</a>
                 </div>
