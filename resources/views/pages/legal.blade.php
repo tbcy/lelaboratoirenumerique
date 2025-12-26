@@ -22,74 +22,74 @@
 
 <!-- Contenu -->
 <section class="py-16 md:py-24 bg-white">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="space-y-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
 
             <!-- Éditeur du site -->
-            <div class="mb-12">
-                <h2 class="text-2xl font-bold text-neutral-900 mb-4">Éditeur du site</h2>
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-neutral-900 mb-6">Éditeur du site</h2>
                 <div class="card bg-neutral-50">
-                    <p class="mb-2"><strong>Raison sociale :</strong> Le Laboratoire Numérique</p>
-                    <p class="mb-2"><strong>Statut juridique :</strong> Auto-entreprise</p>
-                    <p class="mb-2"><strong>Dirigeant :</strong> Thomas Bourcy</p>
-                    <p class="mb-2"><strong>Adresse :</strong> 44 rue de Nanterre, 92600 Asnières-sur-Seine, France</p>
-                    <p class="mb-2"><strong>Email :</strong> <a href="mailto:contact@lelaboratoirenumerique.com" class="text-primary-600 hover:text-primary-700">contact@lelaboratoirenumerique.com</a></p>
+                    <p class="mb-3 text-neutral-700"><strong class="text-neutral-900">Raison sociale :</strong> Le Laboratoire Numérique</p>
+                    <p class="mb-3 text-neutral-700"><strong class="text-neutral-900">Statut juridique :</strong> Auto-entreprise</p>
+                    <p class="mb-3 text-neutral-700"><strong class="text-neutral-900">Dirigeant :</strong> Thomas Bourcy</p>
+                    <p class="mb-3 text-neutral-700"><strong class="text-neutral-900">Adresse :</strong> 44 rue de Nanterre, 92600 Asnières-sur-Seine, France</p>
+                    <p class="text-neutral-700"><strong class="text-neutral-900">Email :</strong> <a href="mailto:contact@lelaboratoirenumerique.com" class="text-primary-600 hover:text-primary-700 underline">contact@lelaboratoirenumerique.com</a></p>
                 </div>
             </div>
 
             <!-- Hébergeur -->
-            <div class="mb-12">
-                <h2 class="text-2xl font-bold text-neutral-900 mb-4">Hébergeur</h2>
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-neutral-900 mb-6">Hébergeur</h2>
                 <div class="card bg-neutral-50">
-                    <p class="mb-2"><strong>Raison sociale :</strong> o2switch</p>
-                    <p class="mb-2"><strong>Adresse :</strong> Chemin des Pardiaux, 63000 Clermont-Ferrand, France</p>
-                    <p class="mb-2"><strong>Téléphone :</strong> +33 4 44 44 60 40</p>
-                    <p class="mb-2"><strong>Site web :</strong> <a href="https://www.o2switch.fr" target="_blank" rel="noopener" class="text-primary-600 hover:text-primary-700">www.o2switch.fr</a></p>
+                    <p class="mb-3 text-neutral-700"><strong class="text-neutral-900">Raison sociale :</strong> o2switch</p>
+                    <p class="mb-3 text-neutral-700"><strong class="text-neutral-900">Adresse :</strong> Chemin des Pardiaux, 63000 Clermont-Ferrand, France</p>
+                    <p class="mb-3 text-neutral-700"><strong class="text-neutral-900">Téléphone :</strong> +33 4 44 44 60 40</p>
+                    <p class="text-neutral-700"><strong class="text-neutral-900">Site web :</strong> <a href="https://www.o2switch.fr" target="_blank" rel="noopener" class="text-primary-600 hover:text-primary-700 underline">www.o2switch.fr</a></p>
                 </div>
             </div>
 
             <!-- Propriété intellectuelle -->
-            <div class="mb-12">
-                <h2 class="text-2xl font-bold text-neutral-900 mb-4">Propriété intellectuelle</h2>
-                <p class="text-neutral-600 mb-4">
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-neutral-900 mb-6">Propriété intellectuelle</h2>
+                <p class="text-lg text-neutral-700 mb-4 leading-relaxed">
                     L'ensemble du contenu de ce site (textes, images, vidéos, logos, graphismes, etc.) est la propriété exclusive de Thomas Bourcy / Le Laboratoire Numérique, sauf mention contraire.
                 </p>
-                <p class="text-neutral-600">
+                <p class="text-lg text-neutral-700 leading-relaxed">
                     Toute reproduction, distribution, modification, adaptation, retransmission ou publication de ces différents éléments est strictement interdite sans l'accord écrit de l'éditeur.
                 </p>
             </div>
 
             <!-- Responsabilité -->
-            <div class="mb-12">
-                <h2 class="text-2xl font-bold text-neutral-900 mb-4">Limitation de responsabilité</h2>
-                <p class="text-neutral-600 mb-4">
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-neutral-900 mb-6">Limitation de responsabilité</h2>
+                <p class="text-lg text-neutral-700 mb-4 leading-relaxed">
                     Le Laboratoire Numérique s'efforce d'assurer l'exactitude et la mise à jour des informations diffusées sur ce site, dont elle se réserve le droit de corriger le contenu à tout moment et sans préavis.
                 </p>
-                <p class="text-neutral-600">
+                <p class="text-lg text-neutral-700 leading-relaxed">
                     Toutefois, Le Laboratoire Numérique ne peut garantir l'exactitude, la précision ou l'exhaustivité des informations mises à disposition sur ce site. En conséquence, l'utilisateur reconnaît utiliser ces informations sous sa responsabilité exclusive.
                 </p>
             </div>
 
             <!-- Liens hypertextes -->
-            <div class="mb-12">
-                <h2 class="text-2xl font-bold text-neutral-900 mb-4">Liens hypertextes</h2>
-                <p class="text-neutral-600">
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-neutral-900 mb-6">Liens hypertextes</h2>
+                <p class="text-lg text-neutral-700 leading-relaxed">
                     Ce site peut contenir des liens vers d'autres sites web. Le Laboratoire Numérique ne saurait être tenu responsable du contenu de ces sites tiers. L'existence d'un lien vers un autre site ne constitue pas une validation de ce site ou de son contenu.
                 </p>
             </div>
 
             <!-- Droit applicable -->
-            <div class="mb-12">
-                <h2 class="text-2xl font-bold text-neutral-900 mb-4">Droit applicable</h2>
-                <p class="text-neutral-600">
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-neutral-900 mb-6">Droit applicable</h2>
+                <p class="text-lg text-neutral-700 leading-relaxed">
                     Les présentes mentions légales sont régies par le droit français. En cas de litige et à défaut d'accord amiable, le litige sera porté devant les tribunaux français conformément aux règles de compétence en vigueur.
                 </p>
             </div>
 
             <!-- Contact -->
             <div class="card border-2 border-primary-200 bg-primary-50/30">
-                <h3 class="text-xl font-semibold text-neutral-900 mb-3">Une question ?</h3>
-                <p class="text-neutral-600 mb-4">
+                <h3 class="text-2xl font-semibold text-neutral-900 mb-4">Une question ?</h3>
+                <p class="text-lg text-neutral-700 mb-6 leading-relaxed">
                     Pour toute question concernant les mentions légales de ce site, n'hésitez pas à me contacter.
                 </p>
                 <a href="{{ route('contact') }}" class="btn btn-primary">
