@@ -23,7 +23,7 @@
 <!-- Contenu -->
 <section class="py-16 md:py-24 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-4xl mx-auto">
+        <div class="max-w-3xl mx-auto">
 
             <!-- Introduction -->
             <div class="mb-16">
