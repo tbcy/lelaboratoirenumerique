@@ -6,7 +6,9 @@ use App\Services\Mcp\ErrorHandlingService;
 use App\Services\Mcp\Resources\CategoryResource;
 use App\Services\Mcp\Resources\PostResource;
 use App\Services\Mcp\Resources\TagResource;
+use App\Services\Mcp\Tools\CategoryTools;
 use App\Services\Mcp\Tools\PostTools;
+use App\Services\Mcp\Tools\TagTools;
 
 class ToolsHandler
 {
@@ -18,7 +20,9 @@ class ToolsHandler
         private PostResource $postResource,
         private PostTools $postTools,
         private CategoryResource $categoryResource,
+        private CategoryTools $categoryTools,
         private TagResource $tagResource,
+        private TagTools $tagTools,
         private ErrorHandlingService $errorHandler
     ) {
         $this->buildToolExecutors();
@@ -40,10 +44,16 @@ class ToolsHandler
             // Category Tools
             'list_categories' => [$this->categoryResource, 'list'],
             'get_category' => [$this->categoryResource, 'get'],
+            'create_category' => [$this->categoryTools, 'create'],
+            'update_category' => [$this->categoryTools, 'update'],
+            'delete_category' => [$this->categoryTools, 'delete'],
 
             // Tag Tools
             'list_tags' => [$this->tagResource, 'list'],
             'get_tag' => [$this->tagResource, 'get'],
+            'create_tag' => [$this->tagTools, 'create'],
+            'update_tag' => [$this->tagTools, 'update'],
+            'delete_tag' => [$this->tagTools, 'delete'],
         ];
     }
 
@@ -289,6 +299,87 @@ class ToolsHandler
             ],
         ];
 
+        $this->toolDefinitions[] = [
+            'name' => 'create_category',
+            'description' => 'Create a new blog category',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'name' => [
+                        'type' => 'string',
+                        'description' => 'Category name (required)',
+                    ],
+                    'slug' => [
+                        'type' => 'string',
+                        'description' => 'URL slug (auto-generated from name if not provided)',
+                    ],
+                    'description' => [
+                        'type' => 'string',
+                        'description' => 'Category description',
+                    ],
+                    'color' => [
+                        'type' => 'string',
+                        'description' => 'Category color in hex format (e.g., #3B82F6)',
+                    ],
+                    'sort_order' => [
+                        'type' => 'integer',
+                        'description' => 'Sort order for display (lower = first)',
+                    ],
+                ],
+                'required' => ['name'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'update_category',
+            'description' => 'Update an existing blog category. Only provided fields will be updated.',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => [
+                        'type' => 'integer',
+                        'description' => 'Category ID (required)',
+                    ],
+                    'name' => [
+                        'type' => 'string',
+                        'description' => 'Category name',
+                    ],
+                    'slug' => [
+                        'type' => 'string',
+                        'description' => 'URL slug',
+                    ],
+                    'description' => [
+                        'type' => 'string',
+                        'description' => 'Category description',
+                    ],
+                    'color' => [
+                        'type' => 'string',
+                        'description' => 'Category color in hex format (e.g., #3B82F6)',
+                    ],
+                    'sort_order' => [
+                        'type' => 'integer',
+                        'description' => 'Sort order for display',
+                    ],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'delete_category',
+            'description' => 'Delete a blog category. Will fail if posts are using this category.',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => [
+                        'type' => 'integer',
+                        'description' => 'Category ID',
+                    ],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
         // Tag Tools
         $this->toolDefinitions[] = [
             'name' => 'list_tags',
@@ -311,6 +402,63 @@ class ToolsHandler
         $this->toolDefinitions[] = [
             'name' => 'get_tag',
             'description' => 'Get a single tag by ID',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => [
+                        'type' => 'integer',
+                        'description' => 'Tag ID',
+                    ],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'create_tag',
+            'description' => 'Create a new blog tag',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'name' => [
+                        'type' => 'string',
+                        'description' => 'Tag name (required)',
+                    ],
+                    'slug' => [
+                        'type' => 'string',
+                        'description' => 'URL slug (auto-generated from name if not provided)',
+                    ],
+                ],
+                'required' => ['name'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'update_tag',
+            'description' => 'Update an existing blog tag. Only provided fields will be updated.',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => [
+                        'type' => 'integer',
+                        'description' => 'Tag ID (required)',
+                    ],
+                    'name' => [
+                        'type' => 'string',
+                        'description' => 'Tag name',
+                    ],
+                    'slug' => [
+                        'type' => 'string',
+                        'description' => 'URL slug',
+                    ],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'delete_tag',
+            'description' => 'Delete a blog tag. The tag will be detached from all posts.',
             'inputSchema' => [
                 'type' => 'object',
                 'properties' => [
