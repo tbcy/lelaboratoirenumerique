@@ -191,10 +191,16 @@ MCP_SESSION_TTL=1440
 **Catégories :**
 - `list_categories` - Lister toutes les catégories
 - `get_category` - Récupérer une catégorie par ID
+- `create_category` - Créer une catégorie (name, slug, description, color, sort_order)
+- `update_category` - Modifier une catégorie existante
+- `delete_category` - Supprimer une catégorie (échoue si des posts l'utilisent)
 
 **Tags :**
 - `list_tags` - Lister tous les tags
 - `get_tag` - Récupérer un tag par ID
+- `create_tag` - Créer un tag (name, slug)
+- `update_tag` - Modifier un tag existant
+- `delete_tag` - Supprimer un tag (détaché automatiquement des posts)
 
 ### Test du Serveur MCP
 
