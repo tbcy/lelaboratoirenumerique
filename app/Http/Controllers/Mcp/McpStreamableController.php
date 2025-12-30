@@ -90,7 +90,7 @@ class McpStreamableController extends Controller
                 'created_at' => now()->toIso8601String(),
                 'last_activity' => now()->toIso8601String(),
             ],
-            now()->addMinutes(config('mcp.session_ttl', 1440))
+            now()->addMinutes((int) config('mcp.session_ttl', 1440))
         );
     }
 
@@ -119,7 +119,7 @@ class McpStreamableController extends Controller
             Cache::put(
                 "mcp_session:{$this->sessionId}",
                 $sessionData,
-                now()->addMinutes(config('mcp.session_ttl', 1440))
+                now()->addMinutes((int) config('mcp.session_ttl', 1440))
             );
         }
 
