@@ -112,7 +112,7 @@ class ToolsHandler
                     ],
                     'content' => [
                         'type' => 'string',
-                        'description' => 'Post content in HTML or Markdown (required)',
+                        'description' => 'Post content in HTML format (required). Must be valid HTML compatible with Filament/TipTap editor. Use standard HTML tags: <p>, <h2>, <h3>, <ul>, <ol>, <li>, <a>, <strong>, <em>, <blockquote>, <pre>, <code>. Do NOT use Markdown.',
                     ],
                     'excerpt' => [
                         'type' => 'string',
@@ -169,7 +169,7 @@ class ToolsHandler
                     ],
                     'content' => [
                         'type' => 'string',
-                        'description' => 'Post content',
+                        'description' => 'Post content in HTML format. Must be valid HTML compatible with Filament/TipTap editor. Use standard HTML tags: <p>, <h2>, <h3>, <ul>, <ol>, <li>, <a>, <strong>, <em>, <blockquote>, <pre>, <code>. Do NOT use Markdown.',
                     ],
                     'excerpt' => [
                         'type' => 'string',
