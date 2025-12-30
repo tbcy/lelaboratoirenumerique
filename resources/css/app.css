@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@plugin "@tailwindcss/typography";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -261,4 +262,22 @@ body {
 
 .hover-glow {
     @apply transition-all duration-200 hover:shadow-xl hover:shadow-primary-500/20;
+}
+
+/* === FIX TAILWIND CSS 4.x max-w-* BUG === */
+/* Tailwind 4.x incorrectly maps max-w-Nxl to --spacing-Nxl instead of --container-Nxl */
+.max-w-xl {
+    max-width: 36rem; /* 576px */
+}
+
+.max-w-2xl {
+    max-width: 42rem; /* 672px */
+}
+
+.max-w-3xl {
+    max-width: 48rem; /* 768px */
+}
+
+.max-w-4xl {
+    max-width: 56rem; /* 896px */
 }

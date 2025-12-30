@@ -19,6 +19,9 @@
                 <a href="{{ route('projects') }}" class="text-neutral-700 hover:text-primary-600 font-medium transition-colors {{ request()->routeIs('projects') ? 'text-primary-600' : '' }}">
                     Projets
                 </a>
+                <a href="{{ route('blog.index') }}" class="text-neutral-700 hover:text-primary-600 font-medium transition-colors {{ request()->routeIs('blog.*') ? 'text-primary-600' : '' }}">
+                    Blog
+                </a>
                 <a href="{{ route('services') }}" class="text-neutral-700 hover:text-primary-600 font-medium transition-colors {{ request()->routeIs('services') ? 'text-primary-600' : '' }}">
                     Services
                 </a>
@@ -51,6 +54,9 @@
                 </a>
                 <a href="{{ route('projects') }}" class="text-neutral-700 hover:text-primary-600 font-medium transition-colors py-2 {{ request()->routeIs('projects') ? 'text-primary-600' : '' }}">
                     Projets
+                </a>
+                <a href="{{ route('blog.index') }}" class="text-neutral-700 hover:text-primary-600 font-medium transition-colors py-2 {{ request()->routeIs('blog.*') ? 'text-primary-600' : '' }}">
+                    Blog
                 </a>
                 <a href="{{ route('services') }}" class="text-neutral-700 hover:text-primary-600 font-medium transition-colors py-2 {{ request()->routeIs('services') ? 'text-primary-600' : '' }}">
                     Services

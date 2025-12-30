@@ -15,11 +15,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Lancer les seeders UAT uniquement en environnement local
+        if (app()->environment('local')) {
+            $this->call([
+                UAT_DataSeeder::class,
+            ]);
+        }
     }
 }
