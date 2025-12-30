@@ -20,7 +20,7 @@ use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Set;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
@@ -74,6 +74,13 @@ class PostResource extends Resource
                             ->maxLength(500)
                             ->helperText('Résumé affiché dans les listes d\'articles'),
 
+                        Toggle::make('html_mode')
+                            ->label('Mode HTML')
+                            ->helperText('Éditer le code source HTML')
+                            ->live()
+                            ->dehydrated(false)
+                            ->columnSpanFull(),
+
                         RichEditor::make('content')
                             ->label('Contenu')
                             ->required()
@@ -96,7 +103,16 @@ class PostResource extends Resource
                                 'strike',
                                 'underline',
                                 'undo',
-                            ]),
+                            ])
+                            ->visible(fn ($get) => ! $get('html_mode')),
+
+                        Textarea::make('content')
+                            ->label('Contenu (HTML)')
+                            ->required()
+                            ->rows(20)
+                            ->columnSpanFull()
+                            ->helperText('Édition directe du code HTML')
+                            ->visible(fn ($get) => $get('html_mode')),
                     ]),
 
                 // Colonne latérale (1/3)
