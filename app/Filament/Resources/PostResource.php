@@ -79,6 +79,11 @@ class PostResource extends Resource
                             ->helperText('Éditer le code source HTML')
                             ->live()
                             ->dehydrated(false)
+                            ->afterStateUpdated(function (Set $set, $get, $state) {
+                                // Force refresh du contenu lors du switch
+                                $content = $get('content');
+                                $set('content', $content);
+                            })
                             ->columnSpanFull(),
 
                         RichEditor::make('content')
@@ -104,15 +109,19 @@ class PostResource extends Resource
                                 'underline',
                                 'undo',
                             ])
-                            ->visible(fn ($get) => ! $get('html_mode')),
+                            ->hidden(fn ($get) => $get('html_mode')),
 
-                        Textarea::make('content')
+                        Textarea::make('content_html')
                             ->label('Contenu (HTML)')
                             ->required()
                             ->rows(20)
                             ->columnSpanFull()
                             ->helperText('Édition directe du code HTML')
-                            ->visible(fn ($get) => $get('html_mode')),
+                            ->dehydrated(false)
+                            ->formatStateUsing(fn ($get) => $get('content'))
+                            ->afterStateUpdated(fn (Set $set, $state) => $set('content', $state))
+                            ->live(onBlur: true)
+                            ->hidden(fn ($get) => ! $get('html_mode')),
                     ]),
 
                 // Colonne latérale (1/3)
