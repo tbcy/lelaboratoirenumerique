@@ -252,7 +252,7 @@
                         <a href="https://olympiadus.lelaboratoirenumerique.com" target="_blank" rel="noopener noreferrer"
                            class="flex items-center justify-between p-3 rounded-lg bg-neutral-50 hover:bg-neutral-100 transition-colors group">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
+                                <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #f97316, #dc2626);">
                                     <span class="text-white font-bold text-sm">O</span>
                                 </div>
                                 <div>
