@@ -195,13 +195,13 @@ class PostResource extends Resource
                     ->schema([
                         TextInput::make('meta_title')
                             ->label('Titre SEO')
-                            ->maxLength(60)
+                            ->maxLength(70)
                             ->helperText('Laissez vide pour utiliser le titre de l\'article'),
 
                         Textarea::make('meta_description')
                             ->label('Description SEO')
                             ->rows(2)
-                            ->maxLength(160)
+                            ->maxLength(320)
                             ->helperText('Laissez vide pour utiliser l\'extrait'),
                     ]),
             ]);
