@@ -107,11 +107,24 @@ class ImportHelperData extends Command
         // Disable foreign key checks during import
         DB::statement('PRAGMA foreign_keys = OFF');
 
+        // Fields that are stored as JSON strings in Helper but have array casts in Laravel
+        $jsonFields = [
+            'images', 'connection_ids', 'credentials', 'metadata', 'old_values', 'new_values',
+        ];
+
         foreach ($rows as $row) {
             $data = [];
             foreach ($mapping as $helperColumn => $laboColumn) {
                 if (array_key_exists($helperColumn, $row)) {
-                    $data[$laboColumn] = $row[$helperColumn];
+                    $value = $row[$helperColumn];
+
+                    // Decode JSON fields to prevent double-encoding
+                    if (in_array($laboColumn, $jsonFields) && is_string($value) && $value !== '') {
+                        $decoded = json_decode($value, true);
+                        $value = $decoded !== null ? $decoded : $value;
+                    }
+
+                    $data[$laboColumn] = $value;
                 }
             }
 
