@@ -19,8 +19,8 @@ class CreatePostRequest extends BaseToolRequest
             'tag_ids.*' => ['integer', 'exists:tags,id'],
             'status' => ['nullable', 'string', 'in:draft,published'],
             'is_featured' => ['nullable', 'boolean'],
-            'meta_title' => ['nullable', 'string', 'max:255'],
-            'meta_description' => ['nullable', 'string', 'max:500'],
+            'meta_title' => ['nullable', 'string', 'max:70'],
+            'meta_description' => ['nullable', 'string', 'max:320'],
         ];
     }
 

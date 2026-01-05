@@ -20,7 +20,7 @@ class CategoryTools
         $rules = [
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:categories,slug',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:500',
             'color' => 'nullable|string|max:7',
             'sort_order' => 'nullable|integer|min:0',
         ];
@@ -76,7 +76,7 @@ class CategoryTools
             'id' => 'required|integer',
             'name' => 'nullable|string|max:255',
             'slug' => 'nullable|string|max:255|unique:categories,slug,'.$id,
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:500',
             'color' => 'nullable|string|max:7',
             'sort_order' => 'nullable|integer|min:0',
         ];

@@ -70,7 +70,7 @@ class InvoiceTools
                 'subject' => $validated['subject'],
                 'introduction' => $args['introduction'] ?? null,
                 'conclusion' => $args['conclusion'] ?? null,
-                'status' => $validated['status'],
+                'status' => $validated['status'] ?? 'draft',
                 'issue_date' => $validated['issue_date'],
                 'due_date' => $validated['due_date'],
                 'payment_terms' => $validated['payment_terms'] ?? null,

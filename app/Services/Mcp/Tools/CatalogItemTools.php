@@ -36,7 +36,7 @@ class CatalogItemTools
             $validated = $validator->validated();
 
             $item = CatalogItem::create([
-                'catalog_category_id' => $validated['catalog_category_id'],
+                'catalog_category_id' => $validated['catalog_category_id'] ?? null,
                 'name' => $validated['name'],
                 'description' => $validated['description'] ?? null,
                 'unit_price' => $validated['unit_price'],
