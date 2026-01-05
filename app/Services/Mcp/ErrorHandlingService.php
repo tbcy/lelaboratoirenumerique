@@ -62,4 +62,12 @@ class ErrorHandlingService
             ];
         }
     }
+
+    /**
+     * Wrap a tool operation with error handling
+     */
+    public function wrapToolOperation(callable $callback, string $context = ''): array
+    {
+        return $this->wrap($callback, $context);
+    }
 }

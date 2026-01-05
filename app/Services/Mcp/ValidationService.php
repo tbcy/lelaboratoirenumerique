@@ -39,7 +39,7 @@ class ValidationService
     public function validateToolArgs(string $toolName, array $arguments): array
     {
         // TODO: Implement proper tool argument validation if needed
-        return ['valid' => true, 'errors' => []];
+        return ['valid' => true, 'errors' => [], 'data' => $arguments];
     }
 
     public function makeValidator(array $data, string $requestClass): \Illuminate\Validation\Validator
