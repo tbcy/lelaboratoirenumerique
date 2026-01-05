@@ -135,7 +135,7 @@ class McpStreamableController extends Controller
             throw new \InvalidArgumentException('Tool name is required');
         }
 
-        return $this->toolsHandler->call($name, $arguments);
+        return $this->toolsHandler->call(['name' => $name, 'arguments' => $arguments]);
     }
 
     private function handleResourceRead(array $params): array
