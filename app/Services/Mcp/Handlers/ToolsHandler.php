@@ -169,7 +169,7 @@ class ToolsHandler
     /**
      * List all available tools
      */
-    public function list(array $params): array
+    public function list(array $params = []): array
     {
         return [
             'tools' => $this->toolDefinitions,
