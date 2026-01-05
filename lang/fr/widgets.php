@@ -15,5 +15,9 @@ return [
         'active_projects' => 'Projets actifs',
         'tasks_in_progress' => 'Tâches en cours',
         'overdue' => 'en retard',
+        'published_posts' => 'Articles publiés',
+        'post_count' => '{0} article|{1} article|[2,*] articles',
+        'drafts' => 'brouillon(s)',
+        'no_drafts' => 'Aucun brouillon',
     ],
 ];

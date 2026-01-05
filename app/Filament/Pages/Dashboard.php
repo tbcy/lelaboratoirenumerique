@@ -2,9 +2,8 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Widgets\ActivityStatsWidget;
 use App\Filament\Widgets\FinanceStatsWidget;
-use App\Filament\Widgets\PendingQuotesWidget;
-use App\Filament\Widgets\TasksWidget;
 use App\Filament\Widgets\TimeStatsWidget;
 use Filament\Pages\Dashboard as BaseDashboard;
 
@@ -17,8 +16,7 @@ class Dashboard extends BaseDashboard
         return [
             FinanceStatsWidget::class,
             TimeStatsWidget::class,
-            TasksWidget::class,
-            PendingQuotesWidget::class,
+            ActivityStatsWidget::class,
         ];
     }
 
