@@ -7,10 +7,18 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "barryvdh/laravel-dompdf": "^3.1",
+        "bezhansalleh/filament-language-switch": "^4.0",
         "filament/filament": "^4.0",
         "filament/spatie-laravel-media-library-plugin": "^4.0",
+        "guzzlehttp/psr7": "^2.8",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
+        "magefine/linkedin-api-php-client": "^1.0",
+        "noweh/twitter-api-v2-php": "^3.7",
+        "php-http/curl-client": "^2.4",
+        "php-http/message": "^1.16",
+        "spatie/eloquent-sortable": "^4.5",
         "symfony/http-client": "^7.0",
         "symfony/mailgun-mailer": "^7.0"
     },

@@ -3,108 +3,1219 @@
 namespace App\Services\Mcp\Handlers;
 
 use App\Services\Mcp\ErrorHandlingService;
+use App\Services\Mcp\Resources\CatalogCategoryResource;
+use App\Services\Mcp\Resources\CatalogItemResource;
 use App\Services\Mcp\Resources\CategoryResource;
+use App\Services\Mcp\Resources\ClientResource;
+use App\Services\Mcp\Resources\DashboardResource;
+use App\Services\Mcp\Resources\InvoiceResource;
+use App\Services\Mcp\Resources\MediaResource;
 use App\Services\Mcp\Resources\PostResource;
+use App\Services\Mcp\Resources\ProjectResource;
+use App\Services\Mcp\Resources\QuoteResource;
+use App\Services\Mcp\Resources\SocialConnectionResource;
+use App\Services\Mcp\Resources\SocialPostResource;
 use App\Services\Mcp\Resources\TagResource;
+use App\Services\Mcp\Resources\TaskResource;
+use App\Services\Mcp\Resources\TimeEntryResource;
+use App\Services\Mcp\Tools\CatalogCategoryTools;
+use App\Services\Mcp\Tools\CatalogItemTools;
 use App\Services\Mcp\Tools\CategoryTools;
+use App\Services\Mcp\Tools\ClientTools;
+use App\Services\Mcp\Tools\ImageGenerationTools;
+use App\Services\Mcp\Tools\InvoiceTools;
+use App\Services\Mcp\Tools\MediaTools;
 use App\Services\Mcp\Tools\PostTools;
+use App\Services\Mcp\Tools\ProjectTools;
+use App\Services\Mcp\Tools\QuoteTools;
+use App\Services\Mcp\Tools\SocialConnectionTools;
+use App\Services\Mcp\Tools\SocialPostTools;
 use App\Services\Mcp\Tools\TagTools;
+use App\Services\Mcp\Tools\TaskTools;
+use App\Services\Mcp\Tools\TimeEntryTools;
+use App\Services\Mcp\ValidationService;
 
+/**
+ * Handles MCP tools/list and tools/call requests
+ */
 class ToolsHandler
 {
+    private array $toolExecutors;
     private array $toolDefinitions = [];
 
-    private array $toolExecutors = [];
-
     public function __construct(
-        private PostResource $postResource,
-        private PostTools $postTools,
-        private CategoryResource $categoryResource,
-        private CategoryTools $categoryTools,
-        private TagResource $tagResource,
-        private TagTools $tagTools,
+        private ValidationService $validator,
         private ErrorHandlingService $errorHandler
     ) {
-        $this->buildToolExecutors();
+        $this->toolExecutors = [
+            // Dashboard Tools
+            'get_dashboard' => [DashboardResource::class, 'getDashboard'],
+
+            // Client Tools
+            'list_clients' => [ClientResource::class, 'list'],
+            'get_client' => [ClientResource::class, 'get'],
+            'create_client' => [ClientTools::class, 'create'],
+            'update_client' => [ClientTools::class, 'update'],
+            'delete_client' => [ClientTools::class, 'delete'],
+            'archive_client' => [ClientTools::class, 'archive'],
+
+            // Invoice Tools
+            'list_invoices' => [InvoiceResource::class, 'list'],
+            'get_invoice' => [InvoiceResource::class, 'get'],
+            'create_invoice' => [InvoiceTools::class, 'create'],
+            'update_invoice' => [InvoiceTools::class, 'update'],
+            'delete_invoice' => [InvoiceTools::class, 'delete'],
+            'mark_invoice_paid' => [InvoiceTools::class, 'markPaid'],
+            'send_invoice' => [InvoiceTools::class, 'send'],
+
+            // Quote Tools
+            'list_quotes' => [QuoteResource::class, 'list'],
+            'get_quote' => [QuoteResource::class, 'get'],
+            'create_quote' => [QuoteTools::class, 'create'],
+            'update_quote' => [QuoteTools::class, 'update'],
+            'delete_quote' => [QuoteTools::class, 'delete'],
+            'convert_quote_to_invoice' => [QuoteTools::class, 'convertToInvoice'],
+            'send_quote' => [QuoteTools::class, 'send'],
+
+            // Task Tools
+            'list_tasks' => [TaskResource::class, 'list'],
+            'get_task' => [TaskResource::class, 'get'],
+            'create_task' => [TaskTools::class, 'create'],
+            'update_task' => [TaskTools::class, 'update'],
+            'delete_task' => [TaskTools::class, 'delete'],
+            'update_task_status' => [TaskTools::class, 'updateStatus'],
+            'assign_task' => [TaskTools::class, 'assign'],
+
+            // Time Entry Tools
+            'log_time' => [TimeEntryTools::class, 'create'],
+            'get_time_entries' => [TimeEntryResource::class, 'list'],
+
+            // Project Tools
+            'list_projects' => [ProjectResource::class, 'list'],
+            'get_project' => [ProjectResource::class, 'get'],
+            'create_project' => [ProjectTools::class, 'create'],
+            'update_project' => [ProjectTools::class, 'update'],
+            'delete_project' => [ProjectTools::class, 'delete'],
+            'archive_project' => [ProjectTools::class, 'archive'],
+
+            // Social Post Tools
+            'list_social_posts' => [SocialPostResource::class, 'list'],
+            'get_social_post' => [SocialPostResource::class, 'get'],
+            'create_social_post' => [SocialPostTools::class, 'create'],
+            'approve_social_post' => [SocialPostTools::class, 'approve'],
+            'publish_social_post' => [SocialPostTools::class, 'publish'],
+            'delete_social_post' => [SocialPostTools::class, 'delete'],
+
+            // Social Connection Tools
+            'list_social_connections' => [SocialConnectionResource::class, 'list'],
+            'get_social_connection' => [SocialConnectionResource::class, 'get'],
+            'create_social_connection' => [SocialConnectionTools::class, 'create'],
+            'update_social_connection' => [SocialConnectionTools::class, 'update'],
+            'delete_social_connection' => [SocialConnectionTools::class, 'delete'],
+
+            // Catalog Category Tools
+            'list_catalog_categories' => [CatalogCategoryResource::class, 'list'],
+            'get_catalog_category' => [CatalogCategoryResource::class, 'get'],
+            'create_catalog_category' => [CatalogCategoryTools::class, 'create'],
+            'update_catalog_category' => [CatalogCategoryTools::class, 'update'],
+            'delete_catalog_category' => [CatalogCategoryTools::class, 'delete'],
+
+            // Catalog Item Tools
+            'list_catalog_items' => [CatalogItemResource::class, 'list'],
+            'get_catalog_item' => [CatalogItemResource::class, 'get'],
+            'create_catalog_item' => [CatalogItemTools::class, 'create'],
+            'update_catalog_item' => [CatalogItemTools::class, 'update'],
+            'delete_catalog_item' => [CatalogItemTools::class, 'delete'],
+
+            // Media Tools
+            'list_media' => [MediaResource::class, 'list'],
+            'get_media' => [MediaResource::class, 'get'],
+            'upload_media_from_url' => [MediaTools::class, 'uploadFromUrl'],
+            'delete_media' => [MediaTools::class, 'delete'],
+
+            // Image Generation Tools
+            'generate_image' => [ImageGenerationTools::class, 'generate'],
+            'generate_image_for_post' => [ImageGenerationTools::class, 'generateForPost'],
+            'list_generated_images' => [ImageGenerationTools::class, 'list'],
+            'delete_generated_image' => [ImageGenerationTools::class, 'delete'],
+
+            // Blog Post Tools
+            'list_posts' => [PostResource::class, 'list'],
+            'get_post' => [PostResource::class, 'get'],
+            'create_post' => [PostTools::class, 'create'],
+            'update_post' => [PostTools::class, 'update'],
+            'delete_post' => [PostTools::class, 'delete'],
+            'publish_post' => [PostTools::class, 'publish'],
+            'unpublish_post' => [PostTools::class, 'unpublish'],
+
+            // Blog Category Tools
+            'list_categories' => [CategoryResource::class, 'list'],
+            'get_category' => [CategoryResource::class, 'get'],
+            'create_category' => [CategoryTools::class, 'create'],
+            'update_category' => [CategoryTools::class, 'update'],
+            'delete_category' => [CategoryTools::class, 'delete'],
+
+            // Blog Tag Tools
+            'list_tags' => [TagResource::class, 'list'],
+            'get_tag' => [TagResource::class, 'get'],
+            'create_tag' => [TagTools::class, 'create'],
+            'update_tag' => [TagTools::class, 'update'],
+            'delete_tag' => [TagTools::class, 'delete'],
+        ];
+
         $this->buildToolDefinitions();
     }
 
-    private function buildToolExecutors(): void
+    /**
+     * List all available tools
+     */
+    public function list(array $params): array
     {
-        $this->toolExecutors = [
-            // Post Tools
-            'list_posts' => [$this->postResource, 'list'],
-            'get_post' => [$this->postResource, 'get'],
-            'create_post' => [$this->postTools, 'create'],
-            'update_post' => [$this->postTools, 'update'],
-            'delete_post' => [$this->postTools, 'delete'],
-            'publish_post' => [$this->postTools, 'publish'],
-            'unpublish_post' => [$this->postTools, 'unpublish'],
-
-            // Category Tools
-            'list_categories' => [$this->categoryResource, 'list'],
-            'get_category' => [$this->categoryResource, 'get'],
-            'create_category' => [$this->categoryTools, 'create'],
-            'update_category' => [$this->categoryTools, 'update'],
-            'delete_category' => [$this->categoryTools, 'delete'],
-
-            // Tag Tools
-            'list_tags' => [$this->tagResource, 'list'],
-            'get_tag' => [$this->tagResource, 'get'],
-            'create_tag' => [$this->tagTools, 'create'],
-            'update_tag' => [$this->tagTools, 'update'],
-            'delete_tag' => [$this->tagTools, 'delete'],
+        return [
+            'tools' => $this->toolDefinitions,
         ];
     }
 
+    /**
+     * Call a specific tool
+     */
+    public function call(array $params): array
+    {
+        // Validate required parameters
+        $this->errorHandler->validateRequiredParams($params, ['name'], 'tools/call');
+
+        $toolName = $params['name'];
+        $arguments = $params['arguments'] ?? [];
+
+        // Convert parameter aliases before validation
+        $arguments = $this->normalizeAliases($toolName, $arguments);
+
+        // Automatic validation using ValidationService
+        $validation = $this->validator->validateToolArgs($toolName, $arguments);
+
+        if (!$validation['valid']) {
+            return [
+                'content' => [
+                    [
+                        'type' => 'text',
+                        'text' => json_encode([
+                            'success' => false,
+                            'error_code' => 'VALIDATION_ERROR',
+                            'message' => 'Validation failed',
+                            'errors' => $validation['errors'],
+                        ], JSON_PRETTY_PRINT),
+                    ],
+                ],
+            ];
+        }
+
+        // Use validated data
+        $arguments = $validation['data'];
+
+        if (!isset($this->toolExecutors[$toolName])) {
+            throw new \InvalidArgumentException("Unknown tool: {$toolName}");
+        }
+
+        [$class, $method] = $this->toolExecutors[$toolName];
+        $instance = app($class);
+
+        if (!method_exists($instance, $method)) {
+            throw new \InvalidArgumentException("Tool method not found: {$class}::{$method}");
+        }
+
+        // Use reflection to inspect method signature and pass parameters correctly
+        $reflection = new \ReflectionMethod($instance, $method);
+        $parameters = $reflection->getParameters();
+
+        // Determine how to pass arguments based on method signature
+        $methodArgs = $this->prepareMethodArguments($parameters, $arguments);
+
+        // Wrap tool execution in error handling
+        $result = $this->errorHandler->wrapToolOperation(
+            fn () => $instance->$method(...$methodArgs),
+            $toolName
+        );
+
+        return [
+            'content' => [
+                [
+                    'type' => 'text',
+                    'text' => json_encode($result, JSON_PRETTY_PRINT),
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Prepare method arguments based on method signature
+     *
+     * @param array $parameters ReflectionParameter[]
+     * @param array $arguments MCP tool arguments
+     * @return array Arguments to pass to the method
+     */
+    private function prepareMethodArguments(array $parameters, array $arguments): array
+    {
+        // If method has no parameters, return empty array
+        if (empty($parameters)) {
+            return [];
+        }
+
+        // If method expects a single array parameter (like create(array $args))
+        // pass the entire arguments array
+        if (count($parameters) === 1) {
+            $param = $parameters[0];
+            $paramType = $param->getType();
+
+            // If parameter is typed as 'array' or has no type, pass arguments as-is
+            if (!$paramType || $paramType->getName() === 'array') {
+                return [$arguments];
+            }
+        }
+
+        // Otherwise, extract individual parameters from arguments array
+        $methodArgs = [];
+        foreach ($parameters as $param) {
+            $paramName = $param->getName();
+
+            // Extract value from arguments or use default if available
+            if (array_key_exists($paramName, $arguments)) {
+                $methodArgs[] = $arguments[$paramName];
+            } elseif ($param->isDefaultValueAvailable()) {
+                $methodArgs[] = $param->getDefaultValue();
+            } elseif ($param->allowsNull()) {
+                $methodArgs[] = null;
+            } else {
+                // Required parameter missing
+                throw new \InvalidArgumentException(
+                    "Missing required parameter: {$paramName}"
+                );
+            }
+        }
+
+        return $methodArgs;
+    }
+
+    /**
+     * Build tool definitions for tools/list response
+     */
     private function buildToolDefinitions(): void
     {
-        // Post Tools
+        // Dashboard
         $this->toolDefinitions[] = [
-            'name' => 'list_posts',
-            'description' => 'List all blog posts with optional filters. Returns paginated results.',
+            'name' => 'get_dashboard',
+            'description' => 'Get dashboard statistics including unpaid invoices, overdue tasks, etc.',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => (object) [],
+            ],
+        ];
+
+        // Clients
+        $this->toolDefinitions[] = [
+            'name' => 'list_clients',
+            'description' => 'List all clients with optional filters (status, type, search)',
             'inputSchema' => [
                 'type' => 'object',
                 'properties' => [
-                    'status' => [
-                        'type' => 'string',
-                        'enum' => ['draft', 'published'],
-                        'description' => 'Filter by status',
-                    ],
-                    'category_id' => [
-                        'type' => 'integer',
-                        'description' => 'Filter by category ID',
-                    ],
-                    'is_featured' => [
-                        'type' => 'boolean',
-                        'description' => 'Filter featured posts only',
-                    ],
-                    'search' => [
-                        'type' => 'string',
-                        'description' => 'Search in title and content',
-                    ],
-                    'page' => [
-                        'type' => 'integer',
-                        'description' => 'Page number (default: 1)',
-                    ],
-                    'per_page' => [
-                        'type' => 'integer',
-                        'description' => 'Items per page (default: 50, max: 100)',
-                    ],
+                    'status' => ['type' => 'string', 'description' => 'Filter by status: prospect, active, inactive'],
+                    'type' => ['type' => 'string', 'description' => 'Filter by type: company, individual'],
+                    'search' => ['type' => 'string', 'description' => 'Search in name, email'],
+                ],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'get_client',
+            'description' => 'Get a single client with related data (quotes, invoices, projects)',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Client ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'create_client',
+            'description' => 'Create a new client',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'type' => ['type' => 'string', 'description' => 'company or individual'],
+                    'company_name' => ['type' => 'string'],
+                    'first_name' => ['type' => 'string'],
+                    'last_name' => ['type' => 'string'],
+                    'email' => ['type' => 'string'],
+                    'phone' => ['type' => 'string'],
+                    'mobile' => ['type' => 'string'],
+                    'address' => ['type' => 'string'],
+                    'postal_code' => ['type' => 'string'],
+                    'city' => ['type' => 'string'],
+                    'country' => ['type' => 'string'],
+                    'status' => ['type' => 'string', 'description' => 'Status: prospect, active, inactive'],
+                ],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'update_client',
+            'description' => 'Update an existing client',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Client ID'],
+                    'type' => ['type' => 'string', 'description' => 'company or individual'],
+                    'company_name' => ['type' => 'string'],
+                    'first_name' => ['type' => 'string'],
+                    'last_name' => ['type' => 'string'],
+                    'email' => ['type' => 'string'],
+                    'phone' => ['type' => 'string'],
+                    'mobile' => ['type' => 'string'],
+                    'address' => ['type' => 'string'],
+                    'postal_code' => ['type' => 'string'],
+                    'city' => ['type' => 'string'],
+                    'country' => ['type' => 'string'],
+                    'status' => ['type' => 'string', 'description' => 'Status: prospect, active, inactive'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'delete_client',
+            'description' => 'Delete a client',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Client ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'archive_client',
+            'description' => 'Archive a client (set status to inactive)',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Client ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        // Invoices
+        $this->toolDefinitions[] = [
+            'name' => 'list_invoices',
+            'description' => 'List all invoices with optional filters',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'status' => ['type' => 'string', 'description' => 'Filter by status: draft, sent, paid, overdue, cancelled'],
+                    'client_id' => ['type' => 'integer', 'description' => 'Filter by client ID'],
+                    'unpaid' => ['type' => 'boolean', 'description' => 'Filter unpaid invoices only'],
+                ],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'get_invoice',
+            'description' => 'Get a single invoice with lines',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Invoice ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'create_invoice',
+            'description' => 'Create a new invoice',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'client_id' => ['type' => 'integer', 'description' => 'Client ID (required)'],
+                    'number' => ['type' => 'string', 'description' => 'Invoice number (optional, auto-generated if not provided, must be unique). Alias: invoice_number'],
+                    'subject' => ['type' => 'string', 'description' => 'Invoice subject/title (required)'],
+                    'project_id' => ['type' => 'integer', 'description' => 'Project ID (optional, must belong to client)'],
+                    'quote_id' => ['type' => 'integer', 'description' => 'Quote ID (optional, must belong to client)'],
+                    'status' => ['type' => 'string', 'description' => 'Status: draft, sent, paid, overdue, cancelled (default: draft)'],
+                    'issue_date' => ['type' => 'string', 'description' => 'Issue date (YYYY-MM-DD, required)'],
+                    'due_date' => ['type' => 'string', 'description' => 'Due date (YYYY-MM-DD, required)'],
+                    'lines' => ['type' => 'array', 'description' => 'Invoice lines with description, quantity, unit_price, vat_rate'],
+                ],
+                'required' => ['client_id', 'subject', 'issue_date', 'due_date'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'update_invoice',
+            'description' => 'Update an existing invoice (invoice number cannot be changed after creation)',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Invoice ID (required)'],
+                    'subject' => ['type' => 'string', 'description' => 'Invoice subject/title'],
+                    'project_id' => ['type' => 'integer', 'description' => 'Project ID (must belong to invoice client)'],
+                    'quote_id' => ['type' => 'integer', 'description' => 'Quote ID (must belong to invoice client)'],
+                    'status' => ['type' => 'string', 'description' => 'Status: draft, sent, paid, overdue, cancelled'],
+                    'issue_date' => ['type' => 'string', 'description' => 'Issue date (YYYY-MM-DD)'],
+                    'due_date' => ['type' => 'string', 'description' => 'Due date (YYYY-MM-DD)'],
+                    'lines' => ['type' => 'array', 'description' => 'Invoice lines'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'delete_invoice',
+            'description' => 'Delete an invoice',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Invoice ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'mark_invoice_paid',
+            'description' => 'Mark an invoice as paid',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Invoice ID'],
+                    'payment_date' => ['type' => 'string', 'description' => 'Payment date (YYYY-MM-DD)'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'send_invoice',
+            'description' => 'Send an invoice by email',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Invoice ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        // Quotes
+        $this->toolDefinitions[] = [
+            'name' => 'list_quotes',
+            'description' => 'List all quotes with optional filters',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'status' => ['type' => 'string', 'description' => 'Filter by status: draft, sent, accepted, rejected'],
+                    'client_id' => ['type' => 'integer', 'description' => 'Filter by client ID'],
+                ],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'get_quote',
+            'description' => 'Get a single quote with lines',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Quote ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'create_quote',
+            'description' => 'Create a new quote',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'client_id' => ['type' => 'integer', 'description' => 'Client ID (required)'],
+                    'number' => ['type' => 'string', 'description' => 'Quote number (optional, auto-generated if not provided, must be unique). Alias: quote_number'],
+                    'subject' => ['type' => 'string', 'description' => 'Quote subject/title (required)'],
+                    'issue_date' => ['type' => 'string', 'description' => 'Issue date (YYYY-MM-DD, required)'],
+                    'valid_until' => ['type' => 'string', 'description' => 'Valid until date (YYYY-MM-DD, required)'],
+                    'status' => ['type' => 'string', 'description' => 'Status: draft, sent, accepted, rejected, expired (default: draft)'],
+                    'lines' => ['type' => 'array', 'description' => 'Quote lines with description, quantity, unit_price, vat_rate'],
+                ],
+                'required' => ['client_id', 'subject', 'issue_date', 'valid_until'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'update_quote',
+            'description' => 'Update an existing quote (quote number cannot be changed after creation)',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Quote ID (required)'],
+                    'subject' => ['type' => 'string', 'description' => 'Quote subject/title'],
+                    'issue_date' => ['type' => 'string', 'description' => 'Issue date (YYYY-MM-DD)'],
+                    'valid_until' => ['type' => 'string', 'description' => 'Valid until date (YYYY-MM-DD)'],
+                    'status' => ['type' => 'string', 'description' => 'Status: draft, sent, accepted, rejected, expired'],
+                    'lines' => ['type' => 'array', 'description' => 'Quote lines'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'delete_quote',
+            'description' => 'Delete a quote',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Quote ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'convert_quote_to_invoice',
+            'description' => 'Convert an accepted quote to an invoice',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Quote ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'send_quote',
+            'description' => 'Send a quote by email',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Quote ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        // Tasks
+        $this->toolDefinitions[] = [
+            'name' => 'list_tasks',
+            'description' => 'List all tasks with optional filters',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'status' => ['type' => 'string', 'description' => 'Filter by status: todo, in_progress, done'],
+                    'priority' => ['type' => 'string', 'description' => 'Filter by priority: low, medium, high'],
+                    'project_id' => ['type' => 'integer', 'description' => 'Filter by project ID'],
+                    'overdue' => ['type' => 'boolean', 'description' => 'Filter overdue tasks only'],
+                ],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'get_task',
+            'description' => 'Get a single task with subtasks',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Task ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'create_task',
+            'description' => 'Create a new task',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'title' => ['type' => 'string', 'description' => 'Task title'],
+                    'description' => ['type' => 'string', 'description' => 'Task description'],
+                    'status' => ['type' => 'string', 'description' => 'Status: todo, in_progress, done'],
+                    'priority' => ['type' => 'string', 'description' => 'Priority: low, medium, high'],
+                    'due_date' => ['type' => 'string', 'description' => 'Due date (YYYY-MM-DD)'],
+                    'project_id' => ['type' => 'integer', 'description' => 'Project ID'],
+                    'client_id' => ['type' => 'integer', 'description' => 'Client ID'],
+                    'parent_id' => ['type' => 'integer', 'description' => 'Parent task ID for subtasks'],
+                ],
+                'required' => ['title'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'update_task',
+            'description' => 'Update an existing task',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Task ID'],
+                    'title' => ['type' => 'string', 'description' => 'Task title'],
+                    'description' => ['type' => 'string', 'description' => 'Task description'],
+                    'status' => ['type' => 'string', 'description' => 'Status: todo, in_progress, done'],
+                    'priority' => ['type' => 'string', 'description' => 'Priority: low, medium, high'],
+                    'due_date' => ['type' => 'string', 'description' => 'Due date (YYYY-MM-DD)'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'delete_task',
+            'description' => 'Delete a task',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Task ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'update_task_status',
+            'description' => 'Update task status (for Kanban)',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Task ID'],
+                    'status' => ['type' => 'string', 'description' => 'New status: todo, in_progress, done'],
+                ],
+                'required' => ['id', 'status'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'assign_task',
+            'description' => 'Assign a task to a project',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Task ID'],
+                    'project_id' => ['type' => 'integer', 'description' => 'Project ID'],
+                ],
+                'required' => ['id', 'project_id'],
+            ],
+        ];
+
+        // Time Entries
+        $this->toolDefinitions[] = [
+            'name' => 'log_time',
+            'description' => 'Log time spent on a task',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'task_id' => ['type' => 'integer', 'description' => 'Task ID'],
+                    'duration' => ['type' => 'integer', 'description' => 'Duration in minutes'],
+                    'description' => ['type' => 'string', 'description' => 'Description of work done'],
+                    'date' => ['type' => 'string', 'description' => 'Date (YYYY-MM-DD)'],
+                ],
+                'required' => ['task_id', 'duration'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'get_time_entries',
+            'description' => 'Get time entries for a task',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'task_id' => ['type' => 'integer', 'description' => 'Task ID'],
+                ],
+                'required' => ['task_id'],
+            ],
+        ];
+
+        // Projects
+        $this->toolDefinitions[] = [
+            'name' => 'list_projects',
+            'description' => 'List all projects with optional filters',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'status' => ['type' => 'string', 'description' => 'Filter by status: active, completed, archived, cancelled'],
+                    'client_id' => ['type' => 'integer', 'description' => 'Filter by client ID'],
+                ],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'get_project',
+            'description' => 'Get a single project with tasks, quotes, invoices',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Project ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'create_project',
+            'description' => 'Create a new project',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'name' => ['type' => 'string', 'description' => 'Project name'],
+                    'description' => ['type' => 'string', 'description' => 'Project description'],
+                    'client_id' => ['type' => 'integer', 'description' => 'Client ID'],
+                    'status' => ['type' => 'string', 'description' => 'Status: active, completed, archived, cancelled'],
+                    'start_date' => ['type' => 'string', 'description' => 'Start date (YYYY-MM-DD)'],
+                    'end_date' => ['type' => 'string', 'description' => 'End date (YYYY-MM-DD)'],
+                ],
+                'required' => ['name'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'update_project',
+            'description' => 'Update an existing project',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Project ID'],
+                    'name' => ['type' => 'string', 'description' => 'Project name'],
+                    'description' => ['type' => 'string', 'description' => 'Project description'],
+                    'status' => ['type' => 'string', 'description' => 'Status: active, completed, archived, cancelled'],
+                    'start_date' => ['type' => 'string', 'description' => 'Start date (YYYY-MM-DD)'],
+                    'end_date' => ['type' => 'string', 'description' => 'End date (YYYY-MM-DD)'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'delete_project',
+            'description' => 'Delete a project',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Project ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'archive_project',
+            'description' => 'Archive a project',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Project ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        // Social Posts
+        $this->toolDefinitions[] = [
+            'name' => 'list_social_posts',
+            'description' => 'List all social media posts',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'status' => ['type' => 'string', 'description' => 'Filter by status: draft, approved, scheduled, published, rejected'],
+                ],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'get_social_post',
+            'description' => 'Get a single social media post',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Post ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'create_social_post',
+            'description' => 'Create a new social media post. Use connection_ids to specify which social accounts to post to. Use media_ids to attach images from the media library (uploaded via upload_media_from_url).',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'content' => ['type' => 'string', 'description' => 'Post content (max 5000 characters)'],
+                    'connection_ids' => ['type' => 'array', 'items' => ['type' => 'integer'], 'description' => 'Array of social connection IDs to post to (use list_social_connections to get available IDs)'],
+                    'status' => ['type' => 'string', 'enum' => ['draft', 'scheduled', 'approved'], 'description' => 'Post status: draft (default), scheduled, or approved'],
+                    'media_ids' => ['type' => 'array', 'items' => ['type' => 'integer'], 'description' => 'Array of media IDs from the media library to attach as images'],
+                    'scheduled_at' => ['type' => 'string', 'description' => 'Scheduled publication date (YYYY-MM-DD HH:MM:SS) - required if status is "scheduled"'],
+                ],
+                'required' => ['content', 'connection_ids'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'approve_social_post',
+            'description' => 'Approve a social media post for publication',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Post ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'publish_social_post',
+            'description' => 'Publish a social media post immediately',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Post ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'delete_social_post',
+            'description' => 'Delete a social media post',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Post ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        // Social Connections
+        $this->toolDefinitions[] = [
+            'name' => 'list_social_connections',
+            'description' => 'List all social media connections',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => (object) [],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'get_social_connection',
+            'description' => 'Get a single social media connection',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Connection ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'create_social_connection',
+            'description' => 'Create a new social media connection',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'platform' => ['type' => 'string', 'description' => 'Platform: twitter, linkedin, instagram, facebook'],
+                    'name' => ['type' => 'string', 'description' => 'Connection name'],
+                ],
+                'required' => ['platform', 'name'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'update_social_connection',
+            'description' => 'Update a social media connection',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Connection ID'],
+                    'name' => ['type' => 'string', 'description' => 'Connection name'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'delete_social_connection',
+            'description' => 'Delete a social media connection',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Connection ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        // Catalog Categories
+        $this->toolDefinitions[] = [
+            'name' => 'list_catalog_categories',
+            'description' => 'List all catalog categories',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => (object) [],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'get_catalog_category',
+            'description' => 'Get a single catalog category with items',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Category ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'create_catalog_category',
+            'description' => 'Create a new catalog category',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'name' => ['type' => 'string', 'description' => 'Category name'],
+                    'color' => ['type' => 'string', 'description' => 'Category color (hex format, e.g. #FF5733)'],
+                ],
+                'required' => ['name'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'update_catalog_category',
+            'description' => 'Update a catalog category',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Category ID'],
+                    'name' => ['type' => 'string', 'description' => 'Category name'],
+                    'color' => ['type' => 'string', 'description' => 'Category color (hex format, e.g. #FF5733)'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'delete_catalog_category',
+            'description' => 'Delete a catalog category',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Category ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        // Catalog Items
+        $this->toolDefinitions[] = [
+            'name' => 'list_catalog_items',
+            'description' => 'List all catalog items',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'category_id' => ['type' => 'integer', 'description' => 'Filter by category ID'],
+                ],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'get_catalog_item',
+            'description' => 'Get a single catalog item',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Item ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'create_catalog_item',
+            'description' => 'Create a new catalog item',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'catalog_category_id' => ['type' => 'integer', 'description' => 'Category ID'],
+                    'name' => ['type' => 'string', 'description' => 'Item name'],
+                    'description' => ['type' => 'string', 'description' => 'Item description'],
+                    'unit_price' => ['type' => 'number', 'description' => 'Unit price'],
+                    'unit' => ['type' => 'string', 'description' => 'Unit type', 'enum' => ['hour', 'day', 'unit', 'fixed', 'line']],
+                    'vat_rate' => ['type' => 'number', 'description' => 'VAT rate (0, 5.5, 10, 20)'],
+                    'default_quantity' => ['type' => 'number', 'description' => 'Default quantity for quotes/invoices (default: 1)'],
+                    'is_active' => ['type' => 'boolean', 'description' => 'Active status (default: true)'],
+                    'sku' => ['type' => 'string', 'description' => 'SKU code (optional, unique)'],
+                    'minimum_quantity' => ['type' => 'number', 'description' => 'Minimum quantity'],
+                ],
+                'required' => ['catalog_category_id', 'name', 'unit_price', 'unit', 'vat_rate'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'update_catalog_item',
+            'description' => 'Update a catalog item',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Item ID'],
+                    'catalog_category_id' => ['type' => 'integer', 'description' => 'Category ID'],
+                    'name' => ['type' => 'string', 'description' => 'Item name'],
+                    'description' => ['type' => 'string', 'description' => 'Item description'],
+                    'unit_price' => ['type' => 'number', 'description' => 'Unit price'],
+                    'unit' => ['type' => 'string', 'description' => 'Unit type', 'enum' => ['hour', 'day', 'unit', 'fixed', 'line']],
+                    'vat_rate' => ['type' => 'number', 'description' => 'VAT rate (0, 5.5, 10, 20)'],
+                    'default_quantity' => ['type' => 'number', 'description' => 'Default quantity for quotes/invoices'],
+                    'is_active' => ['type' => 'boolean', 'description' => 'Active status'],
+                    'sku' => ['type' => 'string', 'description' => 'SKU code (unique)'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'delete_catalog_item',
+            'description' => 'Delete a catalog item',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Item ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        // Media
+        $this->toolDefinitions[] = [
+            'name' => 'list_media',
+            'description' => 'List all media files in the library',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'collection' => ['type' => 'string', 'description' => 'Filter by collection name'],
+                    'mime_type' => ['type' => 'string', 'description' => 'Filter by MIME type prefix (e.g., "image")'],
+                    'search' => ['type' => 'string', 'description' => 'Search by name'],
+                ],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'get_media',
+            'description' => 'Get a single media file details',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Media ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'upload_media_from_url',
+            'description' => 'Upload media from a URL to the library. Use this to stage images before attaching to social posts.',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'url' => ['type' => 'string', 'description' => 'URL of the image to download'],
+                    'name' => ['type' => 'string', 'description' => 'Optional name for the media file'],
+                    'collection' => ['type' => 'string', 'description' => 'Optional collection name (default: "default")'],
+                ],
+                'required' => ['url'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'delete_media',
+            'description' => 'Delete a media file from the library',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Media ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        // Image Generation
+        $this->toolDefinitions[] = [
+            'name' => 'generate_image',
+            'description' => 'Generate an image from text content using OpenAI GPT Image 1.5. The image will be saved in the generated images library and can be attached to social posts.',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'content' => ['type' => 'string', 'description' => 'Text content to generate an image from (10-5000 characters). The system prompt will add branding guidelines.'],
+                    'social_post_id' => ['type' => 'integer', 'description' => 'Optional: Link the generated image to a social post'],
+                ],
+                'required' => ['content'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'generate_image_for_post',
+            'description' => 'Generate an image based on a social post content and automatically attach it to that post.',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'social_post_id' => ['type' => 'integer', 'description' => 'Social post ID to generate an image for'],
+                ],
+                'required' => ['social_post_id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'list_generated_images',
+            'description' => 'List generated images with optional filters',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'social_post_id' => ['type' => 'integer', 'description' => 'Filter by linked social post ID'],
+                    'has_social_post' => ['type' => 'boolean', 'description' => 'Filter by whether image is linked to a post'],
+                    'limit' => ['type' => 'integer', 'description' => 'Maximum number of results (default: 20, max: 100)'],
+                ],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'delete_generated_image',
+            'description' => 'Delete a generated image from the library',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Generated image ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        // Blog Posts
+        $this->toolDefinitions[] = [
+            'name' => 'list_posts',
+            'description' => 'List blog posts with optional filters',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'status' => ['type' => 'string', 'description' => 'Filter by status: draft, published'],
+                    'category_id' => ['type' => 'integer', 'description' => 'Filter by category ID'],
+                    'is_featured' => ['type' => 'boolean', 'description' => 'Filter featured posts only'],
+                    'search' => ['type' => 'string', 'description' => 'Search in title and content'],
                 ],
             ],
         ];
 
         $this->toolDefinitions[] = [
             'name' => 'get_post',
-            'description' => 'Get a single blog post by ID with all its details',
+            'description' => 'Get a single blog post with category, author, and tags',
             'inputSchema' => [
                 'type' => 'object',
                 'properties' => [
-                    'id' => [
-                        'type' => 'integer',
-                        'description' => 'Post ID',
-                    ],
+                    'id' => ['type' => 'integer', 'description' => 'Post ID'],
                 ],
                 'required' => ['id'],
             ],
@@ -112,52 +1223,20 @@ class ToolsHandler
 
         $this->toolDefinitions[] = [
             'name' => 'create_post',
-            'description' => 'Create a new blog post. The post will be created as a draft by default.',
+            'description' => 'Create a new blog post',
             'inputSchema' => [
                 'type' => 'object',
                 'properties' => [
-                    'title' => [
-                        'type' => 'string',
-                        'description' => 'Post title (required)',
-                    ],
-                    'content' => [
-                        'type' => 'string',
-                        'description' => 'Post content in HTML format (required). Must be valid HTML compatible with Filament/TipTap editor. Use standard HTML tags: <p>, <h2>, <h3>, <ul>, <ol>, <li>, <a>, <strong>, <em>, <blockquote>, <pre>, <code>. Do NOT use Markdown.',
-                    ],
-                    'excerpt' => [
-                        'type' => 'string',
-                        'description' => 'Short excerpt/summary of the post',
-                    ],
-                    'slug' => [
-                        'type' => 'string',
-                        'description' => 'URL slug (auto-generated from title if not provided)',
-                    ],
-                    'category_id' => [
-                        'type' => 'integer',
-                        'description' => 'Category ID',
-                    ],
-                    'tag_ids' => [
-                        'type' => 'array',
-                        'items' => ['type' => 'integer'],
-                        'description' => 'Array of tag IDs to attach',
-                    ],
-                    'status' => [
-                        'type' => 'string',
-                        'enum' => ['draft', 'published'],
-                        'description' => 'Post status (default: draft)',
-                    ],
-                    'is_featured' => [
-                        'type' => 'boolean',
-                        'description' => 'Mark as featured post',
-                    ],
-                    'meta_title' => [
-                        'type' => 'string',
-                        'description' => 'SEO meta title',
-                    ],
-                    'meta_description' => [
-                        'type' => 'string',
-                        'description' => 'SEO meta description',
-                    ],
+                    'title' => ['type' => 'string', 'description' => 'Post title (required)'],
+                    'content' => ['type' => 'string', 'description' => 'Post content in HTML (required)'],
+                    'excerpt' => ['type' => 'string', 'description' => 'Short excerpt/summary'],
+                    'slug' => ['type' => 'string', 'description' => 'URL slug (auto-generated if not provided)'],
+                    'category_id' => ['type' => 'integer', 'description' => 'Category ID'],
+                    'tag_ids' => ['type' => 'array', 'items' => ['type' => 'integer'], 'description' => 'Array of tag IDs'],
+                    'status' => ['type' => 'string', 'description' => 'Status: draft, published (default: draft)'],
+                    'is_featured' => ['type' => 'boolean', 'description' => 'Mark as featured post'],
+                    'meta_title' => ['type' => 'string', 'description' => 'SEO meta title'],
+                    'meta_description' => ['type' => 'string', 'description' => 'SEO meta description'],
                 ],
                 'required' => ['title', 'content'],
             ],
@@ -165,56 +1244,21 @@ class ToolsHandler
 
         $this->toolDefinitions[] = [
             'name' => 'update_post',
-            'description' => 'Update an existing blog post. Only provided fields will be updated.',
+            'description' => 'Update an existing blog post',
             'inputSchema' => [
                 'type' => 'object',
                 'properties' => [
-                    'id' => [
-                        'type' => 'integer',
-                        'description' => 'Post ID (required)',
-                    ],
-                    'title' => [
-                        'type' => 'string',
-                        'description' => 'Post title',
-                    ],
-                    'content' => [
-                        'type' => 'string',
-                        'description' => 'Post content in HTML format. Must be valid HTML compatible with Filament/TipTap editor. Use standard HTML tags: <p>, <h2>, <h3>, <ul>, <ol>, <li>, <a>, <strong>, <em>, <blockquote>, <pre>, <code>. Do NOT use Markdown.',
-                    ],
-                    'excerpt' => [
-                        'type' => 'string',
-                        'description' => 'Short excerpt/summary',
-                    ],
-                    'slug' => [
-                        'type' => 'string',
-                        'description' => 'URL slug',
-                    ],
-                    'category_id' => [
-                        'type' => 'integer',
-                        'description' => 'Category ID',
-                    ],
-                    'tag_ids' => [
-                        'type' => 'array',
-                        'items' => ['type' => 'integer'],
-                        'description' => 'Array of tag IDs (replaces existing tags)',
-                    ],
-                    'status' => [
-                        'type' => 'string',
-                        'enum' => ['draft', 'published'],
-                        'description' => 'Post status',
-                    ],
-                    'is_featured' => [
-                        'type' => 'boolean',
-                        'description' => 'Mark as featured post',
-                    ],
-                    'meta_title' => [
-                        'type' => 'string',
-                        'description' => 'SEO meta title',
-                    ],
-                    'meta_description' => [
-                        'type' => 'string',
-                        'description' => 'SEO meta description',
-                    ],
+                    'id' => ['type' => 'integer', 'description' => 'Post ID (required)'],
+                    'title' => ['type' => 'string', 'description' => 'Post title'],
+                    'content' => ['type' => 'string', 'description' => 'Post content in HTML'],
+                    'excerpt' => ['type' => 'string', 'description' => 'Short excerpt/summary'],
+                    'slug' => ['type' => 'string', 'description' => 'URL slug'],
+                    'category_id' => ['type' => 'integer', 'description' => 'Category ID'],
+                    'tag_ids' => ['type' => 'array', 'items' => ['type' => 'integer'], 'description' => 'Array of tag IDs'],
+                    'status' => ['type' => 'string', 'description' => 'Status: draft, published'],
+                    'is_featured' => ['type' => 'boolean', 'description' => 'Mark as featured post'],
+                    'meta_title' => ['type' => 'string', 'description' => 'SEO meta title'],
+                    'meta_description' => ['type' => 'string', 'description' => 'SEO meta description'],
                 ],
                 'required' => ['id'],
             ],
@@ -222,14 +1266,11 @@ class ToolsHandler
 
         $this->toolDefinitions[] = [
             'name' => 'delete_post',
-            'description' => 'Delete a blog post (soft delete). The post can be restored later.',
+            'description' => 'Delete a blog post (soft delete)',
             'inputSchema' => [
                 'type' => 'object',
                 'properties' => [
-                    'id' => [
-                        'type' => 'integer',
-                        'description' => 'Post ID',
-                    ],
+                    'id' => ['type' => 'integer', 'description' => 'Post ID'],
                 ],
                 'required' => ['id'],
             ],
@@ -237,14 +1278,11 @@ class ToolsHandler
 
         $this->toolDefinitions[] = [
             'name' => 'publish_post',
-            'description' => 'Publish a draft post. Sets status to published and published_at to now.',
+            'description' => 'Publish a draft blog post',
             'inputSchema' => [
                 'type' => 'object',
                 'properties' => [
-                    'id' => [
-                        'type' => 'integer',
-                        'description' => 'Post ID',
-                    ],
+                    'id' => ['type' => 'integer', 'description' => 'Post ID'],
                 ],
                 'required' => ['id'],
             ],
@@ -252,48 +1290,33 @@ class ToolsHandler
 
         $this->toolDefinitions[] = [
             'name' => 'unpublish_post',
-            'description' => 'Unpublish a published post. Sets status back to draft.',
+            'description' => 'Unpublish a blog post (revert to draft)',
             'inputSchema' => [
                 'type' => 'object',
                 'properties' => [
-                    'id' => [
-                        'type' => 'integer',
-                        'description' => 'Post ID',
-                    ],
+                    'id' => ['type' => 'integer', 'description' => 'Post ID'],
                 ],
                 'required' => ['id'],
             ],
         ];
 
-        // Category Tools
+        // Blog Categories
         $this->toolDefinitions[] = [
             'name' => 'list_categories',
             'description' => 'List all blog categories',
             'inputSchema' => [
                 'type' => 'object',
-                'properties' => [
-                    'page' => [
-                        'type' => 'integer',
-                        'description' => 'Page number',
-                    ],
-                    'per_page' => [
-                        'type' => 'integer',
-                        'description' => 'Items per page (max: 100)',
-                    ],
-                ],
+                'properties' => (object) [],
             ],
         ];
 
         $this->toolDefinitions[] = [
             'name' => 'get_category',
-            'description' => 'Get a single category by ID',
+            'description' => 'Get a single blog category with post count',
             'inputSchema' => [
                 'type' => 'object',
                 'properties' => [
-                    'id' => [
-                        'type' => 'integer',
-                        'description' => 'Category ID',
-                    ],
+                    'id' => ['type' => 'integer', 'description' => 'Category ID'],
                 ],
                 'required' => ['id'],
             ],
@@ -305,26 +1328,11 @@ class ToolsHandler
             'inputSchema' => [
                 'type' => 'object',
                 'properties' => [
-                    'name' => [
-                        'type' => 'string',
-                        'description' => 'Category name (required)',
-                    ],
-                    'slug' => [
-                        'type' => 'string',
-                        'description' => 'URL slug (auto-generated from name if not provided)',
-                    ],
-                    'description' => [
-                        'type' => 'string',
-                        'description' => 'Category description',
-                    ],
-                    'color' => [
-                        'type' => 'string',
-                        'description' => 'Category color in hex format (e.g., #3B82F6)',
-                    ],
-                    'sort_order' => [
-                        'type' => 'integer',
-                        'description' => 'Sort order for display (lower = first)',
-                    ],
+                    'name' => ['type' => 'string', 'description' => 'Category name (required)'],
+                    'slug' => ['type' => 'string', 'description' => 'URL slug (auto-generated if not provided)'],
+                    'description' => ['type' => 'string', 'description' => 'Category description'],
+                    'color' => ['type' => 'string', 'description' => 'Category color (hex format, e.g. #FF5733)'],
+                    'sort_order' => ['type' => 'integer', 'description' => 'Sort order for display'],
                 ],
                 'required' => ['name'],
             ],
@@ -332,34 +1340,16 @@ class ToolsHandler
 
         $this->toolDefinitions[] = [
             'name' => 'update_category',
-            'description' => 'Update an existing blog category. Only provided fields will be updated.',
+            'description' => 'Update a blog category',
             'inputSchema' => [
                 'type' => 'object',
                 'properties' => [
-                    'id' => [
-                        'type' => 'integer',
-                        'description' => 'Category ID (required)',
-                    ],
-                    'name' => [
-                        'type' => 'string',
-                        'description' => 'Category name',
-                    ],
-                    'slug' => [
-                        'type' => 'string',
-                        'description' => 'URL slug',
-                    ],
-                    'description' => [
-                        'type' => 'string',
-                        'description' => 'Category description',
-                    ],
-                    'color' => [
-                        'type' => 'string',
-                        'description' => 'Category color in hex format (e.g., #3B82F6)',
-                    ],
-                    'sort_order' => [
-                        'type' => 'integer',
-                        'description' => 'Sort order for display',
-                    ],
+                    'id' => ['type' => 'integer', 'description' => 'Category ID (required)'],
+                    'name' => ['type' => 'string', 'description' => 'Category name'],
+                    'slug' => ['type' => 'string', 'description' => 'URL slug'],
+                    'description' => ['type' => 'string', 'description' => 'Category description'],
+                    'color' => ['type' => 'string', 'description' => 'Category color (hex format)'],
+                    'sort_order' => ['type' => 'integer', 'description' => 'Sort order for display'],
                 ],
                 'required' => ['id'],
             ],
@@ -367,48 +1357,33 @@ class ToolsHandler
 
         $this->toolDefinitions[] = [
             'name' => 'delete_category',
-            'description' => 'Delete a blog category. Will fail if posts are using this category.',
+            'description' => 'Delete a blog category (fails if posts are using it)',
             'inputSchema' => [
                 'type' => 'object',
                 'properties' => [
-                    'id' => [
-                        'type' => 'integer',
-                        'description' => 'Category ID',
-                    ],
+                    'id' => ['type' => 'integer', 'description' => 'Category ID'],
                 ],
                 'required' => ['id'],
             ],
         ];
 
-        // Tag Tools
+        // Blog Tags
         $this->toolDefinitions[] = [
             'name' => 'list_tags',
             'description' => 'List all blog tags',
             'inputSchema' => [
                 'type' => 'object',
-                'properties' => [
-                    'page' => [
-                        'type' => 'integer',
-                        'description' => 'Page number',
-                    ],
-                    'per_page' => [
-                        'type' => 'integer',
-                        'description' => 'Items per page (max: 100)',
-                    ],
-                ],
+                'properties' => (object) [],
             ],
         ];
 
         $this->toolDefinitions[] = [
             'name' => 'get_tag',
-            'description' => 'Get a single tag by ID',
+            'description' => 'Get a single blog tag with post count',
             'inputSchema' => [
                 'type' => 'object',
                 'properties' => [
-                    'id' => [
-                        'type' => 'integer',
-                        'description' => 'Tag ID',
-                    ],
+                    'id' => ['type' => 'integer', 'description' => 'Tag ID'],
                 ],
                 'required' => ['id'],
             ],
@@ -420,14 +1395,8 @@ class ToolsHandler
             'inputSchema' => [
                 'type' => 'object',
                 'properties' => [
-                    'name' => [
-                        'type' => 'string',
-                        'description' => 'Tag name (required)',
-                    ],
-                    'slug' => [
-                        'type' => 'string',
-                        'description' => 'URL slug (auto-generated from name if not provided)',
-                    ],
+                    'name' => ['type' => 'string', 'description' => 'Tag name (required)'],
+                    'slug' => ['type' => 'string', 'description' => 'URL slug (auto-generated if not provided)'],
                 ],
                 'required' => ['name'],
             ],
@@ -435,22 +1404,13 @@ class ToolsHandler
 
         $this->toolDefinitions[] = [
             'name' => 'update_tag',
-            'description' => 'Update an existing blog tag. Only provided fields will be updated.',
+            'description' => 'Update a blog tag',
             'inputSchema' => [
                 'type' => 'object',
                 'properties' => [
-                    'id' => [
-                        'type' => 'integer',
-                        'description' => 'Tag ID (required)',
-                    ],
-                    'name' => [
-                        'type' => 'string',
-                        'description' => 'Tag name',
-                    ],
-                    'slug' => [
-                        'type' => 'string',
-                        'description' => 'URL slug',
-                    ],
+                    'id' => ['type' => 'integer', 'description' => 'Tag ID (required)'],
+                    'name' => ['type' => 'string', 'description' => 'Tag name'],
+                    'slug' => ['type' => 'string', 'description' => 'URL slug'],
                 ],
                 'required' => ['id'],
             ],
@@ -458,57 +1418,37 @@ class ToolsHandler
 
         $this->toolDefinitions[] = [
             'name' => 'delete_tag',
-            'description' => 'Delete a blog tag. The tag will be detached from all posts.',
+            'description' => 'Delete a blog tag (automatically detached from posts)',
             'inputSchema' => [
                 'type' => 'object',
                 'properties' => [
-                    'id' => [
-                        'type' => 'integer',
-                        'description' => 'Tag ID',
-                    ],
+                    'id' => ['type' => 'integer', 'description' => 'Tag ID'],
                 ],
                 'required' => ['id'],
             ],
         ];
     }
 
-    public function list(): array
+    /**
+     * Normalize parameter aliases before validation
+     * This converts alternative parameter names to their canonical form
+     */
+    private function normalizeAliases(string $toolName, array $args): array
     {
-        return ['tools' => $this->toolDefinitions];
-    }
+        $aliases = [
+            'create_invoice' => ['invoice_number' => 'number'],
+            'create_quote' => ['quote_number' => 'number'],
+        ];
 
-    public function call(string $name, array $arguments = []): array
-    {
-        if (! isset($this->toolExecutors[$name])) {
-            return [
-                'content' => [
-                    [
-                        'type' => 'text',
-                        'text' => json_encode([
-                            'success' => false,
-                            'error' => "Unknown tool: {$name}",
-                        ]),
-                    ],
-                ],
-                'isError' => true,
-            ];
+        if (isset($aliases[$toolName])) {
+            foreach ($aliases[$toolName] as $alias => $canonical) {
+                if (isset($args[$alias]) && !isset($args[$canonical])) {
+                    $args[$canonical] = $args[$alias];
+                    unset($args[$alias]);
+                }
+            }
         }
 
-        $result = $this->errorHandler->wrap(
-            fn () => call_user_func($this->toolExecutors[$name], $arguments),
-            "tool:{$name}"
-        );
-
-        $isError = isset($result['success']) && $result['success'] === false;
-
-        return [
-            'content' => [
-                [
-                    'type' => 'text',
-                    'text' => json_encode($result),
-                ],
-            ],
-            'isError' => $isError,
-        ];
+        return $args;
     }
 }

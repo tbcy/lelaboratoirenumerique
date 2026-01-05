@@ -1,0 +1,104 @@
+<?php
+
+namespace App\Filament\Kanban\Concerns;
+
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Schema;
+
+trait HasEditRecordModal
+{
+    public bool $disableEditModal = false;
+
+    public ?array $editModalFormState = [];
+
+    public null|int|string $editModalRecordId = null;
+
+    protected string $editModalTitle = 'Edit Record';
+
+    protected bool $editModalSlideOver = false;
+
+    protected string $editModalWidth = '2xl';
+
+    protected string $editModalSaveButtonLabel = 'Save';
+
+    protected string $editModalCancelButtonLabel = 'Cancel';
+
+    public function mountHasEditRecordModal(): void
+    {
+        $this->form->fill();
+    }
+
+    public function recordClicked(int|string $recordId, array $data): void
+    {
+        if ($this->disableEditModal) {
+            return;
+        }
+
+        $this->editModalRecordId = $recordId;
+
+        $this->form($this->form);
+        $this->form->fill($this->getEditModalRecordData($recordId, $data));
+
+        $this->dispatch('open-modal', id: 'kanban--edit-record-modal');
+    }
+
+    public function editModalFormSubmitted(): void
+    {
+        $this->editRecord($this->editModalRecordId, $this->form->getState(), $this->editModalFormState);
+
+        $this->editModalRecordId = null;
+        $this->form->fill();
+
+        $this->dispatch('close-modal', id: 'kanban--edit-record-modal');
+    }
+
+    public function form(Schema $schema): Schema
+    {
+        return $schema
+            ->components($this->getEditModalFormSchema($this->editModalRecordId))
+            ->statePath('editModalFormState')
+            ->model($this->editModalRecordId ? static::$model::find($this->editModalRecordId) : static::$model);
+    }
+
+    protected function getEditModalRecordData(int|string $recordId, array $data): array
+    {
+        return $this->getEloquentQuery()->find($recordId)->toArray();
+    }
+
+    protected function editRecord(int|string $recordId, array $data, array $state): void
+    {
+        $this->getEloquentQuery()->find($recordId)->update($data);
+    }
+
+    protected function getEditModalFormSchema(null|int|string $recordId): array
+    {
+        return [
+            TextInput::make(static::$recordTitleAttribute),
+        ];
+    }
+
+    protected function getEditModalTitle(): string
+    {
+        return $this->editModalTitle;
+    }
+
+    protected function getEditModalSlideOver(): bool
+    {
+        return $this->editModalSlideOver;
+    }
+
+    protected function getEditModalWidth(): string
+    {
+        return $this->editModalWidth;
+    }
+
+    protected function getEditModalSaveButtonLabel(): string
+    {
+        return $this->editModalSaveButtonLabel;
+    }
+
+    protected function getEditModalCancelButtonLabel(): string
+    {
+        return $this->editModalCancelButtonLabel;
+    }
+}
