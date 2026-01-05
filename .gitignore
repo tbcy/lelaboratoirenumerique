@@ -29,5 +29,8 @@ Thumbs.db
 .auto-claude/
 .claude_settings.json
 
+# Helper backup (data migration)
+helper_backup.sqlite
+
 # Git worktrees
 .worktrees/
