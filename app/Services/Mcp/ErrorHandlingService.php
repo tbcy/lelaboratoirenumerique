@@ -9,6 +9,25 @@ use Illuminate\Support\Facades\Log;
 
 class ErrorHandlingService
 {
+    /**
+     * Validate that required parameters are present
+     */
+    public function validateRequiredParams(array $params, array $required, string $context = ''): void
+    {
+        $missing = [];
+        foreach ($required as $key) {
+            if (! isset($params[$key]) || $params[$key] === '') {
+                $missing[] = $key;
+            }
+        }
+
+        if (! empty($missing)) {
+            throw new \InvalidArgumentException(
+                "Missing required parameters for {$context}: ".implode(', ', $missing)
+            );
+        }
+    }
+
     public function wrap(callable $callback, string $context = ''): array
     {
         try {
