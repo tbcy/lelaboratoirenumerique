@@ -33,6 +33,15 @@ class ValidationService
         return $validator->validated();
     }
 
+    /**
+     * Validate tool arguments (stub - always returns valid)
+     */
+    public function validateToolArgs(string $toolName, array $arguments): array
+    {
+        // TODO: Implement proper tool argument validation if needed
+        return ['valid' => true, 'errors' => []];
+    }
+
     public function makeValidator(array $data, string $requestClass): \Illuminate\Validation\Validator
     {
         if (! class_exists($requestClass)) {
