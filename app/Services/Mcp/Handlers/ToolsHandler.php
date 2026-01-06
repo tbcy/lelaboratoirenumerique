@@ -15,6 +15,9 @@ use App\Services\Mcp\Resources\ProjectResource;
 use App\Services\Mcp\Resources\QuoteResource;
 use App\Services\Mcp\Resources\SocialConnectionResource;
 use App\Services\Mcp\Resources\SocialPostResource;
+use App\Services\Mcp\Resources\NoteResource;
+use App\Services\Mcp\Resources\NoteScopeResource;
+use App\Services\Mcp\Resources\StakeholderResource;
 use App\Services\Mcp\Resources\TagResource;
 use App\Services\Mcp\Resources\TaskResource;
 use App\Services\Mcp\Resources\TimeEntryResource;
@@ -30,6 +33,9 @@ use App\Services\Mcp\Tools\ProjectTools;
 use App\Services\Mcp\Tools\QuoteTools;
 use App\Services\Mcp\Tools\SocialConnectionTools;
 use App\Services\Mcp\Tools\SocialPostTools;
+use App\Services\Mcp\Tools\NoteTools;
+use App\Services\Mcp\Tools\NoteScopeTools;
+use App\Services\Mcp\Tools\StakeholderTools;
 use App\Services\Mcp\Tools\TagTools;
 use App\Services\Mcp\Tools\TaskTools;
 use App\Services\Mcp\Tools\TimeEntryTools;
@@ -161,6 +167,31 @@ class ToolsHandler
             'create_tag' => [TagTools::class, 'create'],
             'update_tag' => [TagTools::class, 'update'],
             'delete_tag' => [TagTools::class, 'delete'],
+
+            // Stakeholder Tools
+            'list_stakeholders' => [StakeholderResource::class, 'list'],
+            'get_stakeholder' => [StakeholderResource::class, 'get'],
+            'create_stakeholder' => [StakeholderTools::class, 'create'],
+            'update_stakeholder' => [StakeholderTools::class, 'update'],
+            'delete_stakeholder' => [StakeholderTools::class, 'delete'],
+
+            // Note Scope Tools
+            'list_note_scopes' => [NoteScopeResource::class, 'list'],
+            'get_note_scope' => [NoteScopeResource::class, 'get'],
+            'create_note_scope' => [NoteScopeTools::class, 'create'],
+            'update_note_scope' => [NoteScopeTools::class, 'update'],
+            'delete_note_scope' => [NoteScopeTools::class, 'delete'],
+
+            // Note Tools
+            'list_notes' => [NoteResource::class, 'list'],
+            'get_note' => [NoteResource::class, 'get'],
+            'get_note_children' => [NoteResource::class, 'getChildren'],
+            'get_note_tree' => [NoteResource::class, 'getTree'],
+            'search_notes' => [NoteResource::class, 'search'],
+            'create_note' => [NoteTools::class, 'create'],
+            'update_note' => [NoteTools::class, 'update'],
+            'delete_note' => [NoteTools::class, 'delete'],
+            'set_note_parent' => [NoteTools::class, 'setParent'],
         ];
 
         $this->buildToolDefinitions();
@@ -1423,6 +1454,275 @@ class ToolsHandler
                 'type' => 'object',
                 'properties' => [
                     'id' => ['type' => 'integer', 'description' => 'Tag ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        // Stakeholders
+        $this->toolDefinitions[] = [
+            'name' => 'list_stakeholders',
+            'description' => 'List all stakeholders (participants) with optional filters',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'search' => ['type' => 'string', 'description' => 'Search in name, email, company'],
+                    'is_active' => ['type' => 'boolean', 'description' => 'Filter by active status'],
+                ],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'get_stakeholder',
+            'description' => 'Get a single stakeholder with notes and tasks counts',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Stakeholder ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'create_stakeholder',
+            'description' => 'Create a new stakeholder',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'name' => ['type' => 'string', 'description' => 'Stakeholder name (required)'],
+                    'email' => ['type' => 'string', 'description' => 'Email address'],
+                    'phone' => ['type' => 'string', 'description' => 'Phone number'],
+                    'company' => ['type' => 'string', 'description' => 'Company name'],
+                    'role' => ['type' => 'string', 'description' => 'Role/position'],
+                    'notes' => ['type' => 'string', 'description' => 'Additional notes'],
+                ],
+                'required' => ['name'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'update_stakeholder',
+            'description' => 'Update an existing stakeholder',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Stakeholder ID (required)'],
+                    'name' => ['type' => 'string', 'description' => 'Stakeholder name'],
+                    'email' => ['type' => 'string', 'description' => 'Email address'],
+                    'phone' => ['type' => 'string', 'description' => 'Phone number'],
+                    'company' => ['type' => 'string', 'description' => 'Company name'],
+                    'role' => ['type' => 'string', 'description' => 'Role/position'],
+                    'notes' => ['type' => 'string', 'description' => 'Additional notes'],
+                    'is_active' => ['type' => 'boolean', 'description' => 'Active status'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'delete_stakeholder',
+            'description' => 'Delete a stakeholder (automatically detached from notes and tasks)',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Stakeholder ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        // Note Scopes
+        $this->toolDefinitions[] = [
+            'name' => 'list_note_scopes',
+            'description' => 'List all note scopes (tags)',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => (object) [],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'get_note_scope',
+            'description' => 'Get a single note scope with notes count',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Note Scope ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'create_note_scope',
+            'description' => 'Create a new note scope',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'name' => ['type' => 'string', 'description' => 'Scope name (required)'],
+                    'slug' => ['type' => 'string', 'description' => 'URL slug (auto-generated if not provided)'],
+                    'color' => ['type' => 'string', 'description' => 'Color (hex format, e.g. #FF5733)'],
+                ],
+                'required' => ['name'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'update_note_scope',
+            'description' => 'Update a note scope',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Note Scope ID (required)'],
+                    'name' => ['type' => 'string', 'description' => 'Scope name'],
+                    'slug' => ['type' => 'string', 'description' => 'URL slug'],
+                    'color' => ['type' => 'string', 'description' => 'Color (hex format)'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'delete_note_scope',
+            'description' => 'Delete a note scope (fails if notes are using it)',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Note Scope ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        // Notes
+        $this->toolDefinitions[] = [
+            'name' => 'list_notes',
+            'description' => 'List notes (hierarchical pages) with optional filters',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'parent_id' => ['type' => 'integer', 'description' => 'Filter by parent note ID (null for root notes)'],
+                    'scope_id' => ['type' => 'integer', 'description' => 'Filter by scope ID'],
+                    'stakeholder_id' => ['type' => 'integer', 'description' => 'Filter by stakeholder ID'],
+                    'search' => ['type' => 'string', 'description' => 'Search in note name'],
+                    'root_only' => ['type' => 'boolean', 'description' => 'Return only root-level notes'],
+                ],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'get_note',
+            'description' => 'Get a single note with full content, stakeholders, scopes, and children',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Note ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'get_note_children',
+            'description' => 'Get direct children (subpages) of a note',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Parent Note ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'get_note_tree',
+            'description' => 'Get hierarchical tree of notes',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'root_id' => ['type' => 'integer', 'description' => 'Root note ID (optional, null returns all root notes with their children)'],
+                ],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'search_notes',
+            'description' => 'Full-text search across all note content fields (name, short_summary, long_summary, notes, transcription). Returns matching notes with context snippets.',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'query' => ['type' => 'string', 'description' => 'Search query (required)'],
+                    'scope_id' => ['type' => 'integer', 'description' => 'Filter by scope ID'],
+                    'stakeholder_id' => ['type' => 'integer', 'description' => 'Filter by stakeholder ID'],
+                    'date_from' => ['type' => 'string', 'description' => 'Filter notes from this date (ISO 8601)'],
+                    'date_to' => ['type' => 'string', 'description' => 'Filter notes until this date (ISO 8601)'],
+                ],
+                'required' => ['query'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'create_note',
+            'description' => 'Create a new note (hierarchical page)',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'name' => ['type' => 'string', 'description' => 'Note name (required)'],
+                    'datetime' => ['type' => 'string', 'description' => 'Date/time (ISO 8601, defaults to now)'],
+                    'short_summary' => ['type' => 'string', 'description' => 'Short summary (HTML)'],
+                    'long_summary' => ['type' => 'string', 'description' => 'Long summary (HTML)'],
+                    'notes' => ['type' => 'string', 'description' => 'Detailed notes (HTML)'],
+                    'transcription' => ['type' => 'string', 'description' => 'Transcription text'],
+                    'parent_id' => ['type' => 'integer', 'description' => 'Parent note ID for creating subpage'],
+                    'stakeholder_ids' => ['type' => 'array', 'items' => ['type' => 'integer'], 'description' => 'Array of stakeholder IDs'],
+                    'scope_ids' => ['type' => 'array', 'items' => ['type' => 'integer'], 'description' => 'Array of scope IDs'],
+                ],
+                'required' => ['name'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'update_note',
+            'description' => 'Update an existing note',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Note ID (required)'],
+                    'name' => ['type' => 'string', 'description' => 'Note name'],
+                    'datetime' => ['type' => 'string', 'description' => 'Date/time (ISO 8601)'],
+                    'short_summary' => ['type' => 'string', 'description' => 'Short summary (HTML)'],
+                    'long_summary' => ['type' => 'string', 'description' => 'Long summary (HTML)'],
+                    'notes' => ['type' => 'string', 'description' => 'Detailed notes (HTML)'],
+                    'transcription' => ['type' => 'string', 'description' => 'Transcription text'],
+                    'parent_id' => ['type' => 'integer', 'description' => 'Parent note ID'],
+                    'stakeholder_ids' => ['type' => 'array', 'items' => ['type' => 'integer'], 'description' => 'Array of stakeholder IDs'],
+                    'scope_ids' => ['type' => 'array', 'items' => ['type' => 'integer'], 'description' => 'Array of scope IDs'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'delete_note',
+            'description' => 'Delete a note (soft delete)',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Note ID'],
+                ],
+                'required' => ['id'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'set_note_parent',
+            'description' => 'Move a note to a new parent (change hierarchy)',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'integer', 'description' => 'Note ID to move (required)'],
+                    'parent_id' => ['type' => 'integer', 'description' => 'New parent note ID (null for root level)'],
                 ],
                 'required' => ['id'],
             ],
