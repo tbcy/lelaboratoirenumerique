@@ -23,9 +23,12 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Notifications\Notification;
+use App\Filament\Traits\StandardTableConfig;
 
 class SocialPostResource extends Resource
 {
+    use StandardTableConfig;
+
     protected static ?string $model = SocialPost::class;
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-megaphone';
@@ -171,7 +174,7 @@ class SocialPostResource extends Resource
                             ->components([
                                 Forms\Components\Placeholder::make('published_info')
                                     ->label(__('resources.social_post.published_at'))
-                                    ->content(fn (?SocialPost $record): string => $record?->published_at?->format('d/m/Y H:i') ?? '-'),
+                                    ->content(fn (?SocialPost $record): string => $record?->published_at?->format(self::DATETIME_FORMAT) ?? '-'),
 
                                 Forms\Components\Placeholder::make('error')
                                     ->label(__('resources.social_post.error'))
@@ -203,33 +206,27 @@ class SocialPostResource extends Resource
                     ->stacked()
                     ->limit(3),
 
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
                     ->label(__('resources.social_post.status'))
-                    ->colors([
-                        'secondary' => 'draft',
-                        'success' => 'approved',
-                        'info' => 'scheduled',
-                        'primary' => 'published',
-                        'danger' => 'failed',
-                        'warning' => 'rejected',
-                    ])
+                    ->badge()
+                    ->color(fn (string $state): string => self::getStatusColor($state))
                     ->formatStateUsing(fn (string $state): string => SocialPost::getStatusOptions()[$state] ?? $state),
 
                 Tables\Columns\TextColumn::make('scheduled_at')
                     ->label(__('resources.social_post.scheduled'))
-                    ->dateTime('d/m/Y H:i')
+                    ->dateTime(self::DATETIME_FORMAT)
                     ->sortable()
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('published_at')
                     ->label(__('resources.social_post.published'))
-                    ->dateTime('d/m/Y H:i')
+                    ->dateTime(self::DATETIME_FORMAT)
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('resources.social_post.created_at'))
-                    ->dateTime('d/m/Y')
+                    ->date(self::DATE_FORMAT)
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

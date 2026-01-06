@@ -17,9 +17,12 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Traits\StandardTableConfig;
 
 class ProjectResource extends Resource
 {
+    use StandardTableConfig;
+
     protected static ?string $model = Project::class;
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-folder';
@@ -57,7 +60,7 @@ class ProjectResource extends Resource
 
                                 Forms\Components\RichEditor::make('description')
                                     ->label(__('resources.project.description'))
-                                    ->toolbarButtons(['bold', 'italic', 'bulletList', 'orderedList', 'link'])
+                                    ->toolbarButtons(self::standardToolbar())
                                     ->columnSpanFull(),
 
                                 Forms\Components\Select::make('client_id')
@@ -200,15 +203,10 @@ class ProjectResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
                     ->label(__('resources.project.status'))
-                    ->colors([
-                        'secondary' => 'draft',
-                        'success' => 'active',
-                        'warning' => 'on_hold',
-                        'info' => 'completed',
-                        'danger' => 'cancelled',
-                    ])
+                    ->badge()
+                    ->color(fn (string $state): string => self::getStatusColor($state))
                     ->formatStateUsing(fn (string $state): string => Project::getStatusOptions()[$state] ?? $state),
 
                 Tables\Columns\TextColumn::make('budget')
@@ -231,13 +229,13 @@ class ProjectResource extends Resource
 
                 Tables\Columns\TextColumn::make('start_date')
                     ->label(__('resources.project.start'))
-                    ->date('d/m/Y')
+                    ->date(self::DATE_FORMAT)
                     ->sortable()
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('end_date')
                     ->label(__('resources.project.end'))
-                    ->date('d/m/Y')
+                    ->date(self::DATE_FORMAT)
                     ->sortable()
                     ->toggleable(),
 
@@ -261,7 +259,7 @@ class ProjectResource extends Resource
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('resources.project.created_at'))
-                    ->dateTime('d/m/Y')
+                    ->date(self::DATE_FORMAT)
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

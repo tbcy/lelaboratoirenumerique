@@ -28,9 +28,12 @@ use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use App\Filament\Traits\StandardTableConfig;
 
 class PostResource extends Resource
 {
+    use StandardTableConfig;
+
     protected static ?string $model = Post::class;
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-document-text';
@@ -103,22 +106,7 @@ class PostResource extends Resource
                             ->fileAttachmentsDisk('public')
                             ->fileAttachmentsDirectory('blog-attachments')
                             ->fileAttachmentsVisibility('public')
-                            ->toolbarButtons([
-                                'attachFiles',
-                                'blockquote',
-                                'bold',
-                                'bulletList',
-                                'codeBlock',
-                                'h2',
-                                'h3',
-                                'italic',
-                                'link',
-                                'orderedList',
-                                'redo',
-                                'strike',
-                                'underline',
-                                'undo',
-                            ])
+                            ->toolbarButtons(self::fullToolbar())
                             ->hidden(fn ($get) => $get('html_mode')),
 
                         Textarea::make('content_html')
@@ -275,11 +263,7 @@ class PostResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label(__('resources.post.status'))
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'draft' => 'gray',
-                        'published' => 'success',
-                        default => 'gray',
-                    })
+                    ->color(fn (string $state): string => self::getStatusColor($state))
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         'draft' => __('resources.post.statuses.draft'),
                         'published' => __('resources.post.statuses.published'),
@@ -288,7 +272,7 @@ class PostResource extends Resource
 
                 Tables\Columns\TextColumn::make('published_at')
                     ->label(__('resources.post.published_at_short'))
-                    ->dateTime('d/m/Y H:i')
+                    ->dateTime(self::DATETIME_FORMAT)
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('author.name')

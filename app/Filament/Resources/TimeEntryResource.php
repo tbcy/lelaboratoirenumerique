@@ -15,9 +15,13 @@ use Filament\Actions;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Traits\StandardTableConfig;
 
 class TimeEntryResource extends Resource
 {
+    use StandardTableConfig;
+
     protected static ?string $model = TimeEntry::class;
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-clock';
@@ -148,12 +152,12 @@ class TimeEntryResource extends Resource
 
                 Tables\Columns\TextColumn::make('started_at')
                     ->label(__('resources.time_entry.started_at'))
-                    ->dateTime('d/m/Y H:i')
+                    ->dateTime(self::DATETIME_FORMAT)
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('stopped_at')
                     ->label(__('resources.time_entry.stopped_at'))
-                    ->dateTime('d/m/Y H:i')
+                    ->dateTime(self::DATETIME_FORMAT)
                     ->sortable()
                     ->placeholder(__('resources.time_entry.placeholders.in_progress'))
                     ->color(fn ($state) => is_null($state) ? 'success' : 'gray'),
@@ -164,13 +168,12 @@ class TimeEntryResource extends Resource
                         $query->orderBy('duration_seconds', $direction)
                     ),
 
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
                     ->label(__('resources.time_entry.status'))
-                    ->getStateUsing(fn (TimeEntry $record) => $record->is_running ? __('resources.time_entry.statuses.running') : __('resources.time_entry.statuses.completed'))
-                    ->colors([
-                        'success' => fn ($state) => $state === __('resources.time_entry.statuses.running'),
-                        'gray' => fn ($state) => $state === __('resources.time_entry.statuses.completed'),
-                    ]),
+                    ->badge()
+                    ->getStateUsing(fn (TimeEntry $record) => $record->is_running ? 'running' : 'completed')
+                    ->formatStateUsing(fn (string $state): string => $state === 'running' ? __('resources.time_entry.statuses.running') : __('resources.time_entry.statuses.completed'))
+                    ->color(fn (string $state): string => $state === 'running' ? 'success' : 'gray'),
             ])
             ->filters([
                 // Filter by project

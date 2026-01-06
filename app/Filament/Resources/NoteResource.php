@@ -19,9 +19,12 @@ use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
+use App\Filament\Traits\StandardTableConfig;
 
 class NoteResource extends Resource
 {
+    use StandardTableConfig;
+
     protected static ?string $model = Note::class;
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-document-text';
@@ -65,11 +68,7 @@ class NoteResource extends Resource
 
                                 Forms\Components\RichEditor::make('short_summary')
                                     ->label(__('resources.note.short_summary'))
-                                    ->toolbarButtons([
-                                        'bold', 'italic', 'underline', 'strike',
-                                        'bulletList', 'orderedList',
-                                        'link',
-                                    ])
+                                    ->toolbarButtons(self::standardToolbar())
                                     ->columnSpanFull(),
                             ]),
 
@@ -80,11 +79,7 @@ class NoteResource extends Resource
                                     ->schema([
                                         Forms\Components\RichEditor::make('long_summary')
                                             ->label('')
-                                            ->toolbarButtons([
-                                                'bold', 'italic', 'underline', 'strike',
-                                                'bulletList', 'orderedList',
-                                                'link', 'h2', 'h3',
-                                            ])
+                                            ->toolbarButtons(self::fullToolbar())
                                             ->columnSpanFull(),
                                     ]),
 
@@ -93,11 +88,7 @@ class NoteResource extends Resource
                                     ->schema([
                                         Forms\Components\RichEditor::make('notes')
                                             ->label('')
-                                            ->toolbarButtons([
-                                                'attachFiles', 'blockquote', 'bold', 'bulletList',
-                                                'codeBlock', 'h2', 'h3', 'italic', 'link',
-                                                'orderedList', 'redo', 'strike', 'underline', 'undo',
-                                            ])
+                                            ->toolbarButtons(self::fullToolbar())
                                             ->columnSpanFull(),
                                     ]),
 
@@ -170,7 +161,7 @@ class NoteResource extends Resource
                                 Forms\Components\Placeholder::make('created_at')
                                     ->label(__('resources.note.created_at'))
                                     ->content(fn (?Note $record): string =>
-                                        $record?->created_at?->format('d/m/Y H:i') ?? '-'
+                                        $record?->created_at?->format(self::DATETIME_FORMAT) ?? '-'
                                     ),
 
                                 Forms\Components\Placeholder::make('children_count')
@@ -201,7 +192,7 @@ class NoteResource extends Resource
 
                 Tables\Columns\TextColumn::make('datetime')
                     ->label(__('resources.note.datetime'))
-                    ->dateTime('d/m/Y H:i')
+                    ->dateTime(self::DATETIME_FORMAT)
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('stakeholders.name')
@@ -225,7 +216,7 @@ class NoteResource extends Resource
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('resources.note.created_at'))
-                    ->dateTime('d/m/Y')
+                    ->date(self::DATE_FORMAT)
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

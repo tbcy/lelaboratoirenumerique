@@ -19,9 +19,12 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Traits\StandardTableConfig;
 
 class ClientResource extends Resource
 {
+    use StandardTableConfig;
+
     protected static ?string $model = Client::class;
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-users';
@@ -178,13 +181,10 @@ class ClientResource extends Resource
                 Tables\Columns\TextColumn::make('city')
                     ->label(__('resources.client.city'))
                     ->searchable(),
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
                     ->label(__('resources.client.status'))
-                    ->colors([
-                        'warning' => 'prospect',
-                        'success' => 'active',
-                        'danger' => 'inactive',
-                    ])
+                    ->badge()
+                    ->color(fn (string $state): string => self::getStatusColor($state))
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         'prospect' => __('enums.client_status.prospect'),
                         'active' => __('enums.client_status.active'),
@@ -201,7 +201,7 @@ class ClientResource extends Resource
                     ->badge(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('resources.client.created_at'))
-                    ->dateTime('d/m/Y')
+                    ->date(self::DATE_FORMAT)
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

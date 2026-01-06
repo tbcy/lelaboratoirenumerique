@@ -23,9 +23,12 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Notifications\Notification;
+use App\Filament\Traits\StandardTableConfig;
 
 class InvoiceResource extends Resource
 {
+    use StandardTableConfig;
+
     protected static ?string $model = Invoice::class;
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-banknotes';
@@ -165,7 +168,7 @@ class InvoiceResource extends Resource
                                         Forms\Components\RichEditor::make('description')
                                             ->label(__('resources.invoice.description'))
                                             ->required()
-                                            ->toolbarButtons(['bold', 'italic', 'bulletList', 'orderedList'])
+                                            ->toolbarButtons(self::standardToolbar())
                                             ->columnSpanFull(),
 
                                         // Ligne 2: Champs numériques
@@ -227,10 +230,10 @@ class InvoiceResource extends Resource
                             ->components([
                                 Forms\Components\RichEditor::make('introduction')
                                     ->label(__('resources.invoice.introduction'))
-                                    ->toolbarButtons(['bold', 'italic', 'bulletList', 'orderedList']),
+                                    ->toolbarButtons(self::standardToolbar()),
                                 Forms\Components\RichEditor::make('conclusion')
                                     ->label(__('resources.invoice.conclusion'))
-                                    ->toolbarButtons(['bold', 'italic', 'bulletList', 'orderedList']),
+                                    ->toolbarButtons(self::standardToolbar()),
                                 Forms\Components\Textarea::make('notes')
                                     ->label(__('resources.invoice.notes'))
                                     ->rows(3),
@@ -293,24 +296,18 @@ class InvoiceResource extends Resource
                     ->label(__('resources.invoice.subject'))
                     ->searchable()
                     ->limit(30),
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
                     ->label(__('resources.invoice.status'))
-                    ->colors([
-                        'secondary' => 'draft',
-                        'info' => 'sent',
-                        'success' => 'paid',
-                        'warning' => 'partial',
-                        'danger' => 'overdue',
-                        'gray' => 'cancelled',
-                    ])
+                    ->badge()
+                    ->color(fn (string $state): string => self::getStatusColor($state))
                     ->formatStateUsing(fn (string $state): string => Invoice::getStatusOptions()[$state] ?? $state),
                 Tables\Columns\TextColumn::make('issue_date')
                     ->label(__('resources.invoice.date'))
-                    ->date('d/m/Y')
+                    ->date(self::DATE_FORMAT)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('due_date')
                     ->label(__('resources.invoice.due'))
-                    ->date('d/m/Y')
+                    ->date(self::DATE_FORMAT)
                     ->sortable()
                     ->color(fn (Invoice $record): string => $record->is_overdue ? 'danger' : 'gray'),
                 Tables\Columns\TextColumn::make('total_ttc')
@@ -324,7 +321,7 @@ class InvoiceResource extends Resource
                     ->color(fn ($state): string => $state > 0 ? 'warning' : 'success'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('resources.invoice.created_at'))
-                    ->dateTime('d/m/Y')
+                    ->date(self::DATE_FORMAT)
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

@@ -18,9 +18,12 @@ use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use App\Filament\Traits\StandardTableConfig;
 
 class CategoryResource extends Resource
 {
+    use StandardTableConfig;
+
     protected static ?string $model = Category::class;
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-folder';
@@ -106,7 +109,7 @@ class CategoryResource extends Resource
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('resources.category.created_at'))
-                    ->dateTime('d/m/Y')
+                    ->date(self::DATE_FORMAT)
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

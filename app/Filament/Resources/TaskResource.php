@@ -22,9 +22,12 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Notifications\Notification;
+use App\Filament\Traits\StandardTableConfig;
 
 class TaskResource extends Resource
 {
+    use StandardTableConfig;
+
     protected static ?string $model = Task::class;
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-clipboard-document-check';
@@ -62,7 +65,7 @@ class TaskResource extends Resource
 
                                 Forms\Components\RichEditor::make('description')
                                     ->label(__('resources.task.description'))
-                                    ->toolbarButtons(['bold', 'italic', 'bulletList', 'orderedList', 'link'])
+                                    ->toolbarButtons(self::standardToolbar())
                                     ->columnSpanFull(),
 
                                 Grid::make(2)
@@ -255,23 +258,22 @@ class TaskResource extends Resource
                     ->limit(40)
                     ->weight('bold'),
 
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
                     ->label(__('resources.task.status'))
-                    ->colors([
-                        'secondary' => 'todo',
-                        'info' => 'in_progress',
-                        'warning' => 'review',
-                        'success' => 'done',
-                    ]),
+                    ->badge()
+                    ->color(fn (string $state): string => self::getStatusColor($state))
+                    ->formatStateUsing(fn (string $state): string => Task::getStatusOptions()[$state] ?? $state),
 
-                Tables\Columns\BadgeColumn::make('priority')
+                Tables\Columns\TextColumn::make('priority')
                     ->label(__('resources.task.priority'))
-                    ->colors([
-                        'gray' => 'low',
-                        'info' => 'medium',
-                        'warning' => 'high',
-                        'danger' => 'urgent',
-                    ])
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'low' => 'gray',
+                        'medium' => 'info',
+                        'high' => 'warning',
+                        'urgent' => 'danger',
+                        default => 'gray',
+                    })
                     ->formatStateUsing(fn (string $state): string => Task::getPriorityOptions()[$state] ?? $state),
 
                 Tables\Columns\TextColumn::make('project.name')
@@ -286,7 +288,7 @@ class TaskResource extends Resource
 
                 Tables\Columns\TextColumn::make('due_date')
                     ->label(__('resources.task.due'))
-                    ->date('d/m/Y')
+                    ->date(self::DATE_FORMAT)
                     ->sortable()
                     ->color(fn (Task $record): string => $record->is_overdue ? 'danger' : 'gray'),
 
@@ -311,7 +313,7 @@ class TaskResource extends Resource
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('resources.task.created_at'))
-                    ->dateTime('d/m/Y')
+                    ->date(self::DATE_FORMAT)
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

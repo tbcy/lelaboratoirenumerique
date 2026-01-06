@@ -23,9 +23,12 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Notifications\Notification;
+use App\Filament\Traits\StandardTableConfig;
 
 class QuoteResource extends Resource
 {
+    use StandardTableConfig;
+
     protected static ?string $model = Quote::class;
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-document-text';
@@ -176,7 +179,7 @@ class QuoteResource extends Resource
                                         Forms\Components\RichEditor::make('description')
                                             ->label(__('resources.quote.description'))
                                             ->required()
-                                            ->toolbarButtons(['bold', 'italic', 'bulletList', 'orderedList'])
+                                            ->toolbarButtons(self::standardToolbar())
                                             ->columnSpanFull(),
 
                                         // Ligne 2: Champs numériques
@@ -295,23 +298,18 @@ class QuoteResource extends Resource
                     ->label(__('resources.quote.subject'))
                     ->searchable()
                     ->limit(30),
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
                     ->label(__('resources.quote.status'))
-                    ->colors([
-                        'secondary' => 'draft',
-                        'info' => 'sent',
-                        'success' => 'accepted',
-                        'danger' => 'refused',
-                        'warning' => 'expired',
-                    ])
+                    ->badge()
+                    ->color(fn (string $state): string => self::getStatusColor($state))
                     ->formatStateUsing(fn (string $state): string => Quote::getStatusOptions()[$state] ?? $state),
                 Tables\Columns\TextColumn::make('issue_date')
                     ->label(__('resources.quote.date'))
-                    ->date('d/m/Y')
+                    ->date(self::DATE_FORMAT)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('validity_date')
                     ->label(__('resources.quote.validity'))
-                    ->date('d/m/Y')
+                    ->date(self::DATE_FORMAT)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_ttc')
                     ->label(__('resources.quote.total_ttc'))
@@ -319,7 +317,7 @@ class QuoteResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('resources.quote.created_at'))
-                    ->dateTime('d/m/Y')
+                    ->date(self::DATE_FORMAT)
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

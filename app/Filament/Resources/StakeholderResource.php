@@ -14,9 +14,12 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Traits\StandardTableConfig;
 
 class StakeholderResource extends Resource
 {
+    use StandardTableConfig;
+
     protected static ?string $model = Stakeholder::class;
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-user-group';
@@ -131,7 +134,7 @@ class StakeholderResource extends Resource
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('resources.stakeholder.created_at'))
-                    ->dateTime('d/m/Y')
+                    ->date(self::DATE_FORMAT)
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
