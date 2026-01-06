@@ -55,18 +55,4 @@ return [
         'token' => env('NOTE_API_TOKEN'),
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Notion API
-    |--------------------------------------------------------------------------
-    |
-    | Configuration for Notion API integration.
-    | Used to import pages from Notion into Notes.
-    |
-    */
-    'notion' => [
-        'token' => env('NOTION_TOKEN'),
-        'version' => '2022-06-28',
-    ],
-
 ];
