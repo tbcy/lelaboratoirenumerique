@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\StakeholderResource\Pages;
+use App\Filament\Resources\StakeholderResource\RelationManagers;
 use App\Models\Stakeholder;
 use Filament\Forms;
 use Filament\Schemas\Components\Grid;
@@ -178,7 +179,9 @@ class StakeholderResource extends Resource
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            RelationManagers\NotesRelationManager::class,
+        ];
     }
 
     public static function getPages(): array
