@@ -14,6 +14,9 @@ return [
         'inactive' => 'Inactif',
         'save' => 'Enregistrer',
         'cancel' => 'Annuler',
+        'view' => 'Voir',
+        'edit' => 'Modifier',
+        'delete' => 'Supprimer',
         // PDF translations
         'client' => 'Client',
         'document_details' => 'Détails du document',
