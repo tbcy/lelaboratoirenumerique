@@ -45,10 +45,10 @@ class NotesRelationManager extends RelationManager
                     ->color('primary')
                     ->limit(3),
 
-                Tables\Columns\TextColumn::make('children_count')
-                    ->label(__('resources.note.children_count'))
-                    ->counts('children')
-                    ->sortable()
+                Tables\Columns\TextColumn::make('short_summary')
+                    ->label(__('resources.note.short_summary'))
+                    ->html()
+                    ->limit(40)
                     ->toggleable(),
             ])
             ->filters([

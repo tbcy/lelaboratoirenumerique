@@ -208,10 +208,10 @@ class NoteResource extends Resource
                     ->limit(3)
                     ->toggleable(),
 
-                Tables\Columns\TextColumn::make('children_count')
-                    ->label(__('resources.note.children_count'))
-                    ->counts('children')
-                    ->sortable()
+                Tables\Columns\TextColumn::make('short_summary')
+                    ->label(__('resources.note.short_summary'))
+                    ->html()
+                    ->limit(50)
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('created_at')
