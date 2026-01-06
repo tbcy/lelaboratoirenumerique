@@ -24,7 +24,7 @@ class TasksKanbanBoard extends KanbanBoard
     protected static string $recordView = 'tasks.kanban-record';
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-view-columns';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     public static function getNavigationLabel(): string
     {
@@ -33,7 +33,7 @@ class TasksKanbanBoard extends KanbanBoard
 
     public static function getNavigationGroup(): ?string
     {
-        return __('resources.kanban.navigation_group');
+        return __('navigation.groups.projects');
     }
 
     protected function getEditModalTitle(): string

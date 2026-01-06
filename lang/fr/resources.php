@@ -545,7 +545,6 @@ return [
 
     'kanban' => [
         'navigation_label' => 'Kanban',
-        'navigation_group' => 'Gestion',
         'edit_modal_title' => 'Modifier la tâche',
         'edit_modal_save' => 'Enregistrer',
         'edit_modal_cancel' => 'Annuler',
