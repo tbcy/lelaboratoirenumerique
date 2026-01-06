@@ -42,4 +42,17 @@ return [
         'scheme' => 'https',
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Note API
+    |--------------------------------------------------------------------------
+    |
+    | API token for external applications to create notes.
+    | This is separate from the MCP API token.
+    |
+    */
+    'note_api' => [
+        'token' => env('NOTE_API_TOKEN'),
+    ],
+
 ];

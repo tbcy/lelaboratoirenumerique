@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\NoteApiController;
 use App\Http\Controllers\Api\V1\CatalogCategoryController;
 use App\Http\Controllers\Api\V1\CatalogItemController;
 use App\Http\Controllers\Api\V1\ClientController;
@@ -103,4 +104,19 @@ Route::prefix('v1')->middleware(['mcp.auth', 'mcp.logging'])->group(function () 
     Route::post('/catalog-items', [CatalogItemController::class, 'store']);
     Route::put('/catalog-items/{id}', [CatalogItemController::class, 'update']);
     Route::delete('/catalog-items/{id}', [CatalogItemController::class, 'destroy']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Note API (External Integration)
+|--------------------------------------------------------------------------
+|
+| Simple API for external applications to create notes.
+| Uses a separate API token (NOTE_API_TOKEN).
+|
+*/
+Route::prefix('notes')->middleware('note.api.auth')->group(function () {
+    Route::post('/', [NoteApiController::class, 'store']);
+    Route::get('/stakeholders', [NoteApiController::class, 'listStakeholders']);
+    Route::get('/scopes', [NoteApiController::class, 'listScopes']);
 });

@@ -27,6 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'mcp.auth' => \App\Http\Middleware\McpAuthentication::class,
             'mcp.logging' => \App\Http\Middleware\McpLogging::class,
+            'note.api.auth' => \App\Http\Middleware\NoteApiAuthentication::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
