@@ -32,9 +32,15 @@ class CategoryResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $modelLabel = 'Catégorie';
+    public static function getModelLabel(): string
+    {
+        return __('resources.category.singular');
+    }
 
-    protected static ?string $pluralModelLabel = 'Catégories';
+    public static function getPluralModelLabel(): string
+    {
+        return __('resources.category.plural');
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -43,26 +49,28 @@ class CategoryResource extends Resource
                 Section::make()
                     ->schema([
                         TextInput::make('name')
-                            ->label('Nom')
+                            ->label(__('resources.category.name'))
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
                             ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
 
                         TextInput::make('slug')
+                            ->label(__('resources.category.slug'))
                             ->required()
                             ->maxLength(255)
                             ->unique(ignoreRecord: true),
 
                         Textarea::make('description')
+                            ->label(__('resources.category.description'))
                             ->rows(3)
                             ->maxLength(500),
 
                         ColorPicker::make('color')
-                            ->label('Couleur'),
+                            ->label(__('resources.category.color')),
 
                         TextInput::make('sort_order')
-                            ->label('Ordre')
+                            ->label(__('resources.category.sort_order'))
                             ->numeric()
                             ->default(0),
                     ])
@@ -78,25 +86,26 @@ class CategoryResource extends Resource
                     ->label(''),
 
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Nom')
+                    ->label(__('resources.category.name'))
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('slug')
+                    ->label(__('resources.category.slug'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('posts_count')
-                    ->label('Articles')
+                    ->label(__('resources.category.posts_count'))
                     ->counts('posts')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('sort_order')
-                    ->label('Ordre')
+                    ->label(__('resources.category.sort_order'))
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Créé le')
+                    ->label(__('resources.category.created_at'))
                     ->dateTime('d/m/Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

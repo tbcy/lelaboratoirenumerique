@@ -17,11 +17,11 @@ class LinkedInConnector
     public function __construct(SocialConnection $connection)
     {
         if ($connection->platform !== 'linkedin') {
-            throw new Exception(__('Cette connexion n\'est pas une connexion LinkedIn'));
+            throw new Exception(__('resources.social_connection.errors.linkedin_wrong_platform'));
         }
 
         if (!$connection->is_active) {
-            throw new Exception(__('Cette connexion LinkedIn est désactivée'));
+            throw new Exception(__('resources.social_connection.errors.linkedin_disabled'));
         }
 
         $this->connection = $connection;
@@ -78,7 +78,7 @@ class LinkedInConnector
             $credentials = $this->connection->credentials;
 
             if (empty($credentials['refresh_token'])) {
-                logger()->warning('LinkedIn: Pas de refresh token disponible', [
+                logger()->warning('LinkedIn: No refresh token available', [
                     'connection_id' => $this->connection->id,
                 ]);
                 return false;
@@ -98,7 +98,7 @@ class LinkedInConnector
             $data = json_decode($response->getBody(), true);
 
             if (!isset($data['access_token'])) {
-                logger()->error('LinkedIn: Échec du renouvellement du token', [
+                logger()->error('LinkedIn: Token refresh failed', [
                     'connection_id' => $this->connection->id,
                     'response' => $data,
                 ]);
@@ -119,14 +119,14 @@ class LinkedInConnector
                 'credentials' => $newCredentials,
             ]);
 
-            logger()->info('LinkedIn: Token renouvelé avec succès', [
+            logger()->info('LinkedIn: Token refreshed successfully', [
                 'connection_id' => $this->connection->id,
                 'expires_at' => date('Y-m-d H:i:s', $newCredentials['expires_at']),
             ]);
 
             return true;
         } catch (Exception $e) {
-            logger()->error('LinkedIn: Erreur lors du renouvellement du token', [
+            logger()->error('LinkedIn: Token refresh error', [
                 'connection_id' => $this->connection->id,
                 'error' => $e->getMessage(),
             ]);
@@ -142,7 +142,7 @@ class LinkedInConnector
         try {
             // Verify we have an access token
             if (empty($this->connection->credentials['access_token'])) {
-                throw new Exception(__('Aucun access token configuré pour cette connexion LinkedIn'));
+                throw new Exception(__('resources.social_connection.errors.linkedin_no_access_token'));
             }
 
             // Get person URN (profile identifier)
@@ -150,7 +150,7 @@ class LinkedInConnector
             $profile = $this->client->get('userinfo');
 
             if (!isset($profile['sub'])) {
-                throw new Exception(__('Impossible de récupérer le profil LinkedIn'));
+                throw new Exception(__('resources.social_connection.errors.linkedin_profile_error'));
             }
 
             $authorUrn = 'urn:li:person:' . $profile['sub'];
@@ -264,7 +264,7 @@ class LinkedInConnector
                 }
             } catch (Exception $e) {
                 // Log error but continue with other images
-                logger()->error('Erreur upload image LinkedIn', [
+                logger()->error('LinkedIn: Image upload error', [
                     'image' => $imagePath,
                     'error' => $e->getMessage(),
                 ]);

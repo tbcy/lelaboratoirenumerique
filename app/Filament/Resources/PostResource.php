@@ -42,9 +42,15 @@ class PostResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $modelLabel = 'Article';
+    public static function getModelLabel(): string
+    {
+        return __('resources.post.singular');
+    }
 
-    protected static ?string $pluralModelLabel = 'Articles';
+    public static function getPluralModelLabel(): string
+    {
+        return __('resources.post.plural');
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -52,11 +58,11 @@ class PostResource extends Resource
             ->columns(3)
             ->components([
                 // Colonne principale (2/3)
-                Section::make('Contenu')
+                Section::make(__('resources.post.sections.content'))
                     ->columnSpan(['lg' => 2])
                     ->schema([
                         TextInput::make('title')
-                            ->label('Titre')
+                            ->label(__('resources.post.title'))
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
@@ -67,19 +73,20 @@ class PostResource extends Resource
                             }),
 
                         TextInput::make('slug')
+                            ->label(__('resources.post.slug'))
                             ->required()
                             ->maxLength(255)
                             ->unique(ignoreRecord: true),
 
                         Textarea::make('excerpt')
-                            ->label('Extrait')
+                            ->label(__('resources.post.excerpt'))
                             ->rows(3)
                             ->maxLength(500)
-                            ->helperText('Résumé affiché dans les listes d\'articles'),
+                            ->helperText(__('resources.post.helpers.excerpt')),
 
                         Toggle::make('html_mode')
-                            ->label('Mode HTML')
-                            ->helperText('Éditer le code source HTML')
+                            ->label(__('resources.post.html_mode'))
+                            ->helperText(__('resources.post.helpers.html_mode'))
                             ->live()
                             ->dehydrated(false)
                             ->afterStateUpdated(function (Set $set, $get, $state) {
@@ -90,7 +97,7 @@ class PostResource extends Resource
                             ->columnSpanFull(),
 
                         RichEditor::make('content')
-                            ->label('Contenu')
+                            ->label(__('resources.post.content'))
                             ->required()
                             ->columnSpanFull()
                             ->fileAttachmentsDisk('public')
@@ -115,11 +122,11 @@ class PostResource extends Resource
                             ->hidden(fn ($get) => $get('html_mode')),
 
                         Textarea::make('content_html')
-                            ->label('Contenu (HTML)')
+                            ->label(__('resources.post.content_html'))
                             ->required()
                             ->rows(20)
                             ->columnSpanFull()
-                            ->helperText('Édition directe du code HTML')
+                            ->helperText(__('resources.post.helpers.content_html'))
                             ->dehydrated(false)
                             ->formatStateUsing(fn ($get) => $get('content'))
                             ->afterStateUpdated(fn (Set $set, $state) => $set('content', $state))
@@ -131,66 +138,69 @@ class PostResource extends Resource
                 Grid::make(1)
                     ->columnSpan(['lg' => 1])
                     ->schema([
-                        Section::make('Statut')
+                        Section::make(__('resources.post.sections.status'))
                             ->schema([
                                 Select::make('status')
-                                    ->label('Statut')
+                                    ->label(__('resources.post.status'))
                                     ->options([
-                                        'draft' => 'Brouillon',
-                                        'published' => 'Publié',
+                                        'draft' => __('resources.post.statuses.draft'),
+                                        'published' => __('resources.post.statuses.published'),
                                     ])
                                     ->default('draft')
                                     ->required(),
 
                                 DateTimePicker::make('published_at')
-                                    ->label('Date de publication')
+                                    ->label(__('resources.post.published_at'))
                                     ->default(now()),
 
                                 Toggle::make('is_featured')
-                                    ->label('Article en vedette')
-                                    ->helperText('Affiché en premier sur la page blog'),
+                                    ->label(__('resources.post.is_featured'))
+                                    ->helperText(__('resources.post.is_featured_helper')),
                             ]),
 
-                        Section::make('Organisation')
+                        Section::make(__('resources.post.sections.organization'))
                             ->schema([
                                 Select::make('category_id')
-                                    ->label('Catégorie')
+                                    ->label(__('resources.post.category'))
                                     ->relationship('category', 'name')
                                     ->searchable()
                                     ->preload()
                                     ->createOptionForm([
                                         TextInput::make('name')
-                                            ->label('Nom')
+                                            ->label(__('resources.post.name'))
                                             ->required()
                                             ->maxLength(255)
                                             ->live(onBlur: true)
                                             ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
                                         TextInput::make('slug')
+                                            ->label(__('resources.post.slug'))
                                             ->required()
                                             ->maxLength(255),
                                         ColorPicker::make('color')
-                                            ->label('Couleur'),
+                                            ->label(__('resources.post.color')),
                                     ]),
 
                                 Select::make('tags')
+                                    ->label(__('resources.post.tags'))
                                     ->relationship('tags', 'name')
                                     ->multiple()
                                     ->searchable()
                                     ->preload()
                                     ->createOptionForm([
                                         TextInput::make('name')
-                                            ->label('Nom')
+                                            ->label(__('resources.post.name'))
                                             ->required()
                                             ->maxLength(255)
                                             ->live(onBlur: true)
                                             ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
                                         TextInput::make('slug')
+                                            ->label(__('resources.post.slug'))
                                             ->required()
                                             ->maxLength(255),
                                     ]),
 
                                 Select::make('author_id')
-                                    ->label('Auteur')
+                                    ->label(__('resources.post.author'))
                                     ->relationship('author', 'name')
                                     ->default(fn () => auth()->id())
                                     ->required()
@@ -198,10 +208,10 @@ class PostResource extends Resource
                                     ->preload(),
                             ]),
 
-                        Section::make('Image')
+                        Section::make(__('resources.post.sections.image'))
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('featured_image')
-                                    ->label('Image à la une')
+                                    ->label(__('resources.post.featured_image'))
                                     ->collection('featured_image')
                                     ->disk('public')
                                     ->visibility('public')
@@ -217,20 +227,20 @@ class PostResource extends Resource
                     ]),
 
                 // SEO en bas, pleine largeur
-                Section::make('SEO')
+                Section::make(__('resources.post.sections.seo'))
                     ->columnSpanFull()
                     ->collapsed()
                     ->schema([
                         TextInput::make('meta_title')
-                            ->label('Titre SEO')
+                            ->label(__('resources.post.meta_title'))
                             ->maxLength(70)
-                            ->helperText('Laissez vide pour utiliser le titre de l\'article'),
+                            ->helperText(__('resources.post.helpers.meta_title')),
 
                         Textarea::make('meta_description')
-                            ->label('Description SEO')
+                            ->label(__('resources.post.meta_description'))
                             ->rows(2)
                             ->maxLength(320)
-                            ->helperText('Laissez vide pour utiliser l\'extrait'),
+                            ->helperText(__('resources.post.helpers.meta_description')),
                     ]),
             ]);
     }
@@ -246,24 +256,24 @@ class PostResource extends Resource
                     ->circular(),
 
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Titre')
+                    ->label(__('resources.post.title'))
                     ->searchable()
                     ->sortable()
                     ->limit(50),
 
                 Tables\Columns\TextColumn::make('category.name')
-                    ->label('Catégorie')
+                    ->label(__('resources.post.category'))
                     ->badge()
                     ->color(fn ($record) => $record->category?->color ? 'gray' : 'primary')
                     ->sortable(),
 
                 Tables\Columns\IconColumn::make('is_featured')
-                    ->label('Vedette')
+                    ->label(__('resources.post.is_featured_short'))
                     ->boolean()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('status')
-                    ->label('Statut')
+                    ->label(__('resources.post.status'))
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'draft' => 'gray',
@@ -271,41 +281,41 @@ class PostResource extends Resource
                         default => 'gray',
                     })
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'draft' => 'Brouillon',
-                        'published' => 'Publié',
+                        'draft' => __('resources.post.statuses.draft'),
+                        'published' => __('resources.post.statuses.published'),
                         default => $state,
                     }),
 
                 Tables\Columns\TextColumn::make('published_at')
-                    ->label('Publié le')
+                    ->label(__('resources.post.published_at_short'))
                     ->dateTime('d/m/Y H:i')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('author.name')
-                    ->label('Auteur')
+                    ->label(__('resources.post.author'))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('reading_time')
-                    ->label('Lecture')
+                    ->label(__('resources.post.reading_time'))
                     ->suffix(' min')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->label('Statut')
+                    ->label(__('resources.post.status'))
                     ->options([
-                        'draft' => 'Brouillon',
-                        'published' => 'Publié',
+                        'draft' => __('resources.post.statuses.draft'),
+                        'published' => __('resources.post.statuses.published'),
                     ]),
 
                 Tables\Filters\SelectFilter::make('category')
-                    ->label('Catégorie')
+                    ->label(__('resources.post.category'))
                     ->relationship('category', 'name'),
 
                 Tables\Filters\TernaryFilter::make('is_featured')
-                    ->label('En vedette'),
+                    ->label(__('resources.post.filters.featured')),
 
                 Tables\Filters\TrashedFilter::make(),
             ])

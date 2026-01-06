@@ -29,22 +29,29 @@ class TagResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    protected static ?string $modelLabel = 'Tag';
+    public static function getModelLabel(): string
+    {
+        return __('resources.tag.singular');
+    }
 
-    protected static ?string $pluralModelLabel = 'Tags';
+    public static function getPluralModelLabel(): string
+    {
+        return __('resources.tag.plural');
+    }
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->label('Nom')
+                    ->label(__('resources.tag.name'))
                     ->required()
                     ->maxLength(255)
                     ->live(onBlur: true)
                     ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
 
                 TextInput::make('slug')
+                    ->label(__('resources.tag.slug'))
                     ->required()
                     ->maxLength(255)
                     ->unique(ignoreRecord: true),
@@ -56,20 +63,21 @@ class TagResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Nom')
+                    ->label(__('resources.tag.name'))
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('slug')
+                    ->label(__('resources.tag.slug'))
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('posts_count')
-                    ->label('Articles')
+                    ->label(__('resources.tag.posts_count'))
                     ->counts('posts')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Créé le')
+                    ->label(__('resources.tag.created_at'))
                     ->dateTime('d/m/Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

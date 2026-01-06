@@ -17,11 +17,11 @@ class TwitterConnector
     public function __construct(SocialConnection $connection)
     {
         if ($connection->platform !== 'twitter') {
-            throw new Exception(__('This connection is not an X/Twitter connection'));
+            throw new Exception(__('resources.social_connection.errors.twitter_wrong_platform'));
         }
 
         if (! $connection->is_active) {
-            throw new Exception(__('This X/Twitter connection is disabled'));
+            throw new Exception(__('resources.social_connection.errors.twitter_disabled'));
         }
 
         $this->connection = $connection;
