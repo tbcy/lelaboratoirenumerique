@@ -43,12 +43,13 @@ class NotesRelationManager extends RelationManager
                     ->label(__('resources.note.scopes'))
                     ->badge()
                     ->color('primary')
-                    ->limit(3),
+                    ->wrap(),
 
                 Tables\Columns\TextColumn::make('short_summary')
                     ->label(__('resources.note.short_summary'))
                     ->html()
-                    ->limit(40)
+                    ->wrap()
+                    ->words(20)
                     ->toggleable(),
             ])
             ->filters([

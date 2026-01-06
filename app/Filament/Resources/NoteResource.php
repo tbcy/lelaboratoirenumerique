@@ -198,20 +198,21 @@ class NoteResource extends Resource
                 Tables\Columns\TextColumn::make('stakeholders.name')
                     ->label(__('resources.note.participants'))
                     ->badge()
-                    ->limit(3)
+                    ->wrap()
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('scopes.name')
                     ->label(__('resources.note.scopes'))
                     ->badge()
                     ->color('primary')
-                    ->limit(3)
+                    ->wrap()
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('short_summary')
                     ->label(__('resources.note.short_summary'))
                     ->html()
-                    ->limit(50)
+                    ->wrap()
+                    ->words(20)
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('created_at')
