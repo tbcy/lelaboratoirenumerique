@@ -30,11 +30,11 @@ class SocialPostResource extends Resource
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-megaphone';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 4;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('navigation.groups.social_media');
+        return __('navigation.groups.communication');
     }
 
     public static function getModelLabel(): string

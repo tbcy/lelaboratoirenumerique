@@ -30,7 +30,7 @@ class ClientResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('navigation.groups.crm');
+        return __('navigation.groups.clients');
     }
 
     public static function getModelLabel(): string

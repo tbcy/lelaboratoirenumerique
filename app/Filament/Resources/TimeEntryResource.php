@@ -26,7 +26,7 @@ class TimeEntryResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('navigation.groups.management');
+        return __('navigation.groups.projects');
     }
 
     public static function getModelLabel(): string

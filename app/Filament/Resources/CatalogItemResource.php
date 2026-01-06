@@ -23,11 +23,11 @@ class CatalogItemResource extends Resource
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-cube';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 4;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('navigation.groups.catalog');
+        return __('navigation.groups.billing');
     }
 
     public static function getModelLabel(): string

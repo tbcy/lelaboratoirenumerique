@@ -23,7 +23,7 @@ class MediaResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('navigation.groups.system');
+        return __('navigation.groups.media');
     }
 
     public static function getModelLabel(): string

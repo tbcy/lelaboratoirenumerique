@@ -24,11 +24,11 @@ class SocialConnectionResource extends Resource
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-link';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 5;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('navigation.groups.social_media');
+        return __('navigation.groups.communication');
     }
 
     public static function getModelLabel(): string

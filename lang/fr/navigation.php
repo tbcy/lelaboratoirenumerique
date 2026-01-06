@@ -2,11 +2,10 @@
 
 return [
     'groups' => [
-        'management' => 'Gestion',
+        'clients' => 'Clients',
+        'projects' => 'Projets',
         'billing' => 'Facturation',
-        'catalog' => 'Catalogue',
-        'social_media' => 'Réseaux Sociaux',
-        'crm' => 'CRM',
-        'system' => 'Système',
+        'communication' => 'Communication',
+        'media' => 'Médias',
     ],
 ];

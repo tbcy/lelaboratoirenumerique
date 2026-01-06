@@ -20,11 +20,11 @@ class CatalogCategoryResource extends Resource
     protected static ?string $model = CatalogCategory::class;
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-folder';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 3;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('navigation.groups.catalog');
+        return __('navigation.groups.billing');
     }
 
     public static function getNavigationLabel(): string
