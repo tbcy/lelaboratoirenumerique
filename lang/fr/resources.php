@@ -449,6 +449,8 @@ return [
             'legal_notice_placeholder' => 'Ex: En cas de retard de paiement, une pénalité de...',
             'openai_api_key' => 'Clé API OpenAI',
             'openai_api_key_help' => 'Obtenez votre clé API sur platform.openai.com',
+            'openai_chat_model' => 'Modèle de chat OpenAI',
+            'openai_chat_model_help' => 'Modèle utilisé pour la génération de résumés et autres tâches de chat.',
             'image_generation_prompt' => 'Prompt système pour la génération d\'images',
             'image_generation_prompt_help' => 'Ce prompt sera ajouté au début de chaque demande de génération d\'image. Laissez vide pour utiliser le prompt par défaut.',
             'default_prompt_label' => 'Prompt par défaut',
@@ -690,6 +692,16 @@ return [
         'actions' => [
             'create_subpage' => 'Créer une sous-page',
             'duplicate' => 'Dupliquer',
+            'generate_summary' => 'Générer les résumés',
+            'generate' => 'Générer',
+        ],
+        'modals' => [
+            'generate_summary_heading' => 'Générer les résumés avec l\'IA',
+            'generate_summary_description' => 'L\'IA va analyser les notes et la transcription pour générer un résumé court (3 lignes) et un compte-rendu de réunion structuré.',
+        ],
+        'notifications' => [
+            'summary_generated' => 'Résumés générés avec succès',
+            'openai_not_configured' => 'Clé API OpenAI non configurée',
         ],
     ],
 ];

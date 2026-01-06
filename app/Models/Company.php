@@ -28,6 +28,7 @@ class Company extends Model
         'bank_name',
         'legal_mentions',
         'openai_api_key',
+        'openai_chat_model',
         'image_generation_prompt',
         'quote_prefix',
         'quote_counter',

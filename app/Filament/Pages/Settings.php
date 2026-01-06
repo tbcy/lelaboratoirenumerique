@@ -238,6 +238,19 @@ class Settings extends Page implements HasForms
                                             ->revealable()
                                             ->helperText(__('resources.settings.fields.openai_api_key_help')),
 
+                                        Forms\Components\Select::make('openai_chat_model')
+                                            ->label(__('resources.settings.fields.openai_chat_model'))
+                                            ->options([
+                                                'gpt-4o' => 'GPT-4o (Recommandé)',
+                                                'gpt-4o-mini' => 'GPT-4o Mini (Économique)',
+                                                'gpt-4-turbo' => 'GPT-4 Turbo',
+                                                'gpt-4' => 'GPT-4',
+                                                'o1' => 'o1 (Raisonnement)',
+                                                'o1-mini' => 'o1 Mini',
+                                            ])
+                                            ->default('gpt-4o')
+                                            ->helperText(__('resources.settings.fields.openai_chat_model_help')),
+
                                         Forms\Components\Textarea::make('image_generation_prompt')
                                             ->label(__('resources.settings.fields.image_generation_prompt'))
                                             ->rows(12)
