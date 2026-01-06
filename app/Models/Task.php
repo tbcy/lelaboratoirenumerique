@@ -6,6 +6,7 @@ use App\Enums\TaskStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
@@ -73,6 +74,11 @@ class Task extends Model implements Sortable
     public function activityLogs()
     {
         return $this->morphMany(ActivityLog::class, 'loggable');
+    }
+
+    public function stakeholders(): BelongsToMany
+    {
+        return $this->belongsToMany(Stakeholder::class)->withTimestamps();
     }
 
     public static function getStatusOptions(): array

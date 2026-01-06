@@ -145,6 +145,13 @@ class TasksKanbanBoard extends KanbanBoard
                 ->helperText(fn (Get $get): ?string =>
                     !$get('client_id') ? __('resources.kanban.helpers.select_client_first') : null
                 ),
+
+            Forms\Components\Select::make('stakeholders')
+                ->label(__('resources.task.stakeholders'))
+                ->relationship('stakeholders', 'name')
+                ->multiple()
+                ->searchable()
+                ->preload(),
         ];
     }
 

@@ -220,6 +220,23 @@ class TaskResource extends Resource
                                     )
                                     ->searchable()
                                     ->preload(),
+
+                                Forms\Components\Select::make('stakeholders')
+                                    ->label(__('resources.task.stakeholders'))
+                                    ->relationship('stakeholders', 'name')
+                                    ->multiple()
+                                    ->searchable()
+                                    ->preload()
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('name')
+                                            ->label(__('resources.stakeholder.name'))
+                                            ->required(),
+                                        Forms\Components\TextInput::make('email')
+                                            ->label(__('resources.stakeholder.email'))
+                                            ->email(),
+                                        Forms\Components\TextInput::make('company')
+                                            ->label(__('resources.stakeholder.company')),
+                                    ]),
                             ]),
                     ])
                     ->columnSpan(['lg' => 1]),

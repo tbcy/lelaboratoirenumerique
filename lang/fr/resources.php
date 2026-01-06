@@ -83,6 +83,7 @@ return [
         'hourly_rate' => 'Taux horaire',
         'parent_task' => 'Tâche parente',
         'client' => 'Client',
+        'stakeholders' => 'Parties prenantes',
         'created_at' => 'Créée le',
         'sections' => [
             'information' => 'Informations de la tâche',
@@ -626,6 +627,69 @@ return [
         ],
         'modals' => [
             'prompt_heading' => 'Prompt utilisé pour la génération',
+        ],
+    ],
+
+    'stakeholder' => [
+        'singular' => 'Partie prenante',
+        'plural' => 'Parties prenantes',
+        'name' => 'Nom',
+        'email' => 'Email',
+        'phone' => 'Téléphone',
+        'company' => 'Société / Organisation',
+        'role' => 'Rôle',
+        'notes' => 'Notes',
+        'is_active' => 'Actif',
+        'created_at' => 'Créé le',
+        'notes_count' => 'Notes',
+        'tasks_count' => 'Tâches',
+        'sections' => [
+            'main_information' => 'Informations principales',
+            'contact' => 'Contact',
+            'internal_notes' => 'Notes internes',
+        ],
+        'filters' => [
+            'active' => 'Actifs uniquement',
+            'company' => 'Société',
+        ],
+    ],
+
+    'note_scope' => [
+        'singular' => 'Scope',
+        'plural' => 'Scopes',
+        'name' => 'Nom',
+        'slug' => 'Slug',
+        'color' => 'Couleur',
+        'notes_count' => 'Notes',
+    ],
+
+    'note' => [
+        'singular' => 'Note',
+        'plural' => 'Notes',
+        'name' => 'Nom de la page',
+        'datetime' => 'Date et heure',
+        'short_summary' => 'Résumé court',
+        'long_summary' => 'Résumé long',
+        'notes' => 'Notes',
+        'transcription' => 'Transcription',
+        'parent' => 'Page parente',
+        'participants' => 'Participants',
+        'scopes' => 'Scopes',
+        'children_count' => 'Sous-pages',
+        'created_at' => 'Créée le',
+        'sections' => [
+            'content' => 'Contenu',
+            'organization' => 'Organisation',
+            'summaries' => 'Résumés',
+        ],
+        'filters' => [
+            'has_parent' => 'Sous-pages uniquement',
+            'root_only' => 'Pages racines',
+            'scope' => 'Scope',
+        ],
+        'actions' => [
+            'create_subpage' => 'Créer une sous-page',
+            'duplicate' => 'Dupliquer',
         ],
     ],
 ];
