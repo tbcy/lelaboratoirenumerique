@@ -59,7 +59,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->renderHook(
                 PanelsRenderHook::BODY_END,
-                fn (): string => Blade::render('@livewire(\'active-timer-widget\')'),
+                fn (): string => Blade::render('@livewire(\App\Filament\Widgets\ActiveTimerWidget::class)'),
             );
     }
 }
