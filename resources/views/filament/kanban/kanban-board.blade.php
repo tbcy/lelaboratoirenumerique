@@ -24,22 +24,22 @@
             :slide-over="$this->getEditModalSlideOver()"
             :width="$this->getEditModalWidth()"
         >
-            <form wire:submit="editModalFormSubmitted">
+            <form wire:submit="editModalFormSubmitted" id="kanban-edit-form">
                 {{ $this->form }}
-
-                <div class="mt-6 flex justify-end gap-x-3">
-                    <x-filament::button
-                        color="gray"
-                        x-on:click="$dispatch('close-modal', { id: 'kanban--edit-record-modal' })"
-                    >
-                        {{ $this->getEditModalCancelButtonLabel() }}
-                    </x-filament::button>
-
-                    <x-filament::button type="submit">
-                        {{ $this->getEditModalSaveButtonLabel() }}
-                    </x-filament::button>
-                </div>
             </form>
+
+            <x-slot:footer>
+                <x-filament::button
+                    color="gray"
+                    x-on:click="$dispatch('close-modal', { id: 'kanban--edit-record-modal' })"
+                >
+                    {{ $this->getEditModalCancelButtonLabel() }}
+                </x-filament::button>
+
+                <x-filament::button type="submit" form="kanban-edit-form">
+                    {{ $this->getEditModalSaveButtonLabel() }}
+                </x-filament::button>
+            </x-slot:footer>
         </x-filament::modal>
     @endunless
 </x-filament-panels::page>
