@@ -271,7 +271,7 @@ class ToolsHandler
             'content' => [
                 [
                     'type' => 'text',
-                    'text' => json_encode($result, JSON_PRETTY_PRINT),
+                    'text' => json_encode($result, JSON_PRETTY_PRINT | JSON_INVALID_UTF8_SUBSTITUTE),
                 ],
             ],
         ];

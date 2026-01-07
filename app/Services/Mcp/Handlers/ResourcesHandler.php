@@ -48,7 +48,7 @@ class ResourcesHandler
                         [
                             'uri' => $uri,
                             'mimeType' => 'application/json',
-                            'text' => json_encode($id ? $handler[0]->{$handler[1]}($id) : $handler[0]->{$handler[1]}()),
+                            'text' => json_encode($id ? $handler[0]->{$handler[1]}($id) : $handler[0]->{$handler[1]}(), JSON_INVALID_UTF8_SUBSTITUTE),
                         ],
                     ],
                 ];
