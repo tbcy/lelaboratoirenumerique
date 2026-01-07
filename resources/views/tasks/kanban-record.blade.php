@@ -1,23 +1,24 @@
 <div
     class="p-3 bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 cursor-pointer hover:shadow-md transition-shadow kanban-record"
+    style="padding: 0.75rem; background-color: white; border-radius: 0.5rem; box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); border: 1px solid rgb(229 231 235); cursor: pointer;"
     data-id="{{ $record->getKey() }}"
     wire:click="recordClicked('{{ $record->getKey() }}', {{ json_encode($record->only(['id', 'title', 'description', 'status', 'priority', 'due_date', 'estimated_minutes', 'client_id', 'project_id'])) }})"
 >
     {{-- Header with priority badge --}}
-    <div class="flex items-start justify-between gap-2 mb-2">
-        <p class="text-sm font-medium text-gray-900 dark:text-white line-clamp-2">
+    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.5rem;">
+        <p style="font-size: 0.875rem; font-weight: 500; color: rgb(17 24 39);">
             {{ $record->title }}
         </p>
         @if ($record->priority)
             @php
-                $priorityColors = [
-                    'low' => 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300',
-                    'medium' => 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
-                    'high' => 'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300',
-                    'urgent' => 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
+                $priorityStyles = [
+                    'low' => 'background-color: rgb(243 244 246); color: rgb(75 85 99);',
+                    'medium' => 'background-color: rgb(219 234 254); color: rgb(29 78 216);',
+                    'high' => 'background-color: rgb(255 237 213); color: rgb(194 65 12);',
+                    'urgent' => 'background-color: rgb(254 226 226); color: rgb(185 28 28);',
                 ];
             @endphp
-            <span class="inline-flex items-center px-1.5 py-0.5 text-xs font-medium rounded {{ $priorityColors[$record->priority] ?? $priorityColors['medium'] }}">
+            <span style="display: inline-flex; align-items: center; padding: 0.125rem 0.375rem; font-size: 0.75rem; font-weight: 500; border-radius: 0.25rem; {{ $priorityStyles[$record->priority] ?? $priorityStyles['medium'] }}">
                 {{ ucfirst($record->priority) }}
             </span>
         @endif
