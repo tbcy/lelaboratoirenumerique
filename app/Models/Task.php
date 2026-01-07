@@ -125,11 +125,6 @@ class Task extends Model implements Sortable
     {
         $userId = $userId ?? auth()->id();
 
-        // Validation: catalog_item_id required
-        if (!$this->catalog_item_id) {
-            throw new \Exception('Task must have a catalog item before starting timer');
-        }
-
         // Stop active timer for user (only one at a time)
         $activeTimer = TimeEntry::forUser($userId)->running()->first();
         if ($activeTimer) {

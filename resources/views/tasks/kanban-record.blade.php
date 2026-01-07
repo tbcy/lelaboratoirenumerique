@@ -67,15 +67,13 @@
         </div>
 
         {{-- Timer button --}}
-        @if ($record->catalog_item_id)
-            <button
-                type="button"
-                wire:click.stop="startTaskTimer({{ $record->getKey() }})"
-                class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-primary-500 transition-colors"
-                title="{{ __('resources.kanban.actions.start_timer') }}"
-            >
-                <x-heroicon-m-play class="w-4 h-4" />
-            </button>
-        @endif
+        <button
+            type="button"
+            wire:click.stop="startTaskTimer({{ $record->getKey() }})"
+            class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-primary-500 transition-colors"
+            title="{{ __('resources.kanban.actions.start_timer') }}"
+        >
+            <x-heroicon-m-play class="w-4 h-4" />
+        </button>
     </div>
 </div>
