@@ -1,4 +1,4 @@
-<div>
+<div wire:poll.5s="loadActiveTimer">
     @if($activeTimer)
         <div
             x-data="{
@@ -14,7 +14,7 @@
             x-transition:leave-start="opacity-100 translate-y-0"
             x-transition:leave-end="opacity-0 translate-y-4"
             class="bg-white dark:bg-gray-800 border-2 border-amber-400 rounded-lg px-4 py-3 shadow-xl w-96"
-            style="opacity: 1 !important;"
+            style="position: fixed; bottom: 1rem; right: 1rem; z-index: 50;"
         >
             <div class="flex flex-col gap-3">
                 <!-- Header: Titre + Icon -->

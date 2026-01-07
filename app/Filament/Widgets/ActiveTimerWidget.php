@@ -14,12 +14,6 @@ class ActiveTimerWidget extends Widget
     public ?TimeEntry $activeTimer = null;
     public int $elapsedSeconds = 0;
 
-    // Empêcher l'affichage automatique sur le Dashboard
-    public static function canView(): bool
-    {
-        return false;
-    }
-
     public function mount(): void
     {
         $this->loadActiveTimer();
