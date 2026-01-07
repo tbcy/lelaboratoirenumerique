@@ -562,6 +562,10 @@ return [
         'edit_modal_title' => 'Modifier la tâche',
         'edit_modal_save' => 'Enregistrer',
         'edit_modal_cancel' => 'Annuler',
+        'actions' => [
+            'start_timer' => 'Démarrer',
+            'stop_timer' => 'Arrêter',
+        ],
         'fields' => [
             'title' => 'Titre',
             'description' => 'Description',
