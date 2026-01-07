@@ -4,6 +4,7 @@
             statuses: @js($statuses),
         })"
         class="flex gap-4 overflow-x-auto pb-4"
+        style="display: flex; flex-direction: row; gap: 1rem; overflow-x: auto; padding-bottom: 1rem;"
     >
         @foreach ($statuses as $status)
             @include($statusView, [
