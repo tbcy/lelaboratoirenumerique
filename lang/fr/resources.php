@@ -581,6 +581,8 @@ return [
         'notifications' => [
             'timer_started' => 'Timer démarré',
             'timer_started_body' => 'Timer démarré pour: :title',
+            'timer_stopped' => 'Timer arrêté',
+            'timer_stopped_body' => 'Timer arrêté pour: :title',
             'error' => 'Erreur',
         ],
         'helpers' => [

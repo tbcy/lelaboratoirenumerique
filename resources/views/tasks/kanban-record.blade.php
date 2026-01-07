@@ -4,6 +4,10 @@
     data-id="{{ $record->getKey() }}"
     wire:click="recordClicked('{{ $record->getKey() }}', {{ json_encode($record->only(['id', 'title', 'description', 'status', 'priority', 'due_date', 'estimated_minutes', 'client_id', 'project_id'])) }})"
 >
+    @php
+        $hasActiveTimer = $record->timeEntries->isNotEmpty();
+    @endphp
+
     {{-- Header with priority badge --}}
     <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.5rem;">
         <p style="font-size: 0.875rem; font-weight: 500; color: rgb(17 24 39);">
@@ -66,15 +70,33 @@
             @endif
         </div>
 
-        {{-- Timer button --}}
-        <button
-            type="button"
-            wire:click.stop="startTaskTimer({{ $record->getKey() }})"
-            class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-primary-500 transition-colors"
-            style="padding: 0.25rem; border-radius: 0.25rem; color: rgb(156 163 175); display: inline-flex; align-items: center; justify-content: center;"
-            title="{{ __('resources.kanban.actions.start_timer') }}"
-        >
-            <x-heroicon-m-play class="w-4 h-4" style="width: 1rem; height: 1rem;" />
-        </button>
+        {{-- Timer button - Start or Stop --}}
+        @if ($hasActiveTimer)
+            <button
+                type="button"
+                wire:click.stop="stopTaskTimer({{ $record->getKey() }})"
+                style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.5rem; background-color: rgb(220 38 38); color: white; font-size: 0.75rem; font-weight: 500; border-radius: 0.25rem; border: none; cursor: pointer;"
+                onmouseover="this.style.backgroundColor='rgb(185 28 28)'"
+                onmouseout="this.style.backgroundColor='rgb(220 38 38)'"
+                title="{{ __('resources.kanban.actions.stop_timer') }}"
+            >
+                <svg style="width: 0.875rem; height: 0.875rem;" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z" clip-rule="evenodd" />
+                </svg>
+                {{ __('resources.kanban.actions.stop_timer') }}
+            </button>
+        @else
+            <button
+                type="button"
+                wire:click.stop="startTaskTimer({{ $record->getKey() }})"
+                style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.5rem; background-color: rgb(34 197 94); color: white; font-size: 0.75rem; font-weight: 500; border-radius: 0.25rem; border: none; cursor: pointer;"
+                onmouseover="this.style.backgroundColor='rgb(22 163 74)'"
+                onmouseout="this.style.backgroundColor='rgb(34 197 94)'"
+                title="{{ __('resources.kanban.actions.start_timer') }}"
+            >
+                <x-heroicon-m-play style="width: 0.875rem; height: 0.875rem;" />
+                {{ __('resources.kanban.actions.start_timer') }}
+            </button>
+        @endif
     </div>
 </div>

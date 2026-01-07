@@ -55,8 +55,13 @@ class TasksKanbanBoard extends KanbanBoard
 
     protected function records(): Collection
     {
+        $userId = auth()->id();
+
         return $this->getEloquentQuery()
             ->with(['project', 'client', 'subtasks'])
+            ->with(['timeEntries' => function ($query) use ($userId) {
+                $query->where('user_id', $userId)->whereNull('stopped_at');
+            }])
             ->whereNull('parent_id')
             ->orderBy('sort_order', 'asc')
             ->get();
@@ -166,6 +171,28 @@ class TasksKanbanBoard extends KanbanBoard
             Notification::make()
                 ->title(__('resources.kanban.notifications.timer_started'))
                 ->body(__('resources.kanban.notifications.timer_started_body', ['title' => $task->title]))
+                ->success()
+                ->send();
+        } catch (\Exception $e) {
+            Notification::make()
+                ->title(__('resources.kanban.notifications.error'))
+                ->body($e->getMessage())
+                ->danger()
+                ->send();
+        }
+    }
+
+    public function stopTaskTimer(int $taskId): void
+    {
+        try {
+            $task = Task::findOrFail($taskId);
+            $task->stopTimer();
+
+            $this->dispatch('timer-stopped');
+
+            Notification::make()
+                ->title(__('resources.kanban.notifications.timer_stopped'))
+                ->body(__('resources.kanban.notifications.timer_stopped_body', ['title' => $task->title]))
                 ->success()
                 ->send();
         } catch (\Exception $e) {
