@@ -243,9 +243,8 @@ class NoteResource extends Resource
 
                 Tables\Columns\TextColumn::make('short_summary')
                     ->label(__('resources.note.short_summary'))
-                    ->html()
+                    ->formatStateUsing(fn (?string $state): string => $state ? \Illuminate\Support\Str::words(strip_tags($state), 20, '...') : '')
                     ->wrap()
-                    ->limit(150)
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('created_at')
