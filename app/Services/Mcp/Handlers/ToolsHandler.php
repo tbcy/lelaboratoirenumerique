@@ -1648,11 +1648,11 @@ class ToolsHandler
 
         $this->toolDefinitions[] = [
             'name' => 'search_notes',
-            'description' => 'Full-text search across all note content fields (name, short_summary, long_summary, notes, transcription). Returns matching notes with context snippets.',
+            'description' => 'Full-text search across all note content fields using FTS5 index. Searches in: name, short_summary, long_summary, notes, transcription. Features: (1) Results ranked by relevance (BM25 algorithm), (2) Phrase search with quotes: "exact phrase", (3) Prefix/partial matching: searching "meet" finds "meeting", "meetings". Returns up to 50 notes with relevance scores and context snippets showing where matches were found.',
             'inputSchema' => [
                 'type' => 'object',
                 'properties' => [
-                    'query' => ['type' => 'string', 'description' => 'Search query (required)'],
+                    'query' => ['type' => 'string', 'description' => 'Search query. Use quotes for exact phrase: "project review". Multiple words are OR-matched with prefix support.'],
                     'scope_id' => ['type' => 'integer', 'description' => 'Filter by scope ID'],
                     'stakeholder_id' => ['type' => 'integer', 'description' => 'Filter by stakeholder ID'],
                     'date_from' => ['type' => 'string', 'description' => 'Filter notes from this date (ISO 8601)'],
