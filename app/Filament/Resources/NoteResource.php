@@ -245,7 +245,7 @@ class NoteResource extends Resource
                     ->label(__('resources.note.short_summary'))
                     ->html()
                     ->wrap()
-                    ->words(20)
+                    ->limit(150)
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('created_at')
