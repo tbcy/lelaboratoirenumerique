@@ -71,9 +71,9 @@ class TasksKanbanBoard extends KanbanBoard
                 ->maxLength(255)
                 ->columnSpanFull(),
 
-            Forms\Components\Textarea::make('description')
+            Forms\Components\RichEditor::make('description')
                 ->label(__('resources.kanban.fields.description'))
-                ->rows(3)
+                ->toolbarButtons(['bold', 'italic', 'bulletList', 'orderedList', 'link'])
                 ->columnSpanFull(),
 
             Grid::make(2)
