@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\TaskStatus;
 use App\Filament\Resources\TaskResource\Pages;
 use App\Filament\Resources\TaskResource\RelationManagers;
 use App\Models\Task;
@@ -263,8 +264,8 @@ class TaskResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label(__('resources.task.status'))
                     ->badge()
-                    ->color(fn (string $state): string => self::getStatusColor($state))
-                    ->formatStateUsing(fn (string $state): string => Task::getStatusOptions()[$state] ?? $state),
+                    ->color(fn (TaskStatus $state): string => $state->getColor())
+                    ->formatStateUsing(fn (TaskStatus $state): string => $state->getLabel()),
 
                 Tables\Columns\TextColumn::make('priority')
                     ->label(__('resources.task.priority'))
