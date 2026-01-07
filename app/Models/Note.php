@@ -9,10 +9,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Note extends Model implements Sortable
+class Note extends Model implements Sortable, HasMedia
 {
-    use SoftDeletes, SortableTrait;
+    use SoftDeletes, SortableTrait, InteractsWithMedia;
 
     public $sortable = [
         'order_column_name' => 'sort_order',
@@ -34,6 +36,11 @@ class Note extends Model implements Sortable
         'datetime' => 'datetime',
         'sort_order' => 'integer',
     ];
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('attachments');
+    }
 
     public function parent(): BelongsTo
     {

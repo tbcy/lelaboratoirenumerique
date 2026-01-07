@@ -6,6 +6,7 @@ use App\Filament\Resources\NoteResource\Pages;
 use App\Models\Note;
 use App\Models\NoteScope;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
@@ -98,6 +99,36 @@ class NoteResource extends Resource
                                         Forms\Components\Textarea::make('transcription')
                                             ->label('')
                                             ->rows(15)
+                                            ->columnSpanFull(),
+                                    ]),
+
+                                Tabs\Tab::make(__('resources.note.attachments'))
+                                    ->icon('heroicon-o-paper-clip')
+                                    ->schema([
+                                        SpatieMediaLibraryFileUpload::make('attachments')
+                                            ->label('')
+                                            ->collection('attachments')
+                                            ->multiple()
+                                            ->reorderable()
+                                            ->openable()
+                                            ->downloadable()
+                                            ->previewable()
+                                            ->acceptedFileTypes([
+                                                'application/pdf',
+                                                'application/msword',
+                                                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                                                'application/vnd.ms-excel',
+                                                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                                                'application/vnd.ms-powerpoint',
+                                                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                                                'image/jpeg',
+                                                'image/png',
+                                                'image/webp',
+                                                'image/gif',
+                                                'text/plain',
+                                                'text/csv',
+                                            ])
+                                            ->maxSize(10240)
                                             ->columnSpanFull(),
                                     ]),
                             ])
@@ -220,6 +251,13 @@ class NoteResource extends Resource
                     ->date(self::DATE_FORMAT)
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
+                Tables\Columns\TextColumn::make('media_count')
+                    ->label(__('resources.note.attachments_count'))
+                    ->state(fn (Note $record): int => $record->getMedia('attachments')->count())
+                    ->badge()
+                    ->color(fn (int $state): string => $state > 0 ? 'success' : 'gray')
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('scopes')
@@ -259,8 +297,13 @@ class NoteResource extends Resource
                             $newNote->stakeholders()->sync($record->stakeholders->pluck('id'));
                             $newNote->scopes()->sync($record->scopes->pluck('id'));
 
+                            // Copy attachments
+                            foreach ($record->getMedia('attachments') as $media) {
+                                $media->copy($newNote, 'attachments');
+                            }
+
                             Notification::make()
-                                ->title('Note dupliquée')
+                                ->title(__('resources.note.notifications.duplicated'))
                                 ->success()
                                 ->send();
                         }),

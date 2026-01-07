@@ -685,6 +685,8 @@ return [
         'long_summary' => 'Résumé long',
         'notes' => 'Notes',
         'transcription' => 'Transcription',
+        'attachments' => 'Pièces jointes',
+        'attachments_count' => 'PJ',
         'parent' => 'Page parente',
         'participants' => 'Participants',
         'scopes' => 'Scopes',
@@ -713,6 +715,7 @@ return [
         'notifications' => [
             'summary_generated' => 'Résumés générés avec succès',
             'openai_not_configured' => 'Clé API OpenAI non configurée',
+            'duplicated' => 'Note dupliquée avec succès',
         ],
     ],
 
