@@ -36,7 +36,7 @@
                     {{ $this->getEditModalCancelButtonLabel() }}
                 </x-filament::button>
 
-                <x-filament::button type="submit" form="kanban-edit-form">
+                <x-filament::button type="button" wire:click="editModalFormSubmitted">
                     {{ $this->getEditModalSaveButtonLabel() }}
                 </x-filament::button>
             </x-slot:footer>
