@@ -241,6 +241,7 @@ class NoteResource
                 'slug' => $s->slug,
                 'color' => $s->color,
             ])->toArray(),
+            'attachments_count' => $note->getMedia('attachments')->count(),
             'created_at' => $note->created_at->toIso8601String(),
             'updated_at' => $note->updated_at->toIso8601String(),
         ];
@@ -255,6 +256,13 @@ class NoteResource
                 'name' => $child->name,
                 'datetime' => $child->datetime?->toIso8601String(),
             ])->toArray() ?? [];
+            $data['attachments'] = $note->getMedia('attachments')->map(fn ($media) => [
+                'id' => $media->id,
+                'name' => $media->file_name,
+                'size' => $media->size,
+                'mime_type' => $media->mime_type,
+                'url' => $media->getUrl(),
+            ])->toArray();
         }
 
         return $data;
