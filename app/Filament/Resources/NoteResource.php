@@ -28,6 +28,8 @@ class NoteResource extends Resource
 
     protected static ?string $model = Note::class;
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?int $navigationSort = 1;
@@ -349,5 +351,23 @@ class NoteResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count() ?: null;
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'short_summary', 'notes', 'transcription'];
+    }
+
+    public static function getGlobalSearchResultDetails(\Illuminate\Database\Eloquent\Model $record): array
+    {
+        return [
+            __('resources.note.datetime') => $record->datetime?->format('d/m/Y H:i') ?? '-',
+            __('resources.note.scopes') => $record->scopes->pluck('name')->join(', ') ?: '-',
+        ];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->with(['scopes']);
     }
 }

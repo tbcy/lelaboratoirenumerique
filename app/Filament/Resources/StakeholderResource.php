@@ -23,6 +23,8 @@ class StakeholderResource extends Resource
 
     protected static ?string $model = Stakeholder::class;
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-user-group';
 
     protected static ?int $navigationSort = 3;
@@ -190,6 +192,19 @@ class StakeholderResource extends Resource
             'index' => Pages\ListStakeholders::route('/'),
             'create' => Pages\CreateStakeholder::route('/create'),
             'edit' => Pages\EditStakeholder::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'email', 'company', 'phone'];
+    }
+
+    public static function getGlobalSearchResultDetails(\Illuminate\Database\Eloquent\Model $record): array
+    {
+        return [
+            __('resources.stakeholder.company') => $record->company ?: '-',
+            __('resources.stakeholder.email') => $record->email ?: '-',
         ];
     }
 }

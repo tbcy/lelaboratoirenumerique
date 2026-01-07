@@ -31,6 +31,8 @@ class InvoiceResource extends Resource
 
     protected static ?string $model = Invoice::class;
 
+    protected static ?string $recordTitleAttribute = 'number';
+
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-banknotes';
 
     protected static ?int $navigationSort = 2;
@@ -451,5 +453,24 @@ class InvoiceResource extends Resource
     public static function getNavigationBadgeColor(): ?string
     {
         return 'warning';
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['number', 'subject', 'client.company_name', 'client.first_name', 'client.last_name'];
+    }
+
+    public static function getGlobalSearchResultDetails(\Illuminate\Database\Eloquent\Model $record): array
+    {
+        return [
+            __('resources.invoice.client') => $record->client?->display_name ?? '-',
+            __('resources.invoice.total_ttc') => number_format($record->total_ttc, 2, ',', ' ') . ' €',
+            __('resources.invoice.status') => Invoice::getStatusOptions()[$record->status] ?? $record->status,
+        ];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->with(['client']);
     }
 }

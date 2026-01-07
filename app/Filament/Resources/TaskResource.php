@@ -30,6 +30,8 @@ class TaskResource extends Resource
 
     protected static ?string $model = Task::class;
 
+    protected static ?string $recordTitleAttribute = 'title';
+
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-clipboard-document-check';
 
     protected static ?int $navigationSort = 2;
@@ -542,5 +544,23 @@ class TaskResource extends Resource
             ->count();
 
         return $overdueCount > 0 ? 'danger' : 'warning';
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['title', 'description', 'project.name', 'client.company_name'];
+    }
+
+    public static function getGlobalSearchResultDetails(\Illuminate\Database\Eloquent\Model $record): array
+    {
+        return [
+            __('resources.task.project') => $record->project?->name ?? '-',
+            __('resources.task.status') => Task::getStatusOptions()[$record->status] ?? $record->status,
+        ];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->with(['project', 'client']);
     }
 }

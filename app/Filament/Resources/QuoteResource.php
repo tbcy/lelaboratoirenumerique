@@ -31,6 +31,8 @@ class QuoteResource extends Resource
 
     protected static ?string $model = Quote::class;
 
+    protected static ?string $recordTitleAttribute = 'number';
+
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?int $navigationSort = 1;
@@ -427,5 +429,24 @@ class QuoteResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['number', 'subject', 'client.company_name', 'client.first_name', 'client.last_name'];
+    }
+
+    public static function getGlobalSearchResultDetails(\Illuminate\Database\Eloquent\Model $record): array
+    {
+        return [
+            __('resources.quote.client') => $record->client?->display_name ?? '-',
+            __('resources.quote.total_ttc') => number_format($record->total_ttc, 2, ',', ' ') . ' €',
+            __('resources.quote.status') => Quote::getStatusOptions()[$record->status] ?? $record->status,
+        ];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->with(['client']);
     }
 }

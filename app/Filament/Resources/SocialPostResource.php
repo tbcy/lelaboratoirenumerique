@@ -31,6 +31,8 @@ class SocialPostResource extends Resource
 
     protected static ?string $model = SocialPost::class;
 
+    protected static ?string $recordTitleAttribute = 'content';
+
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-megaphone';
 
     protected static ?int $navigationSort = 4;
@@ -451,5 +453,23 @@ class SocialPostResource extends Resource
     public static function getNavigationBadgeColor(): ?string
     {
         return 'warning';
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['content'];
+    }
+
+    public static function getGlobalSearchResultTitle(\Illuminate\Database\Eloquent\Model $record): string
+    {
+        return \Illuminate\Support\Str::limit($record->content, 50);
+    }
+
+    public static function getGlobalSearchResultDetails(\Illuminate\Database\Eloquent\Model $record): array
+    {
+        return [
+            __('resources.social_post.status') => SocialPost::getStatusOptions()[$record->status] ?? $record->status,
+            __('resources.social_post.scheduled') => $record->scheduled_at?->format('d/m/Y H:i') ?? '-',
+        ];
     }
 }

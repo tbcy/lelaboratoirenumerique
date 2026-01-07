@@ -27,6 +27,8 @@ class ClientResource extends Resource
 
     protected static ?string $model = Client::class;
 
+    protected static ?string $recordTitleAttribute = 'company_name';
+
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-users';
 
     protected static ?int $navigationSort = 1;
@@ -259,5 +261,23 @@ class ClientResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['company_name', 'first_name', 'last_name', 'email', 'phone'];
+    }
+
+    public static function getGlobalSearchResultTitle(\Illuminate\Database\Eloquent\Model $record): string
+    {
+        return $record->display_name;
+    }
+
+    public static function getGlobalSearchResultDetails(\Illuminate\Database\Eloquent\Model $record): array
+    {
+        return [
+            __('resources.client.status') => __('enums.client_status.' . $record->status),
+            __('resources.client.city') => $record->city ?: '-',
+        ];
     }
 }

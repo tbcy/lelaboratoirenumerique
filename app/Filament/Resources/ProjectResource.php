@@ -25,6 +25,8 @@ class ProjectResource extends Resource
 
     protected static ?string $model = Project::class;
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-folder';
 
     protected static ?int $navigationSort = 1;
@@ -353,5 +355,23 @@ class ProjectResource extends Resource
     public static function getNavigationBadgeColor(): ?string
     {
         return 'success';
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'client.company_name', 'client.first_name', 'client.last_name'];
+    }
+
+    public static function getGlobalSearchResultDetails(\Illuminate\Database\Eloquent\Model $record): array
+    {
+        return [
+            __('resources.project.client') => $record->client?->display_name ?? '-',
+            __('resources.project.status') => Project::getStatusOptions()[$record->status] ?? $record->status,
+        ];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->with(['client']);
     }
 }

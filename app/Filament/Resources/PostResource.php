@@ -36,6 +36,8 @@ class PostResource extends Resource
 
     protected static ?string $model = Post::class;
 
+    protected static ?string $recordTitleAttribute = 'title';
+
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-document-text';
 
     public static function getNavigationGroup(): ?string
@@ -340,5 +342,27 @@ class PostResource extends Resource
             ->withoutGlobalScopes([
                 \Illuminate\Database\Eloquent\SoftDeletingScope::class,
             ]);
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['title', 'excerpt', 'content', 'category.name'];
+    }
+
+    public static function getGlobalSearchResultDetails(\Illuminate\Database\Eloquent\Model $record): array
+    {
+        return [
+            __('resources.post.category') => $record->category?->name ?? '-',
+            __('resources.post.status') => match ($record->status) {
+                'draft' => __('resources.post.statuses.draft'),
+                'published' => __('resources.post.statuses.published'),
+                default => $record->status,
+            },
+        ];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->with(['category']);
     }
 }
