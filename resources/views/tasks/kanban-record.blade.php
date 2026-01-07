@@ -71,9 +71,10 @@
             type="button"
             wire:click.stop="startTaskTimer({{ $record->getKey() }})"
             class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-primary-500 transition-colors"
+            style="padding: 0.25rem; border-radius: 0.25rem; color: rgb(156 163 175); display: inline-flex; align-items: center; justify-content: center;"
             title="{{ __('resources.kanban.actions.start_timer') }}"
         >
-            <x-heroicon-m-play class="w-4 h-4" />
+            <x-heroicon-m-play class="w-4 h-4" style="width: 1rem; height: 1rem;" />
         </button>
     </div>
 </div>
