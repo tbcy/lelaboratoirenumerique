@@ -47,9 +47,8 @@ class NotesRelationManager extends RelationManager
 
                 Tables\Columns\TextColumn::make('short_summary')
                     ->label(__('resources.note.short_summary'))
-                    ->html()
+                    ->formatStateUsing(fn (?string $state): string => $state ? \Illuminate\Support\Str::words(strip_tags($state), 20, '...') : '')
                     ->wrap()
-                    ->words(20)
                     ->toggleable(),
             ])
             ->filters([
