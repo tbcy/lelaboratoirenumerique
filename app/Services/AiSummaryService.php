@@ -171,28 +171,52 @@ PROMPT;
     }
 
     /**
+     * Check if the model is an o1-series model.
+     */
+    protected function isO1Model(): bool
+    {
+        return str_starts_with($this->model, 'o1') || str_starts_with($this->model, 'o3');
+    }
+
+    /**
      * Call OpenAI Chat Completions API.
      */
     protected function callOpenAI(string $systemPrompt, string $content): ?string
     {
+        // o1 models have different API requirements
+        if ($this->isO1Model()) {
+            $payload = [
+                'model' => $this->model,
+                'messages' => [
+                    [
+                        'role' => 'user',
+                        'content' => $systemPrompt . "\n\n---\n\n" . $content,
+                    ],
+                ],
+                'max_completion_tokens' => 4000,
+            ];
+        } else {
+            $payload = [
+                'model' => $this->model,
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => $systemPrompt,
+                    ],
+                    [
+                        'role' => 'user',
+                        'content' => $content,
+                    ],
+                ],
+                'temperature' => 0.7,
+                'max_tokens' => 2000,
+            ];
+        }
+
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->apiKey,
             'Content-Type' => 'application/json',
-        ])->timeout(60)->post($this->baseUrl, [
-            'model' => $this->model,
-            'messages' => [
-                [
-                    'role' => 'system',
-                    'content' => $systemPrompt,
-                ],
-                [
-                    'role' => 'user',
-                    'content' => $content,
-                ],
-            ],
-            'temperature' => 0.7,
-            'max_tokens' => 2000,
-        ]);
+        ])->timeout(120)->post($this->baseUrl, $payload);
 
         if (! $response->successful()) {
             $error = $response->json('error.message') ?? $response->body();
