@@ -10,6 +10,7 @@ class AiSummaryService
 {
     protected ?string $apiKey = null;
     protected string $model = 'gpt-4o';
+    protected string $detailLevel = 'concise';
     protected string $baseUrl = 'https://api.openai.com/v1/chat/completions';
 
     public const SHORT_SUMMARY_PROMPT = <<<'PROMPT'
@@ -20,7 +21,7 @@ Format: paragraphe simple en HTML (<p>...</p>), pas de bullet points.
 Langue: Français.
 PROMPT;
 
-    public const LONG_SUMMARY_PROMPT = <<<'PROMPT'
+    public const LONG_SUMMARY_CONCISE_PROMPT = <<<'PROMPT'
 Tu es un assistant qui rédige des comptes-rendus de réunion.
 Génère un compte-rendu structuré à partir du contenu suivant.
 
@@ -52,11 +53,73 @@ Si une section n'est pas pertinente, omets-la.
 Langue: Français.
 PROMPT;
 
+    public const LONG_SUMMARY_EXHAUSTIVE_PROMPT = <<<'PROMPT'
+Tu es un assistant expert en rédaction de comptes-rendus détaillés.
+Génère un compte-rendu EXHAUSTIF et COMPLET à partir du contenu suivant.
+
+IMPORTANT: Ne résume pas, sois exhaustif. Inclus TOUS les détails, exemples, chiffres et informations mentionnés.
+
+Format attendu (HTML):
+<h3>Contexte et participants</h3>
+<p>[Contexte détaillé de la réunion/échange, participants si mentionnés]</p>
+
+<h3>Sujets abordés en détail</h3>
+[Pour chaque sujet majeur, créer une sous-section:]
+<h4>[Sujet 1]</h4>
+<p>[Description complète avec tous les détails, arguments, exemples mentionnés]</p>
+<ul>
+  <li>[Points spécifiques avec détails]</li>
+</ul>
+
+<h4>[Sujet 2]</h4>
+<p>[...]</p>
+
+<h3>Discussions et échanges</h3>
+<p>[Résumé des discussions, questions posées, réponses apportées, points de vue exprimés]</p>
+
+<h3>Chiffres et données clés</h3>
+<ul>
+  <li>[Tout chiffre, statistique, montant, date, délai mentionné]</li>
+</ul>
+
+<h3>Décisions prises</h3>
+<ul>
+  <li>[Chaque décision avec son contexte et justification si mentionnée]</li>
+</ul>
+
+<h3>Actions à suivre</h3>
+<table>
+  <tr><th>Action</th><th>Responsable</th><th>Échéance</th></tr>
+  <tr><td>[Action détaillée]</td><td>[Nom si mentionné]</td><td>[Date si mentionnée]</td></tr>
+</table>
+
+<h3>Points en suspens / Questions ouvertes</h3>
+<ul>
+  <li>[Questions non résolues, sujets à approfondir]</li>
+</ul>
+
+<h3>Prochaines étapes</h3>
+<p>[Planning détaillé des prochaines actions/réunions]</p>
+
+Note: Adapte les sections selon le contenu. Omets uniquement les sections vraiment non pertinentes.
+Sois EXHAUSTIF: inclus tous les détails même s'ils semblent mineurs.
+Langue: Français.
+PROMPT;
+
     public function __construct()
     {
         $company = Company::first();
         $this->apiKey = $company?->openai_api_key;
         $this->model = $company?->openai_chat_model ?? 'gpt-4o';
+        $this->detailLevel = $company?->summary_detail_level ?? 'concise';
+    }
+
+    /**
+     * Get the detail level being used.
+     */
+    public function getDetailLevel(): string
+    {
+        return $this->detailLevel;
     }
 
     /**
@@ -112,8 +175,11 @@ PROMPT;
                 ];
             }
 
-            // Generate long summary
-            $longSummary = $this->callOpenAI(self::LONG_SUMMARY_PROMPT, $content);
+            // Generate long summary (use appropriate prompt based on detail level)
+            $longPrompt = $this->detailLevel === 'exhaustive'
+                ? self::LONG_SUMMARY_EXHAUSTIVE_PROMPT
+                : self::LONG_SUMMARY_CONCISE_PROMPT;
+            $longSummary = $this->callOpenAI($longPrompt, $content);
 
             if ($longSummary === null) {
                 return [
@@ -179,10 +245,20 @@ PROMPT;
     }
 
     /**
+     * Get max tokens based on detail level.
+     */
+    protected function getMaxTokens(): int
+    {
+        return $this->detailLevel === 'exhaustive' ? 8000 : 4000;
+    }
+
+    /**
      * Call OpenAI Chat Completions API.
      */
     protected function callOpenAI(string $systemPrompt, string $content): ?string
     {
+        $maxTokens = $this->getMaxTokens();
+
         // o1 models have different API requirements
         if ($this->isO1Model()) {
             $payload = [
@@ -193,7 +269,7 @@ PROMPT;
                         'content' => $systemPrompt . "\n\n---\n\n" . $content,
                     ],
                 ],
-                'max_completion_tokens' => 4000,
+                'max_completion_tokens' => $maxTokens,
             ];
         } else {
             $payload = [
@@ -209,7 +285,7 @@ PROMPT;
                     ],
                 ],
                 'temperature' => 0.7,
-                'max_tokens' => 2000,
+                'max_tokens' => $maxTokens,
             ];
         }
 
