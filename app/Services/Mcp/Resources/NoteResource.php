@@ -4,13 +4,16 @@ namespace App\Services\Mcp\Resources;
 
 use App\Exceptions\Mcp\ResourceNotFoundException;
 use App\Models\Note;
+use App\Services\DocumentExtractionService;
 use App\Services\Mcp\PaginationService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class NoteResource
 {
     public function __construct(
-        private PaginationService $pagination
+        private PaginationService $pagination,
+        private DocumentExtractionService $documentExtractor
     ) {}
 
     public function listResources(): array
@@ -355,5 +358,108 @@ class NoteResource
         }
 
         return $contexts;
+    }
+
+    /**
+     * Read the text content of an attachment from a note
+     * Supports PDF, Word, Excel, PowerPoint, and text files
+     */
+    public function readAttachmentContent(array $args): array
+    {
+        $noteId = $args['note_id'] ?? null;
+        $attachmentId = $args['attachment_id'] ?? null;
+
+        if (!$noteId) {
+            return [
+                'success' => false,
+                'error_code' => 'VALIDATION_ERROR',
+                'error' => 'note_id is required',
+            ];
+        }
+
+        if (!$attachmentId) {
+            return [
+                'success' => false,
+                'error_code' => 'VALIDATION_ERROR',
+                'error' => 'attachment_id is required',
+            ];
+        }
+
+        // Find the note
+        try {
+            $note = Note::findOrFail($noteId);
+        } catch (ModelNotFoundException $e) {
+            throw ResourceNotFoundException::make('note', $noteId);
+        }
+
+        // Find the attachment in this note's media
+        $attachment = $note->getMedia('attachments')->firstWhere('id', $attachmentId);
+
+        if (!$attachment) {
+            // Check if attachment exists but belongs to another note
+            $existsElsewhere = Media::find($attachmentId);
+            if ($existsElsewhere) {
+                return [
+                    'success' => false,
+                    'error_code' => 'ATTACHMENT_NOT_IN_NOTE',
+                    'error' => "Attachment #{$attachmentId} exists but is not attached to note #{$noteId}",
+                ];
+            }
+
+            return [
+                'success' => false,
+                'error_code' => 'ATTACHMENT_NOT_FOUND',
+                'error' => "Attachment #{$attachmentId} not found",
+            ];
+        }
+
+        // Check if file type is supported
+        if (!$this->documentExtractor->isSupported($attachment->mime_type)) {
+            return [
+                'success' => false,
+                'error_code' => DocumentExtractionService::ERROR_UNSUPPORTED_TYPE,
+                'error' => "Unsupported file type: {$attachment->mime_type}",
+                'note_id' => $noteId,
+                'attachment' => [
+                    'id' => $attachment->id,
+                    'name' => $attachment->file_name,
+                    'mime_type' => $attachment->mime_type,
+                    'size' => $attachment->size,
+                ],
+                'supported_types' => $this->documentExtractor->getSupportedTypes(),
+            ];
+        }
+
+        // Extract content
+        $result = $this->documentExtractor->extractFromMedia($attachment);
+
+        // Build response
+        $response = [
+            'note_id' => $noteId,
+            'note_name' => $note->name,
+            'attachment' => [
+                'id' => $attachment->id,
+                'name' => $attachment->file_name,
+                'mime_type' => $attachment->mime_type,
+                'size' => $attachment->size,
+            ],
+            'success' => $result['success'],
+        ];
+
+        if ($result['success']) {
+            $response['text'] = $result['text'];
+            $response['metadata'] = $result['metadata'] ?? [];
+            $response['cached'] = $result['cached'] ?? false;
+
+            if (isset($result['warning'])) {
+                $response['warning'] = $result['warning'];
+                $response['warning_code'] = $result['warning_code'] ?? null;
+            }
+        } else {
+            $response['error_code'] = $result['error_code'];
+            $response['error'] = $result['error'];
+        }
+
+        return $response;
     }
 }

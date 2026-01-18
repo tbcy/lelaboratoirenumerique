@@ -188,6 +188,7 @@ class ToolsHandler
             'get_note_children' => [NoteResource::class, 'getChildren'],
             'get_note_tree' => [NoteResource::class, 'getTree'],
             'search_notes' => [NoteResource::class, 'search'],
+            'read_attachment_content' => [NoteResource::class, 'readAttachmentContent'],
             'create_note' => [NoteTools::class, 'create'],
             'update_note' => [NoteTools::class, 'update'],
             'delete_note' => [NoteTools::class, 'delete'],
@@ -1659,6 +1660,19 @@ class ToolsHandler
                     'date_to' => ['type' => 'string', 'description' => 'Filter notes until this date (ISO 8601)'],
                 ],
                 'required' => ['query'],
+            ],
+        ];
+
+        $this->toolDefinitions[] = [
+            'name' => 'read_attachment_content',
+            'description' => 'Read the text content of an attachment from a note. Supports PDF, Word (.doc, .docx), Excel (.xls, .xlsx), PowerPoint (.ppt, .pptx), and text files (.txt, .csv). Use get_note first to see available attachments with their IDs and MIME types. Returns extracted text, metadata (page count, sheet count, etc.), and caches the result for faster subsequent reads.',
+            'inputSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'note_id' => ['type' => 'integer', 'description' => 'Note ID that has the attachment'],
+                    'attachment_id' => ['type' => 'integer', 'description' => 'Attachment/media ID from the note\'s attachments array'],
+                ],
+                'required' => ['note_id', 'attachment_id'],
             ],
         ];
 
