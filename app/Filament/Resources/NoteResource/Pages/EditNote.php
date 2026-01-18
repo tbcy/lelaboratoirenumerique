@@ -5,6 +5,7 @@ namespace App\Filament\Resources\NoteResource\Pages;
 use App\Filament\Resources\NoteResource;
 use App\Services\AiSummaryService;
 use Filament\Actions;
+use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 
@@ -19,12 +20,22 @@ class EditNote extends EditRecord
                 ->label(__('resources.note.actions.generate_summary'))
                 ->icon('heroicon-o-sparkles')
                 ->color('info')
-                ->requiresConfirmation()
                 ->modalHeading(__('resources.note.modals.generate_summary_heading'))
                 ->modalDescription(__('resources.note.modals.generate_summary_description'))
                 ->modalSubmitActionLabel(__('resources.note.actions.generate'))
+                ->form([
+                    Select::make('detail_level')
+                        ->label(__('resources.note.form.detail_level'))
+                        ->options([
+                            'concise' => __('resources.settings.fields.summary_detail_level_concise'),
+                            'exhaustive' => __('resources.settings.fields.summary_detail_level_exhaustive'),
+                        ])
+                        ->default('concise')
+                        ->required()
+                        ->helperText(__('resources.settings.fields.summary_detail_level_help')),
+                ])
                 ->visible(fn () => ! empty($this->record->notes) || ! empty($this->record->transcription))
-                ->action(function () {
+                ->action(function (array $data) {
                     $service = app(AiSummaryService::class);
 
                     if (! $service->isConfigured()) {
@@ -38,7 +49,8 @@ class EditNote extends EditRecord
 
                     $result = $service->generateSummaries(
                         $this->record->notes ?? '',
-                        $this->record->transcription ?? ''
+                        $this->record->transcription ?? '',
+                        $data['detail_level']
                     );
 
                     if ($result['success']) {

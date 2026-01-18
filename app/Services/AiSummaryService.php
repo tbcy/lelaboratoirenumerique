@@ -111,15 +111,6 @@ PROMPT;
         $company = Company::first();
         $this->apiKey = $company?->openai_api_key;
         $this->model = $company?->openai_chat_model ?? 'gpt-4o';
-        $this->detailLevel = $company?->summary_detail_level ?? 'concise';
-    }
-
-    /**
-     * Get the detail level being used.
-     */
-    public function getDetailLevel(): string
-    {
-        return $this->detailLevel;
     }
 
     /**
@@ -143,10 +134,15 @@ PROMPT;
      *
      * @param  string  $notes  HTML notes content
      * @param  string  $transcription  Plain text transcription
+     * @param  string|null  $detailLevel  Override detail level ('concise' or 'exhaustive')
      * @return array{success: bool, short_summary?: string, long_summary?: string, error?: string}
      */
-    public function generateSummaries(string $notes, string $transcription): array
+    public function generateSummaries(string $notes, string $transcription, ?string $detailLevel = null): array
     {
+        // Override detail level if provided
+        if ($detailLevel !== null) {
+            $this->detailLevel = $detailLevel;
+        }
         if (! $this->isConfigured()) {
             return [
                 'success' => false,

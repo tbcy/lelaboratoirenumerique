@@ -718,6 +718,9 @@ return [
             'generate_summary' => 'Générer les résumés',
             'generate' => 'Générer',
         ],
+        'form' => [
+            'detail_level' => 'Niveau de détail',
+        ],
         'modals' => [
             'generate_summary_heading' => 'Générer les résumés avec l\'IA',
             'generate_summary_description' => 'L\'IA va analyser les notes et la transcription pour générer un résumé court (3 lignes) et un compte-rendu de réunion structuré.',

@@ -29,7 +29,6 @@ class Company extends Model
         'legal_mentions',
         'openai_api_key',
         'openai_chat_model',
-        'summary_detail_level',
         'image_generation_prompt',
         'quote_prefix',
         'quote_counter',

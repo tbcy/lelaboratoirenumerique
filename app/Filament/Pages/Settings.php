@@ -251,15 +251,6 @@ class Settings extends Page implements HasForms
                                             ->default('gpt-4o')
                                             ->helperText(__('resources.settings.fields.openai_chat_model_help')),
 
-                                        Forms\Components\Select::make('summary_detail_level')
-                                            ->label(__('resources.settings.fields.summary_detail_level'))
-                                            ->options([
-                                                'concise' => __('resources.settings.fields.summary_detail_level_concise'),
-                                                'exhaustive' => __('resources.settings.fields.summary_detail_level_exhaustive'),
-                                            ])
-                                            ->default('concise')
-                                            ->helperText(__('resources.settings.fields.summary_detail_level_help')),
-
                                         Forms\Components\Textarea::make('image_generation_prompt')
                                             ->label(__('resources.settings.fields.image_generation_prompt'))
                                             ->rows(12)
