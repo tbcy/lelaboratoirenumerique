@@ -191,6 +191,12 @@ class NoteResource extends Resource
 
                         Section::make()
                             ->components([
+                                Forms\Components\Placeholder::make('id')
+                                    ->label('ID')
+                                    ->content(fn (?Note $record): string =>
+                                        $record?->id ? (string) $record->id : '-'
+                                    ),
+
                                 Forms\Components\Placeholder::make('created_at')
                                     ->label(__('resources.note.created_at'))
                                     ->content(fn (?Note $record): string =>
@@ -214,6 +220,11 @@ class NoteResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable()
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('resources.note.name'))
                     ->searchable()
